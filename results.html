@@ -1,34 +1,181 @@
-<!-- Advanced features to implement -->
-<div class="results-container">
-    <!-- Interactive Map View -->
-    <section class="map-visualization">
-        <div id="worldMap" class="interactive-map"></div>
-        <div class="map-controls">
-            <button class="map-filter" data-filter="cost">Cost</button>
-            <button class="map-filter" data-filter="ranking">Ranking</button>
-            <button class="map-filter" data-filter="visa">Visa Ease</button>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Study Abroad Recommendations - Student DSS</title>
+    <link rel="stylesheet" href="css/results.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <nav class="top-navigation">
+        <div class="nav-container">
+            <div class="logo">
+                <h2>Student DSS</h2>
+            </div>
+            <div class="nav-links">
+                <a href="dashboard.html" class="nav-link">Dashboard</a>
+                <a href="results.html" class="nav-link active">Results</a>
+                <a href="comparison.html" class="nav-link">Compare</a>
+                <a href="analytics.html" class="nav-link">Analytics</a>
+            </div>
         </div>
-    </section>
-    
-    <!-- Multi-view Results -->
-    <div class="view-switcher">
-        <button class="view-btn active" data-view="cards">Card View</button>
-        <button class="view-btn" data-view="table">Table View</button>
-        <button class="view-btn" data-view="chart">Chart View</button>
-    </div>
-    
-    <!-- Advanced Filtering -->
-    <div class="advanced-filters">
-        <select id="regionFilter">
-            <option value="all">All Regions</option>
-            <option value="europe">Europe</option>
-            <option value="northamerica">North America</option>
-            <option value="asia">Asia Pacific</option>
-        </select>
-        
-        <div class="budget-slider">
-            <label>Max Budget: $<span id="budgetValue">50000</span></label>
-            <input type="range" id="budgetRange" min="10000" max="100000" step="5000">
+    </nav>
+
+    <div class="results-container">
+        <header class="page-header">
+            <div class="header-content">
+                <h1>Your Study Abroad Recommendations</h1>
+                <p class="subtitle">Based on your preferences and criteria weights</p>
+                <div class="result-stats">
+                    <div class="stat-item">
+                        <span class="stat-number">12</span>
+                        <span class="stat-label">Countries Analyzed</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">8</span>
+                        <span class="stat-label">Criteria Weighted</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">95%</span>
+                        <span class="stat-label">Match Confidence</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="controls-section">
+            <div class="view-controls">
+                <button class="view-btn active" data-view="cards">
+                    <span class="icon">⊞</span> Cards
+                </button>
+                <button class="view-btn" data-view="table">
+                    <span class="icon">☰</span> Table
+                </button>
+                <button class="view-btn" data-view="map">
+                    <span class="icon">🗺</span> Map
+                </button>
+            </div>
+            
+            <div class="filter-controls">
+                <select class="filter-select" id="regionFilter">
+                    <option value="all">All Regions</option>
+                    <option value="europe">Europe</option>
+                    <option value="north-america">North America</option>
+                    <option value="asia-pacific">Asia Pacific</option>
+                </select>
+                
+                <div class="budget-filter">
+                    <label>Max Budget: $<span id="budgetDisplay">80000</span></label>
+                    <input type="range" id="budgetSlider" min="20000" max="120000" step="5000" value="80000">
+                </div>
+                
+                <button class="export-btn">Export Results</button>
+            </div>
+        </div>
+
+        <div class="results-content">
+            <div class="results-grid" id="resultsGrid">
+                <!-- Country Card Template -->
+                <div class="country-card" data-country="canada">
+                    <div class="card-header">
+                        <div class="country-flag">🇨🇦</div>
+                        <div class="country-info">
+                            <h3>Canada</h3>
+                            <p>North America</p>
+                        </div>
+                        <div class="match-score">
+                            <div class="score-circle">
+                                <span class="score-value">92</span>
+                                <span class="score-percent">%</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card-body">
+                        <div class="key-metrics">
+                            <div class="metric">
+                                <span class="metric-label">Cost</span>
+                                <div class="metric-bar">
+                                    <div class="bar-fill" style="width: 75%"></div>
+                                </div>
+                                <span class="metric-value">$45K/year</span>
+                            </div>
+                            <div class="metric">
+                                <span class="metric-label">Quality</span>
+                                <div class="metric-bar">
+                                    <div class="bar-fill" style="width: 88%"></div>
+                                </div>
+                                <span class="metric-value">8.8/10</span>
+                            </div>
+                            <div class="metric">
+                                <span class="metric-label">Visa Ease</span>
+                                <div class="metric-bar">
+                                    <div class="bar-fill" style="width: 70%"></div>
+                                </div>
+                                <span class="metric-value">Moderate</span>
+                            </div>
+                        </div>
+                        
+                        <div class="highlights">
+                            <span class="highlight-tag positive">Strong Job Market</span>
+                            <span class="highlight-tag positive">High QoL</span>
+                            <span class="highlight-tag neutral">Moderate Cost</span>
+                        </div>
+                        
+                        <div class="card-actions">
+                            <button class="btn-secondary" onclick="addToCompare('canada')">Add to Compare</button>
+                            <button class="btn-primary" onclick="viewDetails('canada')">View Details</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Additional country cards would be generated dynamically -->
+            </div>
+            
+            <div class="results-table hidden" id="resultsTable">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Rank</th>
+                            <th>Country</th>
+                            <th>Overall Score</th>
+                            <th>Cost Score</th>
+                            <th>Quality Score</th>
+                            <th>Safety Score</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody">
+                        <!-- Table rows generated dynamically -->
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="results-map hidden" id="resultsMap">
+                <div class="map-container">
+                    <div id="worldMap" class="interactive-map"></div>
+                    <div class="map-legend">
+                        <h4>Score Range</h4>
+                        <div class="legend-item">
+                            <span class="legend-color high"></span>
+                            <span>90-100% Match</span>
+                        </div>
+                        <div class="legend-item">
+                            <span class="legend-color medium"></span>
+                            <span>70-89% Match</span>
+                        </div>
+                        <div class="legend-item">
+                            <span class="legend-color low"></span>
+                            <span>Below 70% Match</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-</div>
+
+    <script src="js/results.js"></script>
+</body>
+</html>

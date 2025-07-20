@@ -1,13 +1,239 @@
-<!-- dashboard.html: Dashboard page for student migration DSS -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Student DSS</title>
     <link rel="stylesheet" href="css/dashboard.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-    <h1>Dashboard</h1>
-    <!-- Dashboard content goes here -->
+    <div class="dashboard-layout">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2>Student DSS</h2>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="nav-item active">
+                    <span class="nav-icon">🏠</span>
+                    <span class="nav-text">Dashboard</span>
+                </a>
+                <a href="preferences.html" class="nav-item">
+                    <span class="nav-icon">⚙️</span>
+                    <span class="nav-text">Preferences</span>
+                </a>
+                <a href="results.html" class="nav-item">
+                    <span class="nav-icon">🎯</span>
+                    <span class="nav-text">Results</span>
+                </a>
+                <a href="comparison.html" class="nav-item">
+                    <span class="nav-icon">⚖️</span>
+                    <span class="nav-text">Compare</span>
+                </a>
+                <a href="analytics.html" class="nav-item">
+                    <span class="nav-icon">📊</span>
+                    <span class="nav-text">Analytics</span>
+                </a>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <header class="dashboard-header">
+                <div class="header-left">
+                    <h1>Welcome back, Alex!</h1>
+                    <p class="header-subtitle">Track your study abroad journey</p>
+                </div>
+                <div class="header-right">
+                    <div class="quick-stats">
+                        <div class="stat-card">
+                            <span class="stat-value">5</span>
+                            <span class="stat-label">Countries Shortlisted</span>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-value">12</span>
+                            <span class="stat-label">Days to Deadline</span>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <div class="dashboard-grid">
+                <div class="card application-progress">
+                    <div class="card-header">
+                        <h3>Application Progress</h3>
+                        <div class="progress-percentage">68%</div>
+                    </div>
+                    <div class="progress-steps">
+                        <div class="step completed">
+                            <div class="step-circle">✓</div>
+                            <div class="step-content">
+                                <h4>Profile Setup</h4>
+                                <p>Completed on March 15</p>
+                            </div>
+                        </div>
+                        <div class="step completed">
+                            <div class="step-circle">✓</div>
+                            <div class="step-content">
+                                <h4>Preference Analysis</h4>
+                                <p>Completed on March 20</p>
+                            </div>
+                        </div>
+                        <div class="step active">
+                            <div class="step-circle">3</div>
+                            <div class="step-content">
+                                <h4>Document Preparation</h4>
+                                <p>In progress</p>
+                            </div>
+                        </div>
+                        <div class="step pending">
+                            <div class="step-circle">4</div>
+                            <div class="step-content">
+                                <h4>Application Submission</h4>
+                                <p>Not started</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card top-recommendations">
+                    <div class="card-header">
+                        <h3>Top Recommendations</h3>
+                        <a href="results.html" class="view-all">View All</a>
+                    </div>
+                    <div class="recommendation-list">
+                        <div class="recommendation-item">
+                            <div class="country-flag">🇨🇦</div>
+                            <div class="country-info">
+                                <h4>Canada</h4>
+                                <p>92% match • Computer Science</p>
+                            </div>
+                            <div class="match-badge">92%</div>
+                        </div>
+                        <div class="recommendation-item">
+                            <div class="country-flag">🇩🇪</div>
+                            <div class="country-info">
+                                <h4>Germany</h4>
+                                <p>89% match • Engineering</p>
+                            </div>
+                            <div class="match-badge">89%</div>
+                        </div>
+                        <div class="recommendation-item">
+                            <div class="country-flag">🇦🇺</div>
+                            <div class="country-info">
+                                <h4>Australia</h4>
+                                <p>87% match • Technology</p>
+                            </div>
+                            <div class="match-badge">87%</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card upcoming-deadlines">
+                    <div class="card-header">
+                        <h3>Upcoming Deadlines</h3>
+                        <button class="add-deadline">+ Add</button>
+                    </div>
+                    <div class="deadline-list">
+                        <div class="deadline-item urgent">
+                            <div class="deadline-date">
+                                <span class="date">Mar</span>
+                                <span class="day">28</span>
+                            </div>
+                            <div class="deadline-info">
+                                <h4>University of Toronto Application</h4>
+                                <p>Canada • Computer Science</p>
+                            </div>
+                            <div class="deadline-status urgent">12 days</div>
+                        </div>
+                        <div class="deadline-item">
+                            <div class="deadline-date">
+                                <span class="date">Apr</span>
+                                <span class="day">15</span>
+                            </div>
+                            <div class="deadline-info">
+                                <h4>IELTS Exam Registration</h4>
+                                <p>English Proficiency Test</p>
+                            </div>
+                            <div class="deadline-status">30 days</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card recent-activity">
+                    <div class="card-header">
+                        <h3>Recent Activity</h3>
+                    </div>
+                    <div class="activity-list">
+                        <div class="activity-item">
+                            <div class="activity-icon">🎯</div>
+                            <div class="activity-content">
+                                <p><strong>Updated preferences</strong> - Changed cost importance weight</p>
+                                <span class="activity-time">2 hours ago</span>
+                            </div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-icon">⚖️</div>
+                            <div class="activity-content">
+                                <p><strong>Compared countries</strong> - Canada vs Germany vs Australia</p>
+                                <span class="activity-time">1 day ago</span>
+                            </div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-icon">📊</div>
+                            <div class="activity-content">
+                                <p><strong>Viewed analytics</strong> - Cost sensitivity analysis</p>
+                                <span class="activity-time">3 days ago</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card cost-overview">
+                    <div class="card-header">
+                        <h3>Cost Overview</h3>
+                        <select class="cost-filter">
+                            <option>Top 3 Countries</option>
+                            <option>All Countries</option>
+                        </select>
+                    </div>
+                    <div class="cost-chart-container">
+                        <canvas id="costChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="card document-checklist">
+                    <div class="card-header">
+                        <h3>Document Checklist</h3>
+                        <div class="checklist-progress">4/7 Complete</div>
+                    </div>
+                    <div class="checklist-items">
+                        <div class="checklist-item completed">
+                            <input type="checkbox" checked disabled>
+                            <label>Academic Transcripts</label>
+                            <span class="item-status">✓</span>
+                        </div>
+                        <div class="checklist-item completed">
+                            <input type="checkbox" checked disabled>
+                            <label>Personal Statement</label>
+                            <span class="item-status">✓</span>
+                        </div>
+                        <div class="checklist-item pending">
+                            <input type="checkbox">
+                            <label>IELTS/TOEFL Scores</label>
+                            <span class="item-status">Pending</span>
+                        </div>
+                        <div class="checklist-item pending">
+                            <input type="checkbox">
+                            <label>Letters of Recommendation</label>
+                            <span class="item-status">Pending</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/dashboard.js"></script>
 </body>
 </html>

@@ -1,28 +1,321 @@
-<!-- Advanced analytics features -->
-<div class="analytics-dashboard">
-    <!-- Sensitivity Analysis -->
-    <section class="sensitivity-analysis">
-        <h3>How Changes Affect Your Results</h3>
-        <div class="sensitivity-controls">
-            <label>Adjust: Cost Importance</label>
-            <input type="range" id="costSensitivity" class="sensitivity-slider">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analytics - Student DSS</title>
+    <link rel="stylesheet" href="css/analytics.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <nav class="top-navigation">
+        <div class="nav-container">
+            <div class="logo">
+                <h2>Student DSS</h2>
+            </div>
+            <div class="nav-links">
+                <a href="dashboard.html" class="nav-link">Dashboard</a>
+                <a href="results.html" class="nav-link">Results</a>
+                <a href="comparison.html" class="nav-link">Compare</a>
+                <a href="analytics.html" class="nav-link active">Analytics</a>
+            </div>
         </div>
-        <canvas id="sensitivityChart"></canvas>
-    </section>
-    
-    <!-- Success Probability -->
-    <section class="success-prediction">
-        <h3>Application Success Probability</h3>
-        <div class="prediction-cards">
-            <div class="prediction-card" data-country="usa">
-                <h4>United States</h4>
-                <div class="probability-score">78%</div>
-                <div class="factors">
-                    <span class="factor positive">Strong GPA</span>
-                    <span class="factor neutral">Test Scores</span>
-                    <span class="factor negative">Competition</span>
+    </nav>
+
+    <div class="analytics-container">
+        <header class="page-header">
+            <div class="header-content">
+                <h1>Advanced Analytics</h1>
+                <p class="subtitle">Deep insights into your study abroad decisions</p>
+            </div>
+            <div class="header-controls">
+                <select class="time-range">
+                    <option>Last 30 days</option>
+                    <option>Last 3 months</option>
+                    <option>All time</option>
+                </select>
+                <button class="refresh-btn">🔄 Refresh</button>
+            </div>
+        </header>
+
+        <div class="analytics-tabs">
+            <button class="tab-btn active" data-tab="sensitivity">Sensitivity Analysis</button>
+            <button class="tab-btn" data-tab="prediction">Success Prediction</button>
+            <button class="tab-btn" data-tab="trends">Market Trends</button>
+            <button class="tab-btn" data-tab="insights">AI Insights</button>
+        </div>
+
+        <div class="tab-content">
+            <div class="tab-panel active" id="sensitivityPanel">
+                <div class="panel-header">
+                    <h2>How Changes Affect Your Rankings</h2>
+                    <p>Adjust criteria weights to see how country rankings change</p>
+                </div>
+                
+                <div class="sensitivity-controls">
+                    <div class="control-section">
+                        <h3>Adjust Criteria Weights</h3>
+                        <div class="weight-sliders">
+                            <div class="slider-group">
+                                <label>Cost Importance: <span id="costWeight">25%</span></label>
+                                <input type="range" id="costSlider" min="0" max="50" value="25" class="weight-slider">
+                            </div>
+                            <div class="slider-group">
+                                <label>Quality Importance: <span id="qualityWeight">30%</span></label>
+                                <input type="range" id="qualitySlider" min="0" max="50" value="30" class="weight-slider">
+                            </div>
+                            <div class="slider-group">
+                                <label>Safety Importance: <span id="safetyWeight">20%</span></label>
+                                <input type="range" id="safetySlider" min="0" max="50" value="20" class="weight-slider">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="sensitivity-results">
+                        <div class="ranking-change">
+                            <h4>Ranking Changes</h4>
+                            <div class="change-list">
+                                <div class="change-item">
+                                    <span class="country">🇨🇦 Canada</span>
+                                    <span class="change positive">↑ 2 positions</span>
+                                </div>
+                                <div class="change-item">
+                                    <span class="country">🇩🇪 Germany</span>
+                                    <span class="change negative">↓ 1 position</span>
+                                </div>
+                                <div class="change-item">
+                                    <span class="country">🇦🇺 Australia</span>
+                                    <span class="change neutral">No change</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="sensitivity-charts">
+                    <div class="chart-container">
+                        <h3>Interactive Sensitivity Chart</h3>
+                        <canvas id="sensitivityChart"></canvas>
+                    </div>
+                    <div class="impact-matrix">
+                        <h3>Criteria Impact Matrix</h3>
+                        <div class="matrix-grid">
+                            <div class="matrix-cell high">
+                                <span class="criteria">Cost</span>
+                                <span class="impact">High Impact</span>
+                            </div>
+                            <div class="matrix-cell medium">
+                                <span class="criteria">Quality</span>
+                                <span class="impact">Medium Impact</span>
+                            </div>
+                            <div class="matrix-cell low">
+                                <span class="criteria">Culture</span>
+                                <span class="impact">Low Impact</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-panel hidden" id="predictionPanel">
+                <div class="panel-header">
+                    <h2>Application Success Prediction</h2>
+                    <p>Based on historical data and your profile</p>
+                </div>
+                
+                <div class="prediction-grid">
+                    <div class="prediction-card">
+                        <div class="card-header">
+                            <h3>🇨🇦 Canada</h3>
+                            <div class="probability-score high">
+                                <span class="score">87%</span>
+                                <span class="label">Success Rate</span>
+                            </div>
+                        </div>
+                        <div class="factors">
+                            <div class="factor positive">
+                                <span class="icon">✓</span>
+                                <span>Strong Academic Record</span>
+                            </div>
+                            <div class="factor positive">
+                                <span class="icon">✓</span>
+                                <span>Relevant Work Experience</span>
+                            </div>
+                            <div class="factor neutral">
+                                <span class="icon">!</span>
+                                <span>Average Test Scores</span>
+                            </div>
+                        </div>
+                        <div class="recommendation">
+                            <strong>Recommendation:</strong> Apply early, consider improving IELTS score
+                        </div>
+                    </div>
+                    
+                    <div class="prediction-card">
+                        <div class="card-header">
+                            <h3>🇩🇪 Germany</h3>
+                            <div class="probability-score medium">
+                                <span class="score">72%</span>
+                                <span class="label">Success Rate</span>
+                            </div>
+                        </div>
+                        <div class="factors">
+                            <div class="factor positive">
+                                <span class="icon">✓</span>
+                                <span>Technical Background</span>
+                            </div>
+                            <div class="factor negative">
+                                <span class="icon">✗</span>
+                                <span>Limited German Proficiency</span>
+                            </div>
+                            <div class="factor neutral">
+                                <span class="icon">!</span>
+                                <span>Competitive Program</span>
+                            </div>
+                        </div>
+                        <div class="recommendation">
+                            <strong>Recommendation:</strong> Consider German language course, apply to multiple universities
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="prediction-timeline">
+                    <h3>Optimal Application Timeline</h3>
+                    <div class="timeline">
+                        <div class="timeline-item completed">
+                            <div class="timeline-marker"></div>
+                            <div class="timeline-content">
+                                <h4>Profile Assessment</h4>
+                                <p>Completed March 2024</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item current">
+                            <div class="timeline-marker"></div>
+                            <div class="timeline-content">
+                                <h4>Document Preparation</h4>
+                                <p>In Progress - Due April 2024</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-marker"></div>
+                            <div class="timeline-content">
+                                <h4>Application Submission</h4>
+                                <p>Recommended by May 2024</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-panel hidden" id="trendsPanel">
+                <div class="panel-header">
+                    <h2>Global Study Abroad Trends</h2>
+                    <p>Market insights and emerging patterns</p>
+                </div>
+                
+                <div class="trends-grid">
+                    <div class="trend-card">
+                        <h3>Popular Destinations</h3>
+                        <div class="trend-chart">
+                            <canvas id="popularityChart"></canvas>
+                        </div>
+                    </div>
+                    
+                    <div class="trend-card">
+                        <h3>Cost Trends</h3>
+                        <div class="trend-chart">
+                            <canvas id="costTrendsChart"></canvas>
+                        </div>
+                    </div>
+                    
+                    <div class="trend-card">
+                        <h3>Field of Study Demand</h3>
+                        <div class="demand-list">
+                            <div class="demand-item">
+                                <span class="field">Computer Science</span>
+                                <div class="demand-bar">
+                                    <div class="bar-fill" style="width: 95%"></div>
+                                </div>
+                                <span class="percentage">95%</span>
+                            </div>
+                            <div class="demand-item">
+                                <span class="field">Engineering</span>
+                                <div class="demand-bar">
+                                    <div class="bar-fill" style="width: 87%"></div>
+                                </div>
+                                <span class="percentage">87%</span>
+                            </div>
+                            <div class="demand-item">
+                                <span class="field">Business</span>
+                                <div class="demand-bar">
+                                    <div class="bar-fill" style="width: 78%"></div>
+                                </div>
+                                <span class="percentage">78%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-panel hidden" id="insightsPanel">
+                <div class="panel-header">
+                    <h2>AI-Powered Insights</h2>
+                    <p>Personalized recommendations based on data analysis</p>
+                </div>
+                
+                <div class="insights-container">
+                    <div class="insight-card priority">
+                        <div class="insight-header">
+                            <span class="insight-icon">🎯</span>
+                            <h3>Priority Recommendation</h3>
+                            <span class="confidence">95% confidence</span>
+                        </div>
+                        <div class="insight-content">
+                            <p><strong>Focus on Canada for Computer Science programs.</strong> Based on your profile analysis, you have the highest success probability and best ROI in Canadian universities.</p>
+                            <div class="supporting-data">
+                                <span class="data-point">87% success rate</span>
+                                <span class="data-point">Strong job market</span>
+                                <span class="data-point">Cultural fit</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="insight-card warning">
+                        <div class="insight-header">
+                            <span class="insight-icon">⚠️</span>
+                            <h3>Risk Alert</h3>
+                            <span class="confidence">78% confidence</span>
+                        </div>
+                        <div class="insight-content">
+                            <p><strong>German applications may be challenging.</strong> Limited German proficiency could impact admission chances for programs taught in German.</p>
+                            <div class="action-suggestions">
+                                <button class="suggestion-btn">Find English Programs</button>
+                                <button class="suggestion-btn">German Course Options</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="insight-card opportunity">
+                        <div class="insight-header">
+                            <span class="insight-icon">💡</span>
+                            <h3>Hidden Opportunity</h3>
+                            <span class="confidence">72% confidence</span>
+                        </div>
+                        <div class="insight-content">
+                            <p><strong>Consider Netherlands for Tech programs.</strong> Emerging as a tech hub with English-taught programs and good visa policies.</p>
+                            <div class="opportunity-metrics">
+                                <span class="metric">Lower competition</span>
+                                <span class="metric">Growing tech sector</span>
+                                <span class="metric">English friendly</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-    </section>
-</div>
+    </div>
+
+    <script src="js/analytics.js"></script>
+</body>
+</html>

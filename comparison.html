@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Country Comparison - Student DSS</title>
+    <link rel="stylesheet" href="css/comparison.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <nav class="top-navigation">
+        <div class="nav-container">
+            <div class="logo">
+                <h2>Student DSS</h2>
+            </div>
+            <div class="nav-links">
+                <a href="dashboard.html" class="nav-link">Dashboard</a>
+                <a href="results.html" class="nav-link">Results</a>
+                <a href="comparison.html" class="nav-link active">Compare</a>
+                <a href="analytics.html" class="nav-link">Analytics</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="comparison-container">
+        <header class="page-header">
+            <h1>Country Comparison</h1>
+            <p class="subtitle">Compare up to 4 countries side-by-side</p>
+        </header>
+
+        <div class="comparison-controls">
+            <div class="country-selector">
+                <div class="selector-item">
+                    <select class="country-select" id="country1">
+                        <option value="">Select Country 1</option>
+                        <option value="canada">🇨🇦 Canada</option>
+                        <option value="germany">🇩🇪 Germany</option>
+                        <option value="australia">🇦🇺 Australia</option>
+                        <option value="uk">🇬🇧 United Kingdom</option>
+                        <option value="usa">🇺🇸 United States</option>
+                    </select>
+                </div>
+                <div class="vs-divider">VS</div>
+                <div class="selector-item">
+                    <select class="country-select" id="country2">
+                        <option value="">Select Country 2</option>
+                        <option value="canada">🇨🇦 Canada</option>
+                        <option value="germany">🇩🇪 Germany</option>
+                        <option value="australia">🇦🇺 Australia</option>
+                        <option value="uk">🇬🇧 United Kingdom</option>
+                        <option value="usa">🇺🇸 United States</option>
+                    </select>
+                </div>
+                <div class="vs-divider">VS</div>
+                <div class="selector-item optional">
+                    <select class="country-select" id="country3">
+                        <option value="">Select Country 3 (Optional)</option>
+                        <option value="canada">🇨🇦 Canada</option>
+                        <option value="germany">🇩🇪 Germany</option>
+                        <option value="australia">🇦🇺 Australia</option>
+                        <option value="uk">🇬🇧 United Kingdom</option>
+                        <option value="usa">🇺🇸 United States</option>
+                    </select>
+                </div>
+            </div>
+            
+            <button class="compare-btn" id="startComparison">Compare Countries</button>
+        </div>
+
+        <div class="comparison-results" id="comparisonResults" style="display: none;">
+            <div class="comparison-header">
+                <h2>Comparison Results</h2>
+                <div class="view-toggle">
+                    <button class="toggle-btn active" data-view="overview">Overview</button>
+                    <button class="toggle-btn" data-view="detailed">Detailed</button>
+                    <button class="toggle-btn" data-view="charts">Charts</button>
+                </div>
+            </div>
+
+            <div class="comparison-content">
+                <div class="overview-view" id="overviewView">
+                    <div class="country-cards">
+                        <div class="comparison-card" id="card-canada">
+                            <div class="card-header">
+                                <div class="country-flag">🇨🇦</div>
+                                <h3>Canada</h3>
+                                <div class="overall-score">
+                                    <span class="score">92</span>
+                                    <span class="score-label">Overall Score</span>
+                                </div>
+                            </div>
+                            
+                            <div class="quick-stats">
+                                <div class="stat">
+                                    <span class="stat-label">Annual Cost</span>
+                                    <span class="stat-value">$45,000</span>
+                                </div>
+                                <div class="stat">
+                                    <span class="stat-label">QS Ranking</span>
+                                    <span class="stat-value">#3 Global</span>
+                                </div>
+                                <div class="stat">
+                                    <span class="stat-label">Visa Success</span>
+                                    <span class="stat-value">85%</span>
+                                </div>
+                            </div>
+
+                            <div class="strengths-weaknesses">
+                                <div class="strengths">
+                                    <h4>Strengths</h4>
+                                    <ul>
+                                        <li>High quality education</li>
+                                        <li>Strong job market</li>
+                                        <li>Multicultural environment</li>
+                                    </ul>
+                                </div>
+                                <div class="weaknesses">
+                                    <h4>Areas to Consider</h4>
+                                    <ul>
+                                        <li>Cold climate</li>
+                                        <li>Moderate cost</li>
+                                        <li>Competitive admission</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="comparison-card" id="card-germany">
+                            <div class="card-header">
+                                <div class="country-flag">🇩🇪</div>
+                                <h3>Germany</h3>
+                                <div class="overall-score">
+                                    <span class="score">89</span>
+                                    <span class="score-label">Overall Score</span>
+                                </div>
+                            </div>
+                            
+                            <div class="quick-stats">
+                                <div class="stat">
+                                    <span class="stat-label">Annual Cost</span>
+                                    <span class="stat-value">$25,000</span>
+                                </div>
+                                <div class="stat">
+                                    <span class="stat-label">QS Ranking</span>
+                                    <span class="stat-value">#4 Global</span>
+                                </div>
+                                <div class="stat">
+                                    <span class="stat-label">Visa Success</span>
+                                    <span class="stat-value">78%</span>
+                                </div>
+                            </div>
+
+                            <div class="strengths-weaknesses">
+                                <div class="strengths">
+                                    <h4>Strengths</h4>
+                                    <ul>
+                                        <li>Low tuition fees</li>
+                                        <li>Strong engineering programs</li>
+                                        <li>EU work opportunities</li>
+                                    </ul>
+                                </div>
+                                <div class="weaknesses">
+                                    <h4>Areas to Consider</h4>
+                                    <ul>
+                                        <li>Language barrier</li>
+                                        <li>Bureaucratic processes</li>
+                                        <li>Limited English programs</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="detailed-view hidden" id="detailedView">
+                    <div class="comparison-table">
+                        <table class="detailed-table">
+                            <thead>
+                                <tr>
+                                    <th>Criteria</th>
+                                    <th>Canada 🇨🇦</th>
+                                    <th>Germany 🇩🇪</th>
+                                    <th>Winner</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Cost of Living</strong></td>
+                                    <td>
+                                        <div class="score-cell">
+                                            <span class="score-value">7.5</span>
+                                            <div class="score-bar">
+                                                <div class="bar-fill" style="width: 75%"></div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="score-cell">
+                                            <span class="score-value">8.2</span>
+                                            <div class="score-bar">
+                                                <div class="bar-fill" style="width: 82%"></div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td><span class="winner-badge">🇩🇪 Germany</span></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Education Quality</strong></td>
+                                    <td>
+                                        <div class="score-cell">
+                                            <span class="score-value">9.2</span>
+                                            <div class="score-bar">
+                                                <div class="bar-fill" style="width: 92%"></div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="score-cell">
+                                            <span class="score-value">8.8</span>
+                                            <div class="score-bar">
+                                                <div class="bar-fill" style="width: 88%"></div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td><span class="winner-badge">🇨🇦 Canada</span></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Safety</strong></td>
+                                    <td>
+                                        <div class="score-cell">
+                                            <span class="score-value">9.0</span>
+                                            <div class="score-bar">
+                                                <div class="bar-fill" style="width: 90%"></div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="score-cell">
+                                            <span class="score-value">8.7</span>
+                                            <div class="score-bar">
+                                                <div class="bar-fill" style="width: 87%"></div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td><span class="winner-badge">🇨🇦 Canada</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="charts-view hidden" id="chartsView">
+                    <div class="charts-container">
+                        <div class="chart-card">
+                            <h3>Criteria Comparison</h3>
+                            <canvas id="radarChart"></canvas>
+                        </div>
+                        <div class="chart-card">
+                            <h3>Cost Breakdown</h3>
+                            <canvas id="costBreakdownChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="comparison-actions">
+                <button class="action-btn secondary">Save Comparison</button>
+                <button class="action-btn secondary">Export Report</button>
+                <button class="action-btn primary">Apply to Shortlist</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/comparison.js"></script>
+</body>
+</html>
