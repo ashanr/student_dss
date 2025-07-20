@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Set Your Preferences - Student DSS</title>
+    <link rel="stylesheet" href="css/preferences.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <nav class="top-navigation">
+        <div class="nav-container">
+            <div class="logo">
+                <h2>Student DSS</h2>
+            </div>
+            <div class="nav-links">
+                <a href="dashboard.html" class="nav-link">Dashboard</a>
+                <a href="preferences.html" class="nav-link active">Preferences</a>
+                <a href="results.html" class="nav-link">Results</a>
+                <a href="comparison.html" class="nav-link">Compare</a>
+                <a href="analytics.html" class="nav-link">Analytics</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="preferences-container">
+        <header class="page-header">
+            <div class="header-content">
+                <h1>Set Your Study Abroad Preferences</h1>
+                <p class="subtitle">Help us understand what matters most to you for better recommendations</p>
+            </div>
+        </header>
+
+        <div class="preferences-wrapper">
+            <div class="progress-tracker">
+                <div class="progress-step active" data-step="1">
+                    <div class="step-number">1</div>
+                    <div class="step-label">Academic</div>
+                </div>
+                <div class="progress-step" data-step="2">
+                    <div class="step-number">2</div>
+                    <div class="step-label">Financial</div>
+                </div>
+                <div class="progress-step" data-step="3">
+                    <div class="step-number">3</div>
+                    <div class="step-label">Location</div>
+                </div>
+                <div class="progress-step" data-step="4">
+                    <div class="step-number">4</div>
+                    <div class="step-label">Lifestyle</div>
+                </div>
+                <div class="progress-step" data-step="5">
+                    <div class="step-number">5</div>
+                    <div class="step-label">Weights</div>
+                </div>
+            </div>
+
+            <form id="preferencesForm">
+                <!-- Step 1: Academic Preferences -->
+                <div class="preference-section active" id="step1">
+                    <h2>Academic Preferences</h2>
+                    <p class="section-description">Tell us about your academic goals and interests</p>
+
+                    <div class="form-group">
+                        <label for="studyLevel">Study Level</label>
+                        <select id="studyLevel" class="form-control">
+                            <option value="">Select your study level</option>
+                            <option value="bachelor">Bachelor's Degree</option>
+                            <option value="master">Master's Degree</option>
+                            <option value="phd">PhD/Doctoral</option>
+                            <option value="diploma">Diploma/Certificate</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="fieldOfStudy">Field of Study</label>
+                        <select id="fieldOfStudy" class="form-control">
+                            <option value="">Select your field of study</option>
+                            <option value="computer_science">Computer Science & IT</option>
+                            <option value="engineering">Engineering</option>
+                            <option value="business">Business & Management</option>
+                            <option value="medicine">Medicine & Healthcare</option>
+                            <option value="arts">Arts & Humanities</option>
+                            <option value="science">Natural Sciences</option>
+                            <option value="social">Social Sciences</option>
+                            <option value="law">Law</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>University Ranking Importance</label>
+                        <div class="range-slider">
+                            <input type="range" id="rankingImportance" min="1" max="10" value="7" class="slider">
+                            <div class="range-labels">
+                                <span>Not Important</span>
+                                <span>Very Important</span>
+                            </div>
+                            <div class="range-value">
+                                <span id="rankingValue">7</span>/10
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="programDuration">Preferred Program Duration</label>
+                        <select id="programDuration" class="form-control">
+                            <option value="">Select preferred duration</option>
+                            <option value="1">1 year</option>
+                            <option value="2">2 years</option>
+                            <option value="3">3 years</option>
+                            <option value="4">4 years</option>
+                            <option value="5plus">5+ years</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Research Opportunities Importance</label>
+                        <div class="range-slider">
+                            <input type="range" id="researchImportance" min="1" max="10" value="5" class="slider">
+                            <div class="range-labels">
+                                <span>Not Important</span>
+                                <span>Very Important</span>
+                            </div>
+                            <div class="range-value">
+                                <span id="researchValue">5</span>/10
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 2: Financial Preferences -->
+                <div class="preference-section" id="step2">
+                    <h2>Financial Preferences</h2>
+                    <p class="section-description">Help us understand your budget and financial considerations</p>
+
+                    <div class="form-group">
+                        <label for="tuitionBudget">Maximum Annual Tuition Budget</label>
+                        <select id="tuitionBudget" class="form-control">
+                            <option value="">Select your maximum budget</option>
+                            <option value="10000">Up to $10,000 USD</option>
+                            <option value="20000">Up to $20,000 USD</option>
+                            <option value="30000">Up to $30,000 USD</option>
+                            <option value="40000">Up to $40,000 USD</option>
+                            <option value="50000">Up to $50,000 USD</option>
+                            <option value="60000">More than $50,000 USD</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="livingBudget">Monthly Living Expenses Budget</label>
+                        <select id="livingBudget" class="form-control">
+                            <option value="">Select your monthly budget</option>
+                            <option value="500">Up to $500 USD</option>
+                            <option value="1000">Up to $1,000 USD</option>
+                            <option value="1500">Up to $1,500 USD</option>
+                            <option value="2000">Up to $2,000 USD</option>
+                            <option value="2500">More than $2,000 USD</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Scholarship Availability Importance</label>
+                        <div class="range-slider">
+                            <input type="range" id="scholarshipImportance" min="1" max="10" value="8" class="slider">
+                            <div class="range-labels">
+                                <span>Not Important</span>
+                                <span>Very Important</span>
+                            </div>
+                            <div class="range-value">
+                                <span id="scholarshipValue">8</span>/10
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Need to Work While Studying</label>
+                        <div class="checkbox-group">
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="workPartTime">
+                                <label for="workPartTime">I need to work part-time</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="workInternship">
+                                <label for="workInternship">I want internship opportunities</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Return on Investment Importance</label>
+                        <div class="range-slider">
+                            <input type="range" id="roiImportance" min="1" max="10" value="7" class="slider">
+                            <div class="range-labels">
+                                <span>Not Important</span>
+                                <span>Very Important</span>
+                            </div>
+                            <div class="range-value">
+                                <span id="roiValue">7</span>/10
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 3: Location Preferences -->
+                <div class="preference-section" id="step3">
+                    <h2>Location Preferences</h2>
+                    <p class="section-description">Tell us about your preferred destinations</p>
+
+                    <div class="form-group">
+                        <label>Preferred Regions</label>
+                        <div class="checkbox-group regions">
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="regionNA">
+                                <label for="regionNA">North America</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="regionEurope">
+                                <label for="regionEurope">Europe</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="regionAsia">
+                                <label for="regionAsia">Asia</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="regionOceania">
+                                <label for="regionOceania">Australia/Oceania</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="regionUK">
+                                <label for="regionUK">United Kingdom</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="locationType">Location Type</label>
+                        <select id="locationType" class="form-control">
+                            <option value="">Select preferred location type</option>
+                            <option value="urban">Urban/Major City</option>
+                            <option value="suburban">Suburban Area</option>
+                            <option value="rural">Rural/Small Town</option>
+                            <option value="any">No Preference</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Climate Preference</label>
+                        <div class="checkbox-group">
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="climateWarm">
+                                <label for="climateWarm">Warm</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="climateCold">
+                                <label for="climateCold">Cold</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="climateMild">
+                                <label for="climateMild">Mild/Moderate</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Distance from Home</label>
+                        <div class="range-slider">
+                            <input type="range" id="distancePreference" min="1" max="10" value="5" class="slider">
+                            <div class="range-labels">
+                                <span>Close to Home</span>
+                                <span>Distance Not Important</span>
+                            </div>
+                            <div class="range-value">
+                                <span id="distanceValue">5</span>/10
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 4: Lifestyle Preferences -->
+                <div class="preference-section" id="step4">
+                    <h2>Lifestyle Preferences</h2>
+                    <p class="section-description">Tell us about what's important for your lifestyle abroad</p>
+
+                    <div class="form-group">
+                        <label>Safety Importance</label>
+                        <div class="range-slider">
+                            <input type="range" id="safetyImportance" min="1" max="10" value="9" class="slider">
+                            <div class="range-labels">
+                                <span>Not Important</span>
+                                <span>Very Important</span>
+                            </div>
+                            <div class="range-value">
+                                <span id="safetyValue">9</span>/10
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Language Considerations</label>
+                        <select id="languagePreference" class="form-control">
+                            <option value="">Select language preference</option>
+                            <option value="english_only">Must be English-speaking country</option>
+                            <option value="english_program">English program in any country</option>
+                            <option value="learn_new">Willing to learn a new language</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Cultural Experience Importance</label>
+                        <div class="range-slider">
+                            <input type="range" id="cultureImportance" min="1" max="10" value="7" class="slider">
+                            <div class="range-labels">
+                                <span>Not Important</span>
+                                <span>Very Important</span>
+                            </div>
+                            <div class="range-value">
+                                <span id="cultureValue">7</span>/10
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Post-Graduation Plans</label>
+                        <select id="postGradPlans" class="form-control">
+                            <option value="">Select your post-graduation plans</option>
+                            <option value="work_host">Work in host country</option>
+                            <option value="return_home">Return to home country</option>
+                            <option value="further_study">Further study</option>
+                            <option value="undecided">Undecided</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Healthcare System Quality Importance</label>
+                        <div class="range-slider">
+                            <input type="range" id="healthcareImportance" min="1" max="10" value="6" class="slider">
+                            <div class="range-labels">
+                                <span>Not Important</span>
+                                <span>Very Important</span>
+                            </div>
+                            <div class="range-value">
+                                <span id="healthcareValue">6</span>/10
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 5: Criteria Weights -->
+                <div class="preference-section" id="step5">
+                    <h2>Set Criteria Weights</h2>
+                    <p class="section-description">Distribute 100 points across these categories based on their importance to you</p>
+
+                    <div class="weights-notice">
+                        <p>Total weight: <span id="totalWeightDisplay">100</span>/100 points</p>
+                        <div id="weightWarning" class="weight-warning hidden">Total must equal 100 points!</div>
+                    </div>
+
+                    <div class="weights-container">
+                        <div class="weight-item">
+                            <label for="academicWeight">Academic Quality</label>
+                            <div class="weight-slider">
+                                <input type="range" id="academicWeight" min="0" max="50" value="25" class="weight-control">
+                                <div class="weight-value" id="academicWeightValue">25</div>
+                            </div>
+                        </div>
+
+                        <div class="weight-item">
+                            <label for="costWeight">Cost & Affordability</label>
+                            <div class="weight-slider">
+                                <input type="range" id="costWeight" min="0" max="50" value="30" class="weight-control">
+                                <div class="weight-value" id="costWeightValue">30</div>
+                            </div>
+                        </div>
+
+                        <div class="weight-item">
+                            <label for="locationWeight">Location & Environment</label>
+                            <div class="weight-slider">
+                                <input type="range" id="locationWeight" min="0" max="50" value="15" class="weight-control">
+                                <div class="weight-value" id="locationWeightValue">15</div>
+                            </div>
+                        </div>
+
+                        <div class="weight-item">
+                            <label for="lifestyleWeight">Lifestyle & Culture</label>
+                            <div class="weight-slider">
+                                <input type="range" id="lifestyleWeight" min="0" max="50" value="10" class="weight-control">
+                                <div class="weight-value" id="lifestyleWeightValue">10</div>
+                            </div>
+                        </div>
+
+                        <div class="weight-item">
+                            <label for="careerWeight">Career Prospects</label>
+                            <div class="weight-slider">
+                                <input type="range" id="careerWeight" min="0" max="50" value="20" class="weight-control">
+                                <div class="weight-value" id="careerWeightValue">20</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Navigation Buttons -->
+                <div class="form-navigation">
+                    <button type="button" id="prevBtn" class="nav-btn secondary">Previous</button>
+                    <button type="button" id="nextBtn" class="nav-btn primary">Next</button>
+                    <button type="submit" id="submitBtn" class="nav-btn submit">Generate Recommendations</button>
+                </div>
+            </form>
+
+            <div class="preference-summary hidden" id="preferenceSummary">
+                <h3>Your Preference Profile</h3>
+                <p>Here's a summary of your preferences:</p>
+                <div class="summary-content">
+                    <!-- This will be filled with JS -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/preferences.js"></script>
+</body>
+</html>
