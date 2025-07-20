@@ -1,0 +1,34 @@
+<!-- Advanced features to implement -->
+<div class="results-container">
+    <!-- Interactive Map View -->
+    <section class="map-visualization">
+        <div id="worldMap" class="interactive-map"></div>
+        <div class="map-controls">
+            <button class="map-filter" data-filter="cost">Cost</button>
+            <button class="map-filter" data-filter="ranking">Ranking</button>
+            <button class="map-filter" data-filter="visa">Visa Ease</button>
+        </div>
+    </section>
+    
+    <!-- Multi-view Results -->
+    <div class="view-switcher">
+        <button class="view-btn active" data-view="cards">Card View</button>
+        <button class="view-btn" data-view="table">Table View</button>
+        <button class="view-btn" data-view="chart">Chart View</button>
+    </div>
+    
+    <!-- Advanced Filtering -->
+    <div class="advanced-filters">
+        <select id="regionFilter">
+            <option value="all">All Regions</option>
+            <option value="europe">Europe</option>
+            <option value="northamerica">North America</option>
+            <option value="asia">Asia Pacific</option>
+        </select>
+        
+        <div class="budget-slider">
+            <label>Max Budget: $<span id="budgetValue">50000</span></label>
+            <input type="range" id="budgetRange" min="10000" max="100000" step="5000">
+        </div>
+    </div>
+</div>

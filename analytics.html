@@ -1,0 +1,28 @@
+<!-- Advanced analytics features -->
+<div class="analytics-dashboard">
+    <!-- Sensitivity Analysis -->
+    <section class="sensitivity-analysis">
+        <h3>How Changes Affect Your Results</h3>
+        <div class="sensitivity-controls">
+            <label>Adjust: Cost Importance</label>
+            <input type="range" id="costSensitivity" class="sensitivity-slider">
+        </div>
+        <canvas id="sensitivityChart"></canvas>
+    </section>
+    
+    <!-- Success Probability -->
+    <section class="success-prediction">
+        <h3>Application Success Probability</h3>
+        <div class="prediction-cards">
+            <div class="prediction-card" data-country="usa">
+                <h4>United States</h4>
+                <div class="probability-score">78%</div>
+                <div class="factors">
+                    <span class="factor positive">Strong GPA</span>
+                    <span class="factor neutral">Test Scores</span>
+                    <span class="factor negative">Competition</span>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
