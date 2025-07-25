@@ -4,7 +4,7 @@
 
 ## Overview
 
-The Student Decision Support System is a comprehensive web-based application designed to assist students in making informed decisions about their higher education journey. This intelligent system helps students identify and select the most suitable degree programs from various countries based on their individual preferences, academic background, and career aspirations.
+The Student Decision Support System is a comprehensive web-based application designed to assist students in making informed decisions about their higher education journey. This intelligent system helps students identify and select the most suitable degree programs from various countries based on their individual preferences, background, and career aspirations.
 
 ## Key Functionality
 
@@ -52,7 +52,44 @@ This system bridges the gap between student aspirations and educational opportun
 
 # Student Decision Support System
 
-A web application to help students make informed decisions about studying abroad.
+A Bootstrap 5-based application for helping students make decisions about studying abroad.
+
+## Running with Docker
+
+### Prerequisites
+- Docker installed on your system
+- Docker Compose installed on your system
+
+### Building and Running
+
+1. Clone this repository
+2. Navigate to the repository directory
+3. Run the following command:
+
+```bash
+docker-compose up -d
+```
+
+4. Access the application at http://localhost:8080
+
+### Stopping the Application
+
+```bash
+docker-compose down
+```
+
+### Rebuilding After Changes
+
+```bash
+docker-compose up -d --build
+```
+
+## Development
+
+This application is built using:
+- Bootstrap 5 for styling
+- Chart.js for data visualization
+- FontAwesome for icons
 
 ## Setup Instructions
 

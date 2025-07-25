@@ -1230,3 +1230,42 @@ select.form-control {
   color: var(--color-error);
   font-weight: var(--font-weight-medium);
 }
+
+/* Preference Sensitivity Page */
+.preference-sensitivity {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.preference-sensitivity__title {
+  text-align: center;
+  margin-bottom: var(--space-16);
+}
+
+.preference-sensitivity__description {
+  text-align: center;
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-32);
+}
+
+.preference-sensitivity__content {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-24);
+  margin-bottom: var(--space-32);
+}
+
+.preference-sensitivity__chart {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 400px;
+  margin-bottom: var(--space-32);
+}
+
+.preference-sensitivity__actions {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-16);
+}

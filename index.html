@@ -1,321 +1,583 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <title>Student Decision Support System</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Migration Decision Support System</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <!-- Chart.js -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
-<body>
+<body class="bg-light">
     <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
         <div class="container">
-            <a class="navbar-brand" href="index.html">Student Migration DSS</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <a class="navbar-brand" href="/">Student DSS</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
+                <ul class="navbar-nav me-auto">
                     <li class="nav-item">
-                        <a class="nav-link active" href="index.html">Home</a>
+                        <a class="nav-link active" href="/">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="dashboard.html" id="adminDashboardLink" style="display: none;">Dashboard</a>
+                        <a class="nav-link" href="#about">About the Project</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="preferences.html">Preferences</a>
+                        <a class="nav-link" href="#features">System Features</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="login.html" id="adminLoginBtn">Login</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#" id="guestLoginBtn">Continue as Guest</a>
-                    </li>
-                    <li class="nav-item">
-                        <span id="loginStatus" class="nav-link text-light"></span>
-                    </li>
-                    <li class="nav-item">
-                        <button class="btn btn-outline-light btn-sm" id="logoutBtn" style="display: none;">Logout</button>
-                    </li>
-                    <li class="nav-item">
-                        <button class="btn btn-outline-light btn-sm" id="resetBtn">Reset</button>
+                        <a class="nav-link" href="#decision-tree">Decision Framework</a>
                     </li>
                 </ul>
+                <div class="d-flex">
+                    <a href="/login.html" class="btn btn-outline-light me-2">Access System</a>
+                    <a href="/register.html" class="btn btn-light">Join User Study</a>
+                </div>
             </div>
         </div>
     </nav>
-
-    <!-- Welcome Page -->
-    <section id="welcomePage" class="container py-5">
-        <div class="row justify-content-center">
-            <div class="col-lg-10">
-                <div class="text-center mb-5">
-                    <h1 class="display-4 fw-bold">Make Informed Decisions About Studying Abroad</h1>
-                    <p class="lead">
-                        Our decision support system helps you evaluate and compare study destinations 
-                        based on your personal preferences and priorities. Get personalized recommendations 
-                        for the best countries to pursue your education.
-                    </p>
+    
+    <!-- Hero Section -->
+    <div class="bg-primary text-white py-5">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-6 mb-4 mb-md-0">
+                    <h1 class="display-4 fw-bold">Academic Project: Improving Study Abroad Decisions</h1>
+                    <p class="lead">Participate in our study on data-driven decision support systems for international education.</p>
+                    <div class="mt-4">
+                        <a href="#decision-tree" class="btn btn-light btn-lg me-2">Learn More</a>
+                        <a href="/login.html" class="btn btn-outline-light btn-lg">Access System</a>
+                    </div>
                 </div>
-                
-                <div class="row row-cols-1 row-cols-md-3 g-4 mb-5">
-                    <div class="col">
-                        <div class="card h-100 shadow-sm">
-                            <div class="card-body">
-                                <h4>Personalized Criteria</h4>
-                                <p>Adjust importance weights based on what matters most to you</p>
+                <div class="col-md-6">
+                    <img src="/images/hero-graphic.png" class="img-fluid rounded shadow-lg" alt="Students studying abroad" onerror="this.src='https://placehold.co/600x400/primary/white?text=Academic+Project';">
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Decision Process Section -->
+    <div class="py-5" id="decision-tree">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="display-5">Explore Our Decision Support Framework</h2>
+                <p class="lead text-muted">Experience how our project system guides educational decisions</p>
+            </div>
+            
+            <div class="card shadow-sm mb-4">
+                <div class="card-body">
+                    <div id="decisionStep1" class="decision-step">
+                        <h3 class="h4 mb-4">What's your current status?</h3>
+                        <div class="row row-cols-1 row-cols-md-3 g-4">
+                            <div class="col">
+                                <div class="card h-100 decision-card" data-next="decisionStep2A">
+                                    <div class="card-body text-center py-4">
+                                        <i class="fas fa-search fa-3x mb-3 text-primary"></i>
+                                        <h5 class="card-title">Just exploring</h5>
+                                        <p class="card-text">I'm curious about studying abroad and want to learn more.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="card h-100 decision-card" data-next="decisionStep2B">
+                                    <div class="card-body text-center py-4">
+                                        <i class="fas fa-list-check fa-3x mb-3 text-primary"></i>
+                                        <h5 class="card-title">Planning stage</h5>
+                                        <p class="card-text">I'm seriously considering studying abroad and planning my next steps.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="card h-100 decision-card" data-next="decisionStep2C">
+                                    <div class="card-body text-center py-4">
+                                        <i class="fas fa-plane-departure fa-3x mb-3 text-primary"></i>
+                                        <h5 class="card-title">Ready to apply</h5>
+                                        <p class="card-text">I know where I want to go and need help with applications.</p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col">
-                        <div class="card h-100 shadow-sm">
-                            <div class="card-body">
-                                <h4>Comprehensive Analysis</h4>
-                                <p>Compare countries across multiple factors including cost, rankings, and opportunities</p>
+                    
+                    <div id="decisionStep2A" class="decision-step d-none">
+                        <button class="btn btn-sm btn-outline-secondary mb-3 back-btn" data-previous="decisionStep1"><i class="fas fa-arrow-left me-1"></i> Back</button>
+                        <h3 class="h4 mb-4">What would you like to explore?</h3>
+                        <div class="row row-cols-1 row-cols-md-3 g-4">
+                            <div class="col">
+                                <div class="card h-100 decision-card" data-action="showCountryComparison">
+                                    <div class="card-body text-center py-4">
+                                        <i class="fas fa-globe fa-3x mb-3 text-primary"></i>
+                                        <h5 class="card-title">Popular destinations</h5>
+                                        <p class="card-text">Compare top study abroad destinations and their features.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="card h-100 decision-card" data-action="showCosts">
+                                    <div class="card-body text-center py-4">
+                                        <i class="fas fa-coins fa-3x mb-3 text-primary"></i>
+                                        <h5 class="card-title">Costs and funding</h5>
+                                        <p class="card-text">Learn about tuition, living expenses, and scholarship opportunities.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="card h-100 decision-card" data-action="showGettingStarted">
+                                    <div class="card-body text-center py-4">
+                                        <i class="fas fa-lightbulb fa-3x mb-3 text-primary"></i>
+                                        <h5 class="card-title">Getting started guide</h5>
+                                        <p class="card-text">Understand the basics of the study abroad process.</p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col">
-                        <div class="card h-100 shadow-sm">
-                            <div class="card-body">
-                                <h4>Smart Recommendations</h4>
-                                <p>Get ranked suggestions using proven decision-making algorithms</p>
+                    
+                    <div id="decisionStep2B" class="decision-step d-none">
+                        <button class="btn btn-sm btn-outline-secondary mb-3 back-btn" data-previous="decisionStep1"><i class="fas fa-arrow-left me-1"></i> Back</button>
+                        <h3 class="h4 mb-4">What help do you need with planning?</h3>
+                        <div class="row row-cols-1 row-cols-md-3 g-4">
+                            <div class="col">
+                                <div class="card h-100 decision-card" data-action="redirectPreferences">
+                                    <div class="card-body text-center py-4">
+                                        <i class="fas fa-sliders fa-3x mb-3 text-primary"></i>
+                                        <h5 class="card-title">Find matching programs</h5>
+                                        <p class="card-text">Set your preferences and get personalized recommendations.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="card h-100 decision-card" data-action="showTimeline">
+                                    <div class="card-body text-center py-4">
+                                        <i class="fas fa-calendar-alt fa-3x mb-3 text-primary"></i>
+                                        <h5 class="card-title">Planning timeline</h5>
+                                        <p class="card-text">Create a timeline for your application process.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="card h-100 decision-card" data-action="redirectRegister">
+                                    <div class="card-body text-center py-4">
+                                        <i class="fas fa-user-plus fa-3x mb-3 text-primary"></i>
+                                        <h5 class="card-title">Create an account</h5>
+                                        <p class="card-text">Save your progress and access all planning tools.</p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                
-                <div class="text-center">
-                    <button class="btn btn-primary btn-lg" id="startBtn">Start Decision Process</button>
+                    
+                    <div id="decisionStep2C" class="decision-step d-none">
+                        <button class="btn btn-sm btn-outline-secondary mb-3 back-btn" data-previous="decisionStep1"><i class="fas fa-arrow-left me-1"></i> Back</button>
+                        <h3 class="h4 mb-4">What application support do you need?</h3>
+                        <div class="row row-cols-1 row-cols-md-3 g-4">
+                            <div class="col">
+                                <div class="card h-100 decision-card" data-action="showChecklist">
+                                    <div class="card-body text-center py-4">
+                                        <i class="fas fa-clipboard-check fa-3x mb-3 text-primary"></i>
+                                        <h5 class="card-title">Application checklist</h5>
+                                        <p class="card-text">Get a detailed checklist for your applications.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="card h-100 decision-card" data-action="showRequirements">
+                                    <div class="card-body text-center py-4">
+                                        <i class="fas fa-file-alt fa-3x mb-3 text-primary"></i>
+                                        <h5 class="card-title">Requirements guide</h5>
+                                        <p class="card-text">Understand specific requirements for different countries.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="card h-100 decision-card" data-action="redirectLogin">
+                                    <div class="card-body text-center py-4">
+                                        <i class="fas fa-sign-in-alt fa-3x mb-3 text-primary"></i>
+                                        <h5 class="card-title">Access your account</h5>
+                                        <p class="card-text">Log in to track your application progress.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Content display area for dynamic content -->
+                    <div id="contentDisplay" class="decision-content mt-4 d-none">
+                        <button class="btn btn-sm btn-outline-secondary mb-3 content-back-btn"><i class="fas fa-arrow-left me-1"></i> Back</button>
+                        <div id="dynamicContent"></div>
+                    </div>
                 </div>
             </div>
+            
+            <!-- Call to action -->
+            <div class="text-center mt-5">
+                <p class="lead">Interested in participating in our study?</p>
+                <a href="/register.html" class="btn btn-primary btn-lg px-4">Join User Study</a>
+                <p class="mt-3 text-muted">Already a participant? <a href="/login.html">Access the system</a></p>
+            </div>
         </div>
-    </section>
-
-    <!-- Criteria Weight Setting Page -->
-    <section id="preferencesPage" class="page hidden">
+    </div>
+    
+    <!-- Features Section -->
+    <div class="py-5 bg-white" id="features">
         <div class="container">
-            <div class="preferences">
-                <h2 class="preferences__title">Set Your Preferences</h2>
-                <p class="preferences__description">
-                    Adjust the importance of each factor based on your priorities. 
-                    The total must equal 100%.
-                </p>
-                
-                <div class="preferences__grid">
-                    <div class="criterion-card">
-                        <h4>Cost of Living</h4>
-                        <p class="criterion-desc">Monthly living expenses in USD</p>
-                        <div class="slider-container">
-                            <input type="range" id="cost_of_living" min="0" max="50" value="20" class="slider">
-                            <span class="slider-value" id="cost_of_living_value">20%</span>
-                        </div>
-                    </div>
-
-                    <div class="criterion-card">
-                        <h4>Tuition Fees</h4>
-                        <p class="criterion-desc">Annual tuition fees in USD</p>
-                        <div class="slider-container">
-                            <input type="range" id="tuition_fees" min="0" max="50" value="25" class="slider">
-                            <span class="slider-value" id="tuition_fees_value">25%</span>
-                        </div>
-                    </div>
-
-                    <div class="criterion-card">
-                        <h4>University Ranking</h4>
-                        <p class="criterion-desc">Average university ranking position</p>
-                        <div class="slider-container">
-                            <input type="range" id="university_ranking" min="0" max="50" value="15" class="slider">
-                            <span class="slider-value" id="university_ranking_value">15%</span>
-                        </div>
-                    </div>
-
-                    <div class="criterion-card">
-                        <h4>Language Barrier</h4>
-                        <p class="criterion-desc">Language support and ease (1-5 scale)</p>
-                        <div class="slider-container">
-                            <input type="range" id="language_barrier" min="0" max="50" value="10" class="slider">
-                            <span class="slider-value" id="language_barrier_value">10%</span>
-                        </div>
-                    </div>
-
-                    <div class="criterion-card">
-                        <h4>Visa Processing</h4>
-                        <p class="criterion-desc">Visa application ease (1-5 scale)</p>
-                        <div class="slider-container">
-                            <input type="range" id="visa_processing" min="0" max="50" value="10" class="slider">
-                            <span class="slider-value" id="visa_processing_value">10%</span>
-                        </div>
-                    </div>
-
-                    <div class="criterion-card">
-                        <h4>Job Prospects</h4>
-                        <p class="criterion-desc">Employment opportunities (1-5 scale)</p>
-                        <div class="slider-container">
-                            <input type="range" id="job_prospects" min="0" max="50" value="20" class="slider">
-                            <span class="slider-value" id="job_prospects_value">20%</span>
+            <div class="text-center mb-5">
+                <h2 class="display-5">System Features</h2>
+                <p class="lead text-muted">Tools developed for our study on educational decision-making</p>
+            </div>
+            
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body text-center py-4">
+                            <i class="fas fa-chart-pie fa-3x mb-3 text-primary"></i>
+                            <h5 class="card-title">Decision Algorithm</h5>
+                            <p class="card-text">Our system analyzes preferences and criteria to generate study abroad recommendations.</p>
                         </div>
                     </div>
                 </div>
-
-                <div class="total-weight">
-                    <strong>Total Weight: <span id="totalWeight">100%</span></strong>
+                <div class="col-md-4">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body text-center py-4">
+                            <i class="fas fa-balance-scale fa-3x mb-3 text-primary"></i>
+                            <h5 class="card-title">Comparative Analysis</h5>
+                            <p class="card-text">Multi-factor comparison framework to evaluate educational opportunities objectively.</p>
+                        </div>
+                    </div>
                 </div>
-
-                <div class="preferences__actions">
-                    <button class="btn btn--primary" id="getRecommendationsBtn">Get Recommendations</button>
-                    <button class="btn btn--secondary" id="backToWelcomeBtn">Back</button>
+                <div class="col-md-4">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body text-center py-4">
+                            <i class="fas fa-calculator fa-3x mb-3 text-primary"></i>
+                            <h5 class="card-title">Cost Projection Models</h5>
+                            <p class="card-text">Advanced algorithms for estimating and comparing international education costs.</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-    </section>
-
-    <!-- Results Display Page -->
-    <section id="resultsPage" class="page hidden">
+    </div>
+    
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-4">
         <div class="container">
-            <div class="results">
-                <h2 class="results__title">Your Recommendations</h2>
-                <p class="results__description">
-                    Based on your preferences, here are the top 5 study destinations ranked by overall score.
-                </p>
-
-                <div class="results__grid">
-                    <div class="recommendations" id="recommendationsList">
-                        <!-- Recommendations will be populated here -->
-                    </div>
-
-                    <div class="results__actions">
-                        <button class="btn btn--primary" id="compareBtn">Compare Top Countries</button>
-                        <button class="btn btn--secondary" id="sensitivityBtn">Sensitivity Analysis</button>
-                        <button class="btn btn--outline" id="backToPreferencesBtn">Adjust Preferences</button>
-                    </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <h5>Student DSS Academic Project</h5>
+                    <p>A study on data-driven decision support systems for international education.</p>
                 </div>
-
-                <div class="detailed-table">
-                    <h3>Detailed Comparison</h3>
-                    <div class="table-container">
-                        <table class="comparison-table" id="detailedTable">
-                            <thead>
-                                <tr>
-                                    <th>Country</th>
-                                    <th>Overall Score</th>
-                                    <th>Cost of Living</th>
-                                    <th>Tuition Fees</th>
-                                    <th>University Ranking</th>
-                                    <th>Language Barrier</th>
-                                    <th>Visa Processing</th>
-                                    <th>Job Prospects</th>
-                                </tr>
-                            </thead>
-                            <tbody id="tableBody">
-                                <!-- Table rows will be populated here -->
-                            </tbody>
-                        </table>
-                    </div>
+                <div class="col-md-3">
+                    <h5>Resources</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#" class="text-white">About</a></li>
+                        <li><a href="#" class="text-white">Methodology</a></li>
+                        <li><a href="#" class="text-white">FAQ</a></li>
+                        <li><a href="#" class="text-white">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3">
+                    <h5>Policies</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#" class="text-white">Ethics Statement</a></li>
+                        <li><a href="#" class="text-white">Data Privacy</a></li>
+                    </ul>
                 </div>
             </div>
-        </div>
-    </section>
-
-    <!-- Comparison Feature -->
-    <section id="comparisonPage" class="page hidden">
-        <div class="container">
-            <div class="comparison">
-                <h2 class="comparison__title">Country Comparison</h2>
-                <p class="comparison__description">
-                    Compare the top countries side-by-side across all criteria.
-                </p>
-
-                <div class="comparison__content">
-                    <div class="comparison__chart">
-                        <canvas id="radarChart" width="400" height="400"></canvas>
-                    </div>
-
-                    <div class="comparison__table">
-                        <table class="comparison-table" id="comparisonTable">
-                            <thead>
-                                <tr>
-                                    <th>Criteria</th>
-                                    <th id="country1Header">Country 1</th>
-                                    <th id="country2Header">Country 2</th>
-                                    <th id="country3Header">Country 3</th>
-                                </tr>
-                            </thead>
-                            <tbody id="comparisonTableBody">
-                                <!-- Comparison data will be populated here -->
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <div class="comparison__actions">
-                    <button class="btn btn--secondary" id="backToResultsBtn">Back to Results</button>
-                </div>
+            <hr>
+            <div class="text-center">
+                <p>&copy; 2023 Student DSS Academic Project. For educational purposes only.</p>
             </div>
         </div>
-    </section>
-
-    <!-- Sensitivity Analysis Page -->
-    <section id="sensitivityPage" class="page hidden">
-        <div class="container">
-            <div class="sensitivity">
-                <h2 class="sensitivity__title">Sensitivity Analysis</h2>
-                <p class="sensitivity__description">
-                    See how changing the importance of different criteria affects the country rankings.
-                </p>
-
-                <div class="sensitivity__controls">
-                    <div class="form-group">
-                        <label class="form-label" for="sensitivityCriteria">Select Criteria to Analyze:</label>
-                        <select class="form-control" id="sensitivityCriteria">
-                            <option value="cost_of_living">Cost of Living</option>
-                            <option value="tuition_fees">Tuition Fees</option>
-                            <option value="university_ranking">University Ranking</option>
-                            <option value="language_barrier">Language Barrier</option>
-                            <option value="visa_processing">Visa Processing</option>
-                            <option value="job_prospects">Job Prospects</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="sensitivity__chart">
-                    <canvas id="sensitivityChart" width="800" height="400"></canvas>
-                </div>
-
-                <div class="sensitivity__actions">
-                    <button class="btn btn--secondary" id="backToResultsFromSensitivityBtn">Back to Results</button>
-                </div>
-            </div>
-        </div>
-    </section>
+    </footer>
 
     <!-- Bootstrap 5 JS Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="js/auth.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Update navigation based on login status
-            updateNavigation();
-            
-            // Start button click handler
-            document.getElementById('startBtn').addEventListener('click', function() {
-                // If logged in, go to preferences, otherwise go to login
-                const { isLoggedIn } = checkLoginStatus();
-                if (isLoggedIn === 'true') {
-                    window.location.href = 'preferences.html';
-                } else {
-                    window.location.href = 'login.html?redirect=preferences.html';
-                }
+            // Handle decision card clicks
+            document.querySelectorAll('.decision-card').forEach(card => {
+                card.addEventListener('click', function() {
+                    const nextStep = this.getAttribute('data-next');
+                    const action = this.getAttribute('data-action');
+                    
+                    if (nextStep) {
+                        // Hide all decision steps
+                        document.querySelectorAll('.decision-step').forEach(step => {
+                            step.classList.add('d-none');
+                        });
+                        
+                        // Show the next step
+                        document.getElementById(nextStep).classList.remove('d-none');
+                    }
+                    
+                    if (action) {
+                        handleAction(action);
+                    }
+                });
             });
+            
+            // Handle back buttons
+            document.querySelectorAll('.back-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const previousStep = this.getAttribute('data-previous');
+                    
+                    // Hide all decision steps
+                    document.querySelectorAll('.decision-step').forEach(step => {
+                        step.classList.add('d-none');
+                    });
+                    
+                    // Show the previous step
+                    document.getElementById(previousStep).classList.remove('d-none');
+                });
+            });
+            
+            // Handle content back button
+            document.querySelector('.content-back-btn').addEventListener('click', function() {
+                document.getElementById('contentDisplay').classList.add('d-none');
+                document.querySelectorAll('.decision-step').forEach(step => {
+                    if (!step.classList.contains('d-none')) {
+                        step.classList.remove('d-none');
+                    }
+                });
+            });
+            
+            // Action handler
+            function handleAction(action) {
+                // Content display area and dynamic content container
+                const contentDisplay = document.getElementById('contentDisplay');
+                const dynamicContent = document.getElementById('dynamicContent');
+                
+                // Hide all steps
+                document.querySelectorAll('.decision-step').forEach(step => {
+                    step.classList.add('d-none');
+                });
+                
+                // Handle different actions
+                switch(action) {
+                    case 'showCountryComparison':
+                        dynamicContent.innerHTML = `
+                            <h3>Popular Study Abroad Destinations</h3>
+                            <div class="row g-4 mt-2">
+                                <div class="col-md-4">
+                                    <div class="card h-100">
+                                        <img src="https://placehold.co/600x400/primary/white?text=Canada" class="card-img-top" alt="Canada">
+                                        <div class="card-body">
+                                            <h5 class="card-title">Canada</h5>
+                                            <p class="card-text">Known for high-quality education, affordable tuition compared to the US, and pathway to immigration.</p>
+                                            <a href="/login.html" class="btn btn-primary">Learn More</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="card h-100">
+                                        <img src="https://placehold.co/600x400/primary/white?text=Germany" class="card-img-top" alt="Germany">
+                                        <div class="card-body">
+                                            <h5 class="card-title">Germany</h5>
+                                            <p class="card-text">Offers free or low-cost tuition at public universities, excellent engineering programs, and strong economy.</p>
+                                            <a href="/login.html" class="btn btn-primary">Learn More</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="card h-100">
+                                        <img src="https://placehold.co/600x400/primary/white?text=Australia" class="card-img-top" alt="Australia">
+                                        <div class="card-body">
+                                            <h5 class="card-title">Australia</h5>
+                                            <p class="card-text">Features world-class universities, friendly environment, and opportunities to work during and after studies.</p>
+                                            <a href="/login.html" class="btn btn-primary">Learn More</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <p class="mt-4 text-center">
+                                <a href="/register.html" class="btn btn-outline-primary">Create an account to see detailed comparisons</a>
+                            </p>
+                        `;
+                        break;
+                        
+                    case 'showCosts':
+                        dynamicContent.innerHTML = `
+                            <h3>Understanding Study Abroad Costs</h3>
+                            <div class="alert alert-info">
+                                <i class="fas fa-info-circle me-2"></i> Create an account to get personalized cost estimates based on your preferences.
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h5>Typical Expenses</h5>
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            Tuition Fees
+                                            <span class="badge bg-primary rounded-pill">$5,000 - $50,000/year</span>
+                                        </li>
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            Accommodation
+                                            <span class="badge bg-primary rounded-pill">$400 - $2,000/month</span>
+                                        </li>
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            Food & Groceries
+                                            <span class="badge bg-primary rounded-pill">$200 - $500/month</span>
+                                        </li>
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            Transportation
+                                            <span class="badge bg-primary rounded-pill">$50 - $150/month</span>
+                                        </li>
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            Health Insurance
+                                            <span class="badge bg-primary rounded-pill">$300 - $1,000/year</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="col-md-6">
+                                    <h5>Funding Options</h5>
+                                    <div class="accordion" id="fundingAccordion">
+                                        <div class="accordion-item">
+                                            <h2 class="accordion-header" id="headingOne">
+                                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                                                    Scholarships
+                                                </button>
+                                            </h2>
+                                            <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#fundingAccordion">
+                                                <div class="accordion-body">
+                                                    Merit-based and need-based scholarships available from universities, governments, and private organizations.
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="accordion-item">
+                                            <h2 class="accordion-header" id="headingTwo">
+                                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                                    Student Loans
+                                                </button>
+                                            </h2>
+                                            <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#fundingAccordion">
+                                                <div class="accordion-body">
+                                                    Educational loans from banks, government programs, and specialized international student loan providers.
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="accordion-item">
+                                            <h2 class="accordion-header" id="headingThree">
+                                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                                    Work Opportunities
+                                                </button>
+                                            </h2>
+                                            <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#fundingAccordion">
+                                                <div class="accordion-body">
+                                                    Part-time work, assistantships, internships, and co-op programs to earn while studying.
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <p class="mt-4 text-center">
+                                <a href="/register.html" class="btn btn-outline-primary">Create an account to use our cost calculator</a>
+                            </p>
+                        `;
+                        break;
+                        
+                    case 'showGettingStarted':
+                        dynamicContent.innerHTML = `
+                            <h3>Getting Started with Study Abroad</h3>
+                            <div class="alert alert-info">
+                                <i class="fas fa-info-circle me-2"></i> This is a basic guide. Create an account for a personalized roadmap.
+                            </div>
+                            
+                            <div class="card mb-3">
+                                <div class="card-header bg-primary text-white">
+                                    Step 1: Research and Planning (12-18 months before)
+                                </div>
+                                <div class="card-body">
+                                    <ul>
+                                        <li>Identify your academic goals and interests</li>
+                                        <li>Research potential countries and universities</li>
+                                        <li>Understand admission requirements</li>
+                                        <li>Estimate costs and explore funding options</li>
+                                        <li>Check language requirements</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            
+                            <div class="card mb-3">
+                                <div class="card-header bg-primary text-white">
+                                    Step 2: Test Preparation (12-15 months before)
+                                </div>
+                                <div class="card-body">
+                                    <ul>
+                                        <li>Prepare for standardized tests (TOEFL/IELTS, GRE, GMAT, etc.)</li>
+                                        <li>Take language courses if needed</li>
+                                        <li>Start preparing your academic documents</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            
+                            <div class="card mb-3">
+                                <div class="card-header bg-primary text-white">
+                                    Step 3: Applications (10-12 months before)
+                                </div>
+                                <div class="card-body">
+                                    <ul>
+                                        <li>Write personal statements/essays</li>
+                                        <li>Request recommendation letters</li>
+                                        <li>Submit university applications</li>
+                                        <li>Apply for scholarships</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            
+                            <div class="card mb-3">
+                                <div class="card-header bg-primary text-white">
+                                    Step 4: Pre-Departure (3-6 months before)
+                                </div>
+                                <div class="card-body">
+                                    <ul>
+                                        <li>Apply for student visa</li>
+                                        <li>Arrange accommodation</li>
+                                        <li>Purchase health insurance</li>
+                                        <li>Book flights</li>
+                                        <li>Prepare financially</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            
+                            <p class="mt-4 text-center">
+                                <a href="/register.html" class="btn btn-outline-primary">Create an account for a personalized timeline</a>
+                            </p>
+                        `;
+                        break;
+                        
+                    // Add cases for other actions
+                        
+                    case 'redirectLogin':
+                        window.location.href = '/login.html';
+                        return;
+                        
+                    case 'redirectRegister':
+                        window.location.href = '/register.html';
+                        return;
+                        
+                    case 'redirectPreferences':
+                        window.location.href = '/login.html?redirect=/preferences.html';
+                        return;
+                        
+                    default:
+                        dynamicContent.innerHTML = `
+                            <div class="alert alert-info">
+                                <i class="fas fa-info-circle me-2"></i> 
+                                This feature requires an account. Please <a href="/login.html">log in</a> or 
+                                <a href="/register.html">create an account</a> to access it.
+                            </div>
+                        `;
+                }
+                
+                // Show content display
+                contentDisplay.classList.remove('d-none');
+            }
         });
     </script>
-    <script src="app.js"></script>
 </body>
 </html>

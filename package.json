@@ -1,7 +1,7 @@
 {
   "name": "student-dss",
   "version": "1.0.0",
-  "description": "Student Decision Support System for study abroad",
+  "description": "Student Decision Support System for international education",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
