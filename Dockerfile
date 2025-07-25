@@ -1,14 +1,28 @@
-# Use the official Nginx image as the base image
-FROM nginx:stable-alpine
+# Use the official Node.js image as the base image
+FROM node:18
 
-# Copy the application files to the Nginx serve directory
-COPY . /usr/share/nginx/html/
+# Set the working directory
+WORKDIR /app
 
-# Copy custom Nginx configuration
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+# Install netcat-openbsd for connection testing
+RUN apt-get update && apt-get install -y netcat-openbsd && rm -rf /var/lib/apt/lists/*
 
-# Expose port 80
-EXPOSE 80
+# Copy package.json and package-lock.json
+COPY package*.json ./
 
-# Start Nginx when the container starts
-CMD ["nginx", "-g", "daemon off;"]
+# Install all dependencies including development dependencies
+RUN npm install
+
+# Copy the rest of the application
+COPY . .
+
+# Add script to wait for MongoDB and run seeder
+COPY docker-entrypoint.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+
+# Expose port 3000
+EXPOSE 3000
+
+# Start the application using the entrypoint script
+ENTRYPOINT ["docker-entrypoint.sh"]
+CMD ["npm", "run", "dev"]

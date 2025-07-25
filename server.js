@@ -1,104 +1,107 @@
 const express = require('express');
-const path = require('path');
 const cors = require('cors');
-const bodyParser = require('body-parser');
+const path = require('path');
 const session = require('express-session');
-const mongoose = require('mongoose');
-const fs = require('fs');
+const { validateConnection } = require('./db/connection');
+const { Pool } = require('pg');
 
-// Initialize express app
+// Import routes
+const authRoutes = require('./api/routes/auth');
+const userRoutes = require('./api/routes/user');
+const preferencesRoutes = require('./api/routes/preferences');
+const countriesRoutes = require('./api/routes/countries');
+const universitiesRoutes = require('./api/routes/universities');
+const citiesRoutes = require('./api/routes/cities');
+
+// Load environment variables if needed
+require('dotenv').config();
+
+// Create Express app
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Middleware
-app.use(cors());
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+// PostgreSQL connection with proper error handling
+const POSTGRES_URI = process.env.POSTGRES_URI || 'postgres://postgres:password@localhost:5432/studentDSS';
 
-// Session configuration
-app.use(session({
-    secret: 'student-dss-secret-key',
-    resave: false,
-    saveUninitialized: true,
-    cookie: { secure: false, maxAge: 24 * 60 * 60 * 1000 } // 1 day
-}));
+// Connect to PostgreSQL with retry logic
+const pool = new Pool({
+  connectionString: POSTGRES_URI,
+});
 
-// Serve static files
-app.use(express.static(path.join(__dirname, './')));
-
-// Authentication middleware
-const checkAuth = (req, res, next) => {
-    // Skip auth check for public routes
-    const publicPaths = ['/', '/index.html', '/login.html', '/register.html', '/css', '/js', '/images', '/api/auth'];
-    const isPublicPath = publicPaths.some(path => req.path.startsWith(path));
-    
-    if (isPublicPath) {
-        return next();
-    }
-    
-    // Check if user is logged in via session
-    if (!req.session.user) {
-        // User not logged in, redirect to decision page
-        return res.redirect('/index.html?redirect=' + encodeURIComponent(req.path));
-    }
-    
-    // User is logged in, proceed
-    next();
+const connectWithRetry = () => {
+  console.log('Attempting to connect to PostgreSQL...');
+  pool.connect()
+    .then(client => {
+      console.log('PostgreSQL connected successfully');
+      client.release();
+    })
+    .catch(err => {
+      console.error('PostgreSQL connection error:', err);
+      console.log('Retrying connection in 5 seconds...');
+      setTimeout(connectWithRetry, 5000);
+    });
 };
 
-// Apply auth middleware
-app.use(checkAuth);
+connectWithRetry();
 
-// API Routes
-app.use('/api/auth', require('./api/routes/auth'));
-app.use('/api/preferences', require('./api/routes/preferences'));
-app.use('/api/countries', require('./api/routes/countries'));
-app.use('/api/user', require('./api/routes/user'));
+// Middleware
+app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-// Root route handler - Decision process
-app.get('/', (req, res) => {
-    // Check if user is already logged in
-    if (req.session.user) {
-        // Logged in users go to dashboard
-        return res.redirect('/dashboard.html');
+// Session middleware using PostgreSQL
+const pgSession = require('connect-pg-simple')(session);
+app.use(session({
+    store: new pgSession({
+        pool: pool,
+        tableName: 'sessions'
+    }),
+    secret: process.env.SESSION_SECRET || 'student-dss-secret-key',
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+        maxAge: 1000 * 60 * 60 * 24 // 1 day
     }
-    
-    // Not logged in - serve the index page with decision process
-    res.sendFile(path.join(__dirname, 'index.html'));
+}));
+
+// Static files
+app.use(express.static(path.join(__dirname, 'public')));
+
+// API routes
+app.use('/api/auth', authRoutes);
+app.use('/api/user', userRoutes);
+app.use('/api/preferences', preferencesRoutes);
+app.use('/api/countries', countriesRoutes);
+app.use('/api/universities', universitiesRoutes);
+app.use('/api/cities', citiesRoutes);
+
+// Health check route
+app.get('/api/health', async (req, res) => {
+  const isDbConnected = await validateConnection();
+  
+  if (isDbConnected) {
+    return res.status(200).json({ status: 'ok', database: 'connected' });
+  } else {
+    return res.status(500).json({ status: 'error', database: 'disconnected' });
+  }
 });
 
-// Handle specific pages that require authentication
-app.get(['/dashboard.html', '/preferences.html', '/results.html', '/comparison.html', '/analytics.html'], (req, res) => {
-    if (!req.session.user) {
-        return res.redirect('/login.html?redirect=' + encodeURIComponent(req.path));
-    }
-    res.sendFile(path.join(__dirname, req.path));
-});
-
-// Fallback route - serve requested file or index for SPA support
+// Serve the static files from the React app for any other routes
 app.get('*', (req, res) => {
-    const filePath = path.join(__dirname, req.path);
-    
-    // Try to serve the requested file
-    if (fs.existsSync(filePath) && fs.statSync(filePath).isFile()) {
-        return res.sendFile(filePath);
-    }
-    
-    // Default to index.html for SPA support
-    res.sendFile(path.join(__dirname, 'index.html'));
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-// MongoDB connection (uncomment and modify when ready to connect to DB)
-/*
-mongoose.connect('mongodb://localhost:27017/studentDSS', {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-})
-.then(() => console.log('MongoDB connected'))
-.catch(err => console.error('MongoDB connection error:', err));
-*/
+// Error handling middleware
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).json({
+        success: false,
+        message: 'Something went wrong on the server',
+        error: process.env.NODE_ENV === 'development' ? err.message : undefined
+    });
+});
 
-// Start the server
+// Start server
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });
