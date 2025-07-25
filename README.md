@@ -49,3 +49,33 @@ The Student Decision Support System is a comprehensive web-based application des
 This system bridges the gap between student aspirations and educational opportunities, making the complex process of international education selection more accessible and informed[1].
 
 [1] programming.documentation
+
+# Student Decision Support System
+
+A web application to help students make informed decisions about studying abroad.
+
+## Setup Instructions
+
+### Prerequisites
+- Node.js (v14 or higher)
+- npm (v6 or higher)
+
+### Installation
+
+1. Clone the repository
+```bash
+git clone <repository-url>
+cd student_dss
+```
+
+2. Install dependencies
+```bash
+npm install
+```
+
+3. Start the development server
+```bash
+npm run dev
+```
+
+4. Open your browser and navigate to:

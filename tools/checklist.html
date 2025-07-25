@@ -3,10 +3,161 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Checklist</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Application Checklist - Student DSS</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <h1>Migration Checklist</h1>
-    <!-- Checklist tool content goes here -->
+    <div class="d-flex">
+        <!-- Sidebar container - will be filled by common.js -->
+        <div id="sidebar-container"></div>
+
+        <main class="flex-grow-1">
+            <div class="container-fluid py-4">
+                <div class="row mb-4">
+                    <div class="col-12 text-center">
+                        <h1 class="display-5 fw-bold">Application Checklist</h1>
+                        <p class="lead text-muted">Track your application requirements and documents</p>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-10 mx-auto">
+                        <div class="card shadow-sm">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center mb-4">
+                                    <button class="btn btn-primary">Add New Item</button>
+                                    <select class="form-select country-select" style="width: auto;">
+                                        <option value="">All Countries</option>
+                                        <option value="canada">Canada</option>
+                                        <option value="usa">United States</option>
+                                        <option value="uk">United Kingdom</option>
+                                        <option value="australia">Australia</option>
+                                        <option value="germany">Germany</option>
+                                    </select>
+                                </div>
+
+                                <div class="checklist">
+                                    <div class="card mb-4">
+                                        <div class="card-header bg-light">
+                                            <h5 class="mb-0">Required Documents</h5>
+                                        </div>
+                                        <div class="list-group list-group-flush">
+                                            <div class="list-group-item d-flex justify-content-between align-items-center">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" id="item1" checked>
+                                                    <label class="form-check-label" for="item1">Academic Transcripts</label>
+                                                </div>
+                                                <div class="d-flex align-items-center">
+                                                    <span class="badge bg-success me-3">Completed on March 12, 2024</span>
+                                                    <button class="btn btn-sm btn-outline-secondary">Details</button>
+                                                </div>
+                                            </div>
+                                            <div class="list-group-item d-flex justify-content-between align-items-center">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" id="item2" checked>
+                                                    <label class="form-check-label" for="item2">Passport Copy</label>
+                                                </div>
+                                                <div class="d-flex align-items-center">
+                                                    <span class="badge bg-success me-3">Completed on February 28, 2024</span>
+                                                    <button class="btn btn-sm btn-outline-secondary">Details</button>
+                                                </div>
+                                            </div>
+                                            <div class="list-group-item d-flex justify-content-between align-items-center">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" id="item3">
+                                                    <label class="form-check-label" for="item3">Language Test Scores (IELTS/TOEFL)</label>
+                                                </div>
+                                                <div class="d-flex align-items-center">
+                                                    <span class="badge bg-warning text-dark me-3">Due April 15, 2024</span>
+                                                    <button class="btn btn-sm btn-outline-secondary">Details</button>
+                                                </div>
+                                            </div>
+                                            <div class="list-group-item d-flex justify-content-between align-items-center">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" id="item4">
+                                                    <label class="form-check-label" for="item4">Statement of Purpose</label>
+                                                </div>
+                                                <div class="d-flex align-items-center">
+                                                    <span class="badge bg-secondary me-3">Due May 1, 2024</span>
+                                                    <button class="btn btn-sm btn-outline-secondary">Details</button>
+                                                </div>
+                                            </div>
+                                            <div class="list-group-item d-flex justify-content-between align-items-center">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" id="item5">
+                                                    <label class="form-check-label" for="item5">Letters of Recommendation (3)</label>
+                                                </div>
+                                                <div class="d-flex align-items-center">
+                                                    <span class="badge bg-secondary me-3">Due May 10, 2024</span>
+                                                    <button class="btn btn-sm btn-outline-secondary">Details</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="card">
+                                        <div class="card-header bg-light">
+                                            <h5 class="mb-0">Financial Documents</h5>
+                                        </div>
+                                        <div class="list-group list-group-flush">
+                                            <div class="list-group-item d-flex justify-content-between align-items-center">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" id="financial1">
+                                                    <label class="form-check-label" for="financial1">Bank Statements</label>
+                                                </div>
+                                                <div class="d-flex align-items-center">
+                                                    <span class="badge bg-secondary me-3">Due May 15, 2024</span>
+                                                    <button class="btn btn-sm btn-outline-secondary">Details</button>
+                                                </div>
+                                            </div>
+                                            <div class="list-group-item d-flex justify-content-between align-items-center">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" id="financial2">
+                                                    <label class="form-check-label" for="financial2">Scholarship Application</label>
+                                                </div>
+                                                <div class="d-flex align-items-center">
+                                                    <span class="badge bg-secondary me-3">Due April 30, 2024</span>
+                                                    <button class="btn btn-sm btn-outline-secondary">Details</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Bootstrap 5 JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Font Awesome JS (if needed for interactive icons) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js" defer></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/common.js"></script>
+</body>
+</html>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap 5 JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../js/auth.js"></script>
 </body>
 </html>

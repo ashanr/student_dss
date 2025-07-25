@@ -663,6 +663,84 @@ body {
 .card:nth-child(5) { animation-delay: 0.5s; }
 .card:nth-child(6) { animation-delay: 0.6s; }
 
+/* Results Page Specific Styles */
+.view-btn.active {
+    background-color: #667eea;
+    color: white;
+    border-color: #667eea;
+}
+
+.metric-label {
+    font-size: 0.9rem;
+    color: #64748b;
+}
+
+.metric-value {
+    font-weight: 600;
+    color: #1e293b;
+}
+
+.progress {
+    height: 8px;
+    background-color: #e2e8f0;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.progress-bar {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+}
+
+.highlights .badge {
+    padding: 0.5em 0.8em;
+    font-weight: 500;
+}
+
+.match-badge {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    padding: 0.4rem 0.8rem;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 0.85rem;
+}
+
+#resultsGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+/* Improved card styling for results */
+#resultsGrid .card {
+    border: none;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+#resultsGrid .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+#resultsGrid .card-header {
+    background: none;
+    border-bottom: 1px solid #f1f5f9;
+    padding: 1.25rem 1.25rem 0.75rem;
+}
+
+#resultsGrid .card-body {
+    padding: 1.25rem;
+}
+
+#resultsGrid .country-flag {
+    font-size: 1.75rem;
+}
+
+#resultsTable .country-flag {
+    font-size: 1.25rem;
+}
+
 /* Responsive Design */
 @media (max-width: 1024px) {
     .dashboard-grid {
@@ -720,6 +798,21 @@ body {
     
     .step-content {
         flex: 1;
+    }
+    
+    #resultsGrid {
+        grid-template-columns: 1fr;
+    }
+    
+    .header-right .quick-stats {
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+    
+    .stat-card {
+        flex: 1;
+        min-width: calc(33% - 0.5rem);
     }
 }
 

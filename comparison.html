@@ -1,277 +1,540 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <title>Country Comparison - Student DSS</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Country Comparison - Student DSS</title>
-    <link rel="stylesheet" href="css/comparison.css">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-    <nav class="top-navigation">
-        <div class="nav-container">
-            <div class="logo">
-                <h2>Student DSS</h2>
-            </div>
-            <div class="nav-links">
-                <a href="dashboard.html" class="nav-link">Dashboard</a>
-                <a href="results.html" class="nav-link">Results</a>
-                <a href="comparison.html" class="nav-link active">Compare</a>
-                <a href="analytics.html" class="nav-link">Analytics</a>
-            </div>
-        </div>
-    </nav>
+    <div class="d-flex">
+        <!-- Sidebar container - will be filled by common.js -->
+        <div id="sidebar-container"></div>
 
-    <div class="comparison-container">
-        <header class="page-header">
-            <h1>Country Comparison</h1>
-            <p class="subtitle">Compare up to 4 countries side-by-side</p>
-        </header>
-
-        <div class="comparison-controls">
-            <div class="country-selector">
-                <div class="selector-item">
-                    <select class="country-select" id="country1">
-                        <option value="">Select Country 1</option>
-                        <option value="canada">🇨🇦 Canada</option>
-                        <option value="germany">🇩🇪 Germany</option>
-                        <option value="australia">🇦🇺 Australia</option>
-                        <option value="uk">🇬🇧 United Kingdom</option>
-                        <option value="usa">🇺🇸 United States</option>
-                    </select>
-                </div>
-                <div class="vs-divider">VS</div>
-                <div class="selector-item">
-                    <select class="country-select" id="country2">
-                        <option value="">Select Country 2</option>
-                        <option value="canada">🇨🇦 Canada</option>
-                        <option value="germany">🇩🇪 Germany</option>
-                        <option value="australia">🇦🇺 Australia</option>
-                        <option value="uk">🇬🇧 United Kingdom</option>
-                        <option value="usa">🇺🇸 United States</option>
-                    </select>
-                </div>
-                <div class="vs-divider">VS</div>
-                <div class="selector-item optional">
-                    <select class="country-select" id="country3">
-                        <option value="">Select Country 3 (Optional)</option>
-                        <option value="canada">🇨🇦 Canada</option>
-                        <option value="germany">🇩🇪 Germany</option>
-                        <option value="australia">🇦🇺 Australia</option>
-                        <option value="uk">🇬🇧 United Kingdom</option>
-                        <option value="usa">🇺🇸 United States</option>
-                    </select>
-                </div>
-            </div>
-            
-            <button class="compare-btn" id="startComparison">Compare Countries</button>
-        </div>
-
-        <div class="comparison-results" id="comparisonResults" style="display: none;">
-            <div class="comparison-header">
-                <h2>Comparison Results</h2>
-                <div class="view-toggle">
-                    <button class="toggle-btn active" data-view="overview">Overview</button>
-                    <button class="toggle-btn" data-view="detailed">Detailed</button>
-                    <button class="toggle-btn" data-view="charts">Charts</button>
-                </div>
-            </div>
-
-            <div class="comparison-content">
-                <div class="overview-view" id="overviewView">
-                    <div class="country-cards">
-                        <div class="comparison-card" id="card-canada">
-                            <div class="card-header">
-                                <div class="country-flag">🇨🇦</div>
-                                <h3>Canada</h3>
-                                <div class="overall-score">
-                                    <span class="score">92</span>
-                                    <span class="score-label">Overall Score</span>
-                                </div>
-                            </div>
-                            
-                            <div class="quick-stats">
-                                <div class="stat">
-                                    <span class="stat-label">Annual Cost</span>
-                                    <span class="stat-value">$45,000</span>
-                                </div>
-                                <div class="stat">
-                                    <span class="stat-label">QS Ranking</span>
-                                    <span class="stat-value">#3 Global</span>
-                                </div>
-                                <div class="stat">
-                                    <span class="stat-label">Visa Success</span>
-                                    <span class="stat-value">85%</span>
-                                </div>
-                            </div>
-
-                            <div class="strengths-weaknesses">
-                                <div class="strengths">
-                                    <h4>Strengths</h4>
-                                    <ul>
-                                        <li>High quality education</li>
-                                        <li>Strong job market</li>
-                                        <li>Multicultural environment</li>
-                                    </ul>
-                                </div>
-                                <div class="weaknesses">
-                                    <h4>Areas to Consider</h4>
-                                    <ul>
-                                        <li>Cold climate</li>
-                                        <li>Moderate cost</li>
-                                        <li>Competitive admission</li>
-                                    </ul>
-                                </div>
-                            </div>
+        <div class="flex-grow-1">
+            <div class="container-fluid py-4">
+                <header class="mb-4">
+                    <div class="row align-items-center">
+                        <div class="col-md-6 mb-3 mb-md-0">
+                            <h1>Country Comparison</h1>
+                            <p class="lead">Compare up to 4 countries side-by-side</p>
                         </div>
-
-                        <div class="comparison-card" id="card-germany">
-                            <div class="card-header">
-                                <div class="country-flag">🇩🇪</div>
-                                <h3>Germany</h3>
-                                <div class="overall-score">
-                                    <span class="score">89</span>
-                                    <span class="score-label">Overall Score</span>
-                                </div>
-                            </div>
-                            
-                            <div class="quick-stats">
-                                <div class="stat">
-                                    <span class="stat-label">Annual Cost</span>
-                                    <span class="stat-value">$25,000</span>
-                                </div>
-                                <div class="stat">
-                                    <span class="stat-label">QS Ranking</span>
-                                    <span class="stat-value">#4 Global</span>
-                                </div>
-                                <div class="stat">
-                                    <span class="stat-label">Visa Success</span>
-                                    <span class="stat-value">78%</span>
-                                </div>
-                            </div>
-
-                            <div class="strengths-weaknesses">
-                                <div class="strengths">
-                                    <h4>Strengths</h4>
-                                    <ul>
-                                        <li>Low tuition fees</li>
-                                        <li>Strong engineering programs</li>
-                                        <li>EU work opportunities</li>
-                                    </ul>
-                                </div>
-                                <div class="weaknesses">
-                                    <h4>Areas to Consider</h4>
-                                    <ul>
-                                        <li>Language barrier</li>
-                                        <li>Bureaucratic processes</li>
-                                        <li>Limited English programs</li>
-                                    </ul>
+                        <div class="col-md-6">
+                            <div class="d-flex justify-content-md-end">
+                                <div class="card text-center p-3" style="width: 180px;">
+                                    <h3 class="m-0">12</h3>
+                                    <p class="small mb-0">Countries Available</p>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                </header>
 
-                <div class="detailed-view hidden" id="detailedView">
-                    <div class="comparison-table">
-                        <table class="detailed-table">
-                            <thead>
-                                <tr>
-                                    <th>Criteria</th>
-                                    <th>Canada 🇨🇦</th>
-                                    <th>Germany 🇩🇪</th>
-                                    <th>Winner</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td><strong>Cost of Living</strong></td>
-                                    <td>
-                                        <div class="score-cell">
-                                            <span class="score-value">7.5</span>
-                                            <div class="score-bar">
-                                                <div class="bar-fill" style="width: 75%"></div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="score-cell">
-                                            <span class="score-value">8.2</span>
-                                            <div class="score-bar">
-                                                <div class="bar-fill" style="width: 82%"></div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td><span class="winner-badge">🇩🇪 Germany</span></td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Education Quality</strong></td>
-                                    <td>
-                                        <div class="score-cell">
-                                            <span class="score-value">9.2</span>
-                                            <div class="score-bar">
-                                                <div class="bar-fill" style="width: 92%"></div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="score-cell">
-                                            <span class="score-value">8.8</span>
-                                            <div class="score-bar">
-                                                <div class="bar-fill" style="width: 88%"></div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td><span class="winner-badge">🇨🇦 Canada</span></td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Safety</strong></td>
-                                    <td>
-                                        <div class="score-cell">
-                                            <span class="score-value">9.0</span>
-                                            <div class="score-bar">
-                                                <div class="bar-fill" style="width: 90%"></div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="score-cell">
-                                            <span class="score-value">8.7</span>
-                                            <div class="score-bar">
-                                                <div class="bar-fill" style="width: 87%"></div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td><span class="winner-badge">🇨🇦 Canada</span></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <div class="charts-view hidden" id="chartsView">
-                    <div class="charts-container">
-                        <div class="chart-card">
-                            <h3>Criteria Comparison</h3>
-                            <canvas id="radarChart"></canvas>
+                <div class="card shadow-sm mb-4">
+                    <div class="card-body">
+                        <div class="row align-items-center mb-3">
+                            <div class="col-md-4 mb-3 mb-md-0">
+                                <label class="form-label">First Country</label>
+                                <select class="form-select" id="country1">
+                                    <option value="">Select Country 1</option>
+                                    <option value="canada">🇨🇦 Canada</option>
+                                    <option value="germany">🇩🇪 Germany</option>
+                                    <option value="australia">🇦🇺 Australia</option>
+                                    <option value="uk">🇬🇧 United Kingdom</option>
+                                    <option value="usa">🇺🇸 United States</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4 mb-3 mb-md-0">
+                                <label class="form-label">Second Country</label>
+                                <select class="form-select" id="country2">
+                                    <option value="">Select Country 2</option>
+                                    <option value="canada">🇨🇦 Canada</option>
+                                    <option value="germany">🇩🇪 Germany</option>
+                                    <option value="australia">🇦🇺 Australia</option>
+                                    <option value="uk">🇬🇧 United Kingdom</option>
+                                    <option value="usa">🇺🇸 United States</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Third Country (Optional)</label>
+                                <select class="form-select" id="country3">
+                                    <option value="">Select Country 3 (Optional)</option>
+                                    <option value="canada">🇨🇦 Canada</option>
+                                    <option value="germany">🇩🇪 Germany</option>
+                                    <option value="australia">🇦🇺 Australia</option>
+                                    <option value="uk">🇬🇧 United Kingdom</option>
+                                    <option value="usa">🇺🇸 United States</option>
+                                </select>
+                            </div>
                         </div>
-                        <div class="chart-card">
-                            <h3>Cost Breakdown</h3>
-                            <canvas id="costBreakdownChart"></canvas>
+                        <div class="text-center">
+                            <button class="btn btn-primary" id="startComparison">Compare Countries</button>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="comparison-actions">
-                <button class="action-btn secondary">Save Comparison</button>
-                <button class="action-btn secondary">Export Report</button>
-                <button class="action-btn primary">Apply to Shortlist</button>
+                <div class="d-none" id="comparisonResults">
+                    <div class="card shadow-sm mb-4">
+                        <div class="card-header bg-white">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h2 class="h3 m-0">Comparison Results</h2>
+                                <div class="btn-group" role="group">
+                                    <button class="btn btn-outline-primary active toggle-btn" data-view="overview">Overview</button>
+                                    <button class="btn btn-outline-primary toggle-btn" data-view="detailed">Detailed</button>
+                                    <button class="btn btn-outline-primary toggle-btn" data-view="charts">Charts</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card-body">
+                            <div id="overviewView">
+                                <div class="row g-4">
+                                    <div class="col-md-6">
+                                        <div class="card h-100" id="card-canada">
+                                            <div class="card-header bg-white d-flex align-items-center">
+                                                <div class="fs-2 me-2">🇨🇦</div>
+                                                <h3 class="m-0">Canada</h3>
+                                                <div class="ms-auto rounded-pill bg-success px-3 py-2 text-white">
+                                                    <span class="fs-5 fw-bold">92</span>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="card-body">
+                                                <div class="row mb-4">
+                                                    <div class="col-4 text-center">
+                                                        <span class="d-block text-muted">Annual Cost</span>
+                                                        <span class="fw-bold">$45,000</span>
+                                                    </div>
+                                                    <div class="col-4 text-center">
+                                                        <span class="d-block text-muted">QS Ranking</span>
+                                                        <span class="fw-bold">#3 Global</span>
+                                                    </div>
+                                                    <div class="col-4 text-center">
+                                                        <span class="d-block text-muted">Visa Success</span>
+                                                        <span class="fw-bold">85%</span>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <h5>Strengths</h5>
+                                                        <ul class="mb-0">
+                                                            <li>High quality education</li>
+                                                            <li>Strong job market</li>
+                                                            <li>Multicultural environment</li>
+                                                        </ul>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <h5>Areas to Consider</h5>
+                                                        <ul class="mb-0">
+                                                            <li>Cold climate</li>
+                                                            <li>Moderate cost</li>
+                                                            <li>Competitive admission</li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="card h-100" id="card-germany">
+                                            <div class="card-header bg-white d-flex align-items-center">
+                                                <div class="fs-2 me-2">🇩🇪</div>
+                                                <h3 class="m-0">Germany</h3>
+                                                <div class="ms-auto rounded-pill bg-success px-3 py-2 text-white">
+                                                    <span class="fs-5 fw-bold">89</span>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="card-body">
+                                                <div class="row mb-4">
+                                                    <div class="col-4 text-center">
+                                                        <span class="d-block text-muted">Annual Cost</span>
+                                                        <span class="fw-bold">$25,000</span>
+                                                    </div>
+                                                    <div class="col-4 text-center">
+                                                        <span class="d-block text-muted">QS Ranking</span>
+                                                        <span class="fw-bold">#4 Global</span>
+                                                    </div>
+                                                    <div class="col-4 text-center">
+                                                        <span class="d-block text-muted">Visa Success</span>
+                                                        <span class="fw-bold">78%</span>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <h5>Strengths</h5>
+                                                        <ul class="mb-0">
+                                                            <li>Low tuition fees</li>
+                                                            <li>Strong engineering programs</li>
+                                                            <li>EU work opportunities</li>
+                                                        </ul>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <h5>Areas to Consider</h5>
+                                                        <ul class="mb-0">
+                                                            <li>Language barrier</li>
+                                                            <li>Bureaucratic processes</li>
+                                                            <li>Limited English programs</li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="d-none" id="detailedView">
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Criteria</th>
+                                                <th>Canada 🇨🇦</th>
+                                                <th>Germany 🇩🇪</th>
+                                                <th>Winner</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td><strong>Cost of Living</strong></td>
+                                                <td>
+                                                    <div>
+                                                        <span class="fw-bold">7.5</span>
+                                                        <div class="progress mt-1">
+                                                            <div class="progress-bar" role="progressbar" style="width: 75%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div>
+                                                        <span class="fw-bold">8.2</span>
+                                                        <div class="progress mt-1">
+                                                            <div class="progress-bar" role="progressbar" style="width: 82%" aria-valuenow="82" aria-valuemin="0" aria-valuemax="100"></div>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td><span class="badge bg-success">🇩🇪 Germany</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Education Quality</strong></td>
+                                                <td>
+                                                    <div>
+                                                        <span class="fw-bold">9.2</span>
+                                                        <div class="progress mt-1">
+                                                            <div class="progress-bar" role="progressbar" style="width: 92%" aria-valuenow="92" aria-valuemin="0" aria-valuemax="100"></div>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div>
+                                                        <span class="fw-bold">8.8</span>
+                                                        <div class="progress mt-1">
+                                                            <div class="progress-bar" role="progressbar" style="width: 88%" aria-valuenow="88" aria-valuemin="0" aria-valuemax="100"></div>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td><span class="badge bg-success">🇨🇦 Canada</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Safety</strong></td>
+                                                <td>
+                                                    <div>
+                                                        <span class="fw-bold">9.0</span>
+                                                        <div class="progress mt-1">
+                                                            <div class="progress-bar" role="progressbar" style="width: 90%" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100"></div>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div>
+                                                        <span class="fw-bold">8.7</span>
+                                                        <div class="progress mt-1">
+                                                            <div class="progress-bar" role="progressbar" style="width: 87%" aria-valuenow="87" aria-valuemin="0" aria-valuemax="100"></div>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td><span class="badge bg-success">🇨🇦 Canada</span></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="d-none" id="chartsView">
+                                <div class="row">
+                                    <div class="col-md-6 mb-4">
+                                        <div class="card h-100">
+                                            <div class="card-header bg-white">
+                                                <h3 class="h5 m-0">Criteria Comparison</h3>
+                                            </div>
+                                            <div class="card-body">
+                                                <canvas id="radarChart" height="300"></canvas>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 mb-4">
+                                        <div class="card h-100">
+                                            <div class="card-header bg-white">
+                                                <h3 class="h5 m-0">Cost Breakdown</h3>
+                                            </div>
+                                            <div class="card-body">
+                                                <canvas id="costBreakdownChart" height="300"></canvas>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card-footer bg-white">
+                            <div class="d-flex justify-content-between">
+                                <div>
+                                    <button class="btn btn-outline-secondary me-2">
+                                        <i class="fas fa-save me-1"></i> Save Comparison
+                                    </button>
+                                    <button class="btn btn-outline-secondary">
+                                        <i class="fas fa-file-export me-1"></i> Export Report
+                                    </button>
+                                </div>
+                                <button class="btn btn-primary">
+                                    <i class="fas fa-plus me-1"></i> Add to Shortlist
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
+    <!-- Bootstrap 5 JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/common.js"></script>
+    <script>
+        // Authentication code
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if user is logged in
+            if (typeof checkLoginStatus === 'function') {
+                const { isLoggedIn, userRole } = checkLoginStatus();
+                
+                if (isLoggedIn !== 'true') {
+                    // If not logged in, redirect to login page
+                    window.location.href = 'login.html';
+                    return;
+                }
+                
+                // Update username in sidebar
+                const username = localStorage.getItem('username');
+                const sidebarUsernameElement = document.getElementById('sidebarUsername');
+                const sidebarUserRoleElement = document.getElementById('sidebarUserRole');
+                
+                if (sidebarUsernameElement) {
+                    sidebarUsernameElement.textContent = username || 'Guest';
+                }
+                
+                if (sidebarUserRoleElement) {
+                    sidebarUserRoleElement.textContent = userRole === 'admin' ? 'Administrator' : 'Student';
+                }
+                
+                // Handle sidebar logout button
+                const sidebarLogoutBtn = document.getElementById('sidebarLogout');
+                if (sidebarLogoutBtn) {
+                    sidebarLogoutBtn.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        
+                        // Clear login status
+                        localStorage.removeItem('isLoggedIn');
+                        localStorage.removeItem('userRole');
+                        localStorage.removeItem('username');
+                        
+                        // Redirect to login page
+                        window.location.href = 'login.html';
+                    });
+                }
+            }
+            
+            // View toggle functionality for comparison results
+            document.querySelectorAll('.toggle-btn').forEach(button => {
+                button.addEventListener('click', function() {
+                    // Update active button
+                    document.querySelectorAll('.toggle-btn').forEach(btn => {
+                        btn.classList.remove('active');
+                    });
+                    this.classList.add('active');
+                    
+                    // Get the view type
+                    const viewType = this.getAttribute('data-view');
+                    
+                    // Hide all views
+                    document.getElementById('overviewView').classList.add('d-none');
+                    document.getElementById('detailedView').classList.add('d-none');
+                    document.getElementById('chartsView').classList.add('d-none');
+                    
+                    // Show selected view
+                    if (viewType === 'overview') {
+                        document.getElementById('overviewView').classList.remove('d-none');
+                    } else if (viewType === 'detailed') {
+                        document.getElementById('detailedView').classList.remove('d-none');
+                    } else if (viewType === 'charts') {
+                        document.getElementById('chartsView').classList.remove('d-none');
+                        initCharts();
+                    }
+                });
+            });
+            
+            // Start comparison button
+            const startComparisonBtn = document.getElementById('startComparison');
+            const comparisonResults = document.getElementById('comparisonResults');
+            
+            if (startComparisonBtn && comparisonResults) {
+                startComparisonBtn.addEventListener('click', function() {
+                    const country1 = document.getElementById('country1').value;
+                    const country2 = document.getElementById('country2').value;
+                    
+                    if (!country1 || !country2) {
+                        alert('Please select at least two countries to compare');
+                        return;
+                    }
+                    
+                    // Show comparison results
+                    comparisonResults.classList.remove('d-none');
+                    
+                    // Initialize charts if charts view is active
+                    if (!document.getElementById('chartsView').classList.contains('d-none')) {
+                        initCharts();
+                    }
+                });
+            }
+            
+            function initCharts() {
+                // Initialize Radar Chart
+                const radarCtx = document.getElementById('radarChart');
+                if (radarCtx) {
+                    const radarChart = new Chart(radarCtx, {
+                        type: 'radar',
+                        data: {
+                            labels: ['Education Quality', 'Cost', 'Safety', 'Job Opportunities', 'Lifestyle', 'Visa Process'],
+                            datasets: [
+                                {
+                                    label: 'Canada',
+                                    data: [92, 75, 90, 85, 88, 80],
+                                    backgroundColor: 'rgba(102, 126, 234, 0.2)',
+                                    borderColor: 'rgba(102, 126, 234, 1)',
+                                    pointBackgroundColor: 'rgba(102, 126, 234, 1)'
+                                },
+                                {
+                                    label: 'Germany',
+                                    data: [88, 85, 87, 80, 82, 75],
+                                    backgroundColor: 'rgba(118, 75, 162, 0.2)',
+                                    borderColor: 'rgba(118, 75, 162, 1)',
+                                    pointBackgroundColor: 'rgba(118, 75, 162, 1)'
+                                }
+                            ]
+                        },
+                        options: {
+                            responsive: true,
+                            scales: {
+                                r: {
+                                    angleLines: {
+                                        display: true
+                                    },
+                                    suggestedMin: 50,
+                                    suggestedMax: 100
+                                }
+                            }
+                        }
+                    });
+                }
+                
+                // Initialize Cost Breakdown Chart
+                const costCtx = document.getElementById('costBreakdownChart');
+                if (costCtx) {
+                    const costChart = new Chart(costCtx, {
+                        type: 'bar',
+                        data: {
+                            labels: ['Tuition', 'Housing', 'Food', 'Transport', 'Other'],
+                            datasets: [
+                                {
+                                    label: 'Canada (USD)',
+                                    data: [25000, 10000, 5000, 2000, 3000],
+                                    backgroundColor: 'rgba(102, 126, 234, 0.7)'
+                                },
+                                {
+                                    label: 'Germany (USD)',
+                                    data: [10000, 8000, 4000, 1500, 1500],
+                                    backgroundColor: 'rgba(118, 75, 162, 0.7)'
+                                }
+                            ]
+                        },
+                        options: {
+                            responsive: true,
+                            plugins: {
+                                legend: {
+                                    position: 'top'
+                                },
+                                title: {
+                                    display: true,
+                                    text: 'Annual Cost Comparison (USD)'
+                                }
+                            }
+                        }
+                    });
+                }
+            }
+        });
+    </script>
+    <script src="js/comparison.js"></script>
+</body>
+</html>
+                // Initialize Cost Breakdown Chart
+                const costCtx = document.getElementById('costBreakdownChart');
+                if (costCtx) {
+                    const costChart = new Chart(costCtx, {
+                        type: 'bar',
+                        data: {
+                            labels: ['Tuition', 'Housing', 'Food', 'Transport', 'Other'],
+                            datasets: [
+                                {
+                                    label: 'Canada (USD)',
+                                    data: [25000, 10000, 5000, 2000, 3000],
+                                    backgroundColor: 'rgba(102, 126, 234, 0.7)'
+                                },
+                                {
+                                    label: 'Germany (USD)',
+                                    data: [10000, 8000, 4000, 1500, 1500],
+                                    backgroundColor: 'rgba(118, 75, 162, 0.7)'
+                                }
+                            ]
+                        },
+                        options: {
+                            responsive: true,
+                            plugins: {
+                                legend: {
+                                    position: 'top'
+                                },
+                                title: {
+                                    display: true,
+                                    text: 'Annual Cost Comparison (USD)'
+                                }
+                            }
+                        }
+                    });
+                }
+            }
+        });
+    </script>
     <script src="js/comparison.js"></script>
 </body>
 </html>

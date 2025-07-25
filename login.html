@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Student DSS</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="container">
+            <div class="nav__content">
+                <h1 class="nav__title">Student Migration Decision Support System</h1>
+                <div class="nav__actions">
+                    <a href="index.html" class="btn btn--link">Home</a>
+                    <a href="#" class="btn btn--link" id="guestLoginBtn">Continue as Guest</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <section class="page">
+        <div class="container">
+            <div class="login-container">
+                <div class="login-card">
+                    <h2 class="login-title">Admin Login</h2>
+                    <div class="login-message" id="loginMessage"></div>
+                    
+                    <form id="loginForm" class="login-form">
+                        <div class="form-group">
+                            <label for="username" class="form-label">Username</label>
+                            <input type="text" id="username" class="form-control" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="password" class="form-label">Password</label>
+                            <input type="password" id="password" class="form-control" required>
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn--primary btn--full-width">Login</button>
+                        </div>
+                    </form>
+                    
+                    <div class="login-footer">
+                        <p>Use username and password "admin" for admin access.</p>
+                        <p><a href="index.html">Return to home</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="js/auth.js"></script>
+</body>
+</html>

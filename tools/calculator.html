@@ -3,10 +3,213 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Calculator</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cost Calculator - Student DSS</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <h1>Migration Calculator</h1>
-    <!-- Calculator tool content goes here -->
+    <nav class="top-navigation">
+        <div class="nav-container">
+            <div class="logo">
+                <h2>Student DSS</h2>
+            </div>
+            <div class="nav-links">
+                <a href="../dashboard.html" class="nav-link">Dashboard</a>
+                <a href="../results.html" class="nav-link">Results</a>
+                <a href="../comparison.html" class="nav-link">Compare</a>
+                <a href="../analytics.html" class="nav-link">Analytics</a>
+                <a href="../tools/calculator.html" class="nav-link active">Calculator</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="tool-container">
+        <header class="tool-header">
+            <h1>Study Abroad Cost Calculator</h1>
+            <p class="subtitle">Estimate and compare your total study abroad costs</p>
+        </header>
+
+        <div class="calculator-container">
+            <div class="calculator-form">
+                <h2>Enter Your Details</h2>
+                
+                <div class="form-group">
+                    <label>Destination Country</label>
+                    <select class="form-control" id="countrySelect">
+                        <option value="">Select a country</option>
+                        <option value="canada">Canada</option>
+                        <option value="usa">United States</option>
+                        <option value="uk">United Kingdom</option>
+                        <option value="australia">Australia</option>
+                        <option value="germany">Germany</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>Study Level</label>
+                    <select class="form-control" id="studyLevelSelect">
+                        <option value="">Select study level</option>
+                        <option value="bachelor">Bachelor's Degree</option>
+                        <option value="master">Master's Degree</option>
+                        <option value="phd">PhD/Doctoral</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>Program Duration (years)</label>
+                    <input type="number" class="form-control" id="durationInput" value="1" min="1" max="6">
+                </div>
+                
+                <div class="form-section">
+                    <h3>Tuition Expenses</h3>
+                    <div class="form-group">
+                        <label>Annual Tuition Fee (USD)</label>
+                        <input type="number" class="form-control" id="tuitionInput" value="15000">
+                    </div>
+                </div>
+                
+                <div class="form-section">
+                    <h3>Living Expenses</h3>
+                    <div class="form-group">
+                        <label>Monthly Rent (USD)</label>
+                        <input type="number" class="form-control" id="rentInput" value="800">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Monthly Food (USD)</label>
+                        <input type="number" class="form-control" id="foodInput" value="300">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Monthly Transport (USD)</label>
+                        <input type="number" class="form-control" id="transportInput" value="100">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Other Monthly Expenses (USD)</label>
+                        <input type="number" class="form-control" id="otherInput" value="200">
+                    </div>
+                </div>
+                
+                <div class="form-section">
+                    <h3>One-time Expenses</h3>
+                    <div class="form-group">
+                        <label>Visa Fee (USD)</label>
+                        <input type="number" class="form-control" id="visaInput" value="500">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Flight Tickets (USD)</label>
+                        <input type="number" class="form-control" id="flightInput" value="1200">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Initial Settlement (USD)</label>
+                        <input type="number" class="form-control" id="settlementInput" value="2000">
+                    </div>
+                </div>
+                
+                <button class="btn btn--primary btn--full-width" id="calculateBtn">Calculate Total Cost</button>
+            </div>
+            
+            <div class="calculator-results" id="calculatorResults">
+                <h2>Cost Breakdown</h2>
+                <div class="results-summary">
+                    <div class="total-cost">
+                        <span class="label">Total Estimated Cost:</span>
+                        <span class="value">$41,700 USD</span>
+                    </div>
+                    <div class="duration-note">For 1 year of study</div>
+                </div>
+                
+                <div class="cost-breakdown">
+                    <div class="breakdown-chart">
+                        <canvas id="costBreakdownChart"></canvas>
+                    </div>
+                    
+                    <div class="breakdown-list">
+                        <div class="breakdown-item">
+                            <span class="category">Tuition Fees</span>
+                            <span class="amount">$15,000</span>
+                            <div class="percentage-bar">
+                                <div class="bar-fill" style="width: 36%"></div>
+                            </div>
+                            <span class="percentage">36%</span>
+                        </div>
+                        
+                        <div class="breakdown-item">
+                            <span class="category">Accommodation</span>
+                            <span class="amount">$9,600</span>
+                            <div class="percentage-bar">
+                                <div class="bar-fill" style="width: 23%"></div>
+                            </div>
+                            <span class="percentage">23%</span>
+                        </div>
+                        
+                        <div class="breakdown-item">
+                            <span class="category">Food</span>
+                            <span class="amount">$3,600</span>
+                            <div class="percentage-bar">
+                                <div class="bar-fill" style="width: 9%"></div>
+                            </div>
+                            <span class="percentage">9%</span>
+                        </div>
+                        
+                        <div class="breakdown-item">
+                            <span class="category">Other Expenses</span>
+                            <span class="amount">$13,500</span>
+                            <div class="percentage-bar">
+                                <div class="bar-fill" style="width: 32%"></div>
+                            </div>
+                            <span class="percentage">32%</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="funding-gap">
+                    <h3>Funding Gap Analysis</h3>
+                    <p>Based on the average scholarship amount for your profile</p>
+                    <div class="gap-visualization">
+                        <div class="gap-bar">
+                            <div class="funded" style="width: 65%">
+                                <span>Typically Funded (65%)</span>
+                            </div>
+                            <div class="gap" style="width: 35%">
+                                <span>Funding Gap (35%)</span>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="gap-amount">Estimated funding gap: <strong>$14,595</strong></p>
+                </div>
+                
+                <div class="calculator-actions">
+                    <button class="btn btn--secondary">Save Calculation</button>
+                    <button class="btn btn--secondary">Export as PDF</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="../js/auth.js"></script>
+</body>
+</html>
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'right',
+                            }
+                        }
+                    }
+                });
+            }
+        });
+    </script>
 </body>
 </html>

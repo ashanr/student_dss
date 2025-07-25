@@ -13,7 +13,14 @@
         <div class="container">
             <div class="nav__content">
                 <h1 class="nav__title">Student Migration Decision Support System</h1>
-                <button class="btn btn--outline btn--sm" id="resetBtn">Reset Preferences</button>
+                <div class="nav__actions">
+                    <span id="loginStatus" class="login-status"></span>
+                    <a href="dashboard.html" class="btn btn--link" id="adminDashboardLink" style="display: none;">Admin Dashboard</a>
+                    <a href="login.html" class="btn btn--link" id="adminLoginBtn">Login as Admin</a>
+                    <a href="#" class="btn btn--link" id="guestLoginBtn">Continue as Guest</a>
+                    <button class="btn btn--outline btn--sm" id="logoutBtn" style="display: none;">Logout</button>
+                    <button class="btn btn--outline btn--sm" id="resetBtn">Reset Preferences</button>
+                </div>
             </div>
         </div>
     </nav>
@@ -246,6 +253,7 @@
         </div>
     </section>
 
+    <script src="js/auth.js"></script>
     <script src="app.js"></script>
 </body>
 </html>

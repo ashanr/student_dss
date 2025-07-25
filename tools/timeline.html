@@ -3,10 +3,287 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Timeline</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Application Timeline - Student DSS</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-    <h1>Migration Timeline</h1>
-    <!-- Timeline tool content goes here -->
+    <div class="d-flex">
+        <!-- Sidebar container - will be filled by common.js -->
+        <div id="sidebar-container"></div>
+
+        <main class="flex-grow-1">
+            <div class="container-fluid py-4">
+                <div class="row mb-4">
+                    <div class="col-12 text-center">
+                        <h1 class="display-5 fw-bold">Application Timeline Planner</h1>
+                        <p class="lead text-muted">Create and manage your study abroad application timeline</p>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-10 mx-auto">
+                        <div class="card shadow-sm">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center mb-4">
+                                    <div>
+                                        <button class="btn btn-primary me-2">Add Milestone</button>
+                                        <button class="btn btn-outline-secondary">Export Timeline</button>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label me-2">View:</label>
+                                        <select class="form-select form-select-sm" style="width: auto; display: inline-block;">
+                                            <option>Monthly</option>
+                                            <option>Quarterly</option>
+                                            <option>Academic Year</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="mt-4">
+                                    <!-- Timeline with Bootstrap styling -->
+                                    <div class="position-relative pb-4 border-start border-2 ps-4 ms-3">
+                                        <div class="position-absolute top-0 start-0 translate-middle rounded-circle bg-success text-white d-flex align-items-center justify-content-center" style="width: 24px; height: 24px;">
+                                            <i class="fas fa-check small"></i>
+                                        </div>
+                                        <div class="position-absolute top-0 start-0 translate-middle bg-primary text-white px-2 py-1 rounded" style="transform: translate(-2.5rem, -1rem);">Jan 2024</div>
+                                        <div class="card border-0 shadow-sm mb-4">
+                                            <div class="card-body">
+                                                <h3 class="h5">Research Programs</h3>
+                                                <p class="mb-2">Identify potential universities and programs</p>
+                                                <span class="badge bg-success">Completed</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="position-relative pb-4 border-start border-2 ps-4 ms-3">
+                                        <div class="position-absolute top-0 start-0 translate-middle rounded-circle bg-primary text-white d-flex align-items-center justify-content-center" style="width: 24px; height: 24px;">
+                                            <i class="fas fa-sync-alt small"></i>
+                                        </div>
+                                        <div class="position-absolute top-0 start-0 translate-middle bg-primary text-white px-2 py-1 rounded" style="transform: translate(-2.5rem, -1rem);">Mar 2024</div>
+                                        <div class="card border-0 shadow-sm mb-4 border-start border-5 border-primary">
+                                            <div class="card-body">
+                                                <h3 class="h5">Standardized Tests</h3>
+                                                <p class="mb-2">Take required tests (IELTS, GRE, etc.)</p>
+                                                <span class="badge bg-primary">In Progress</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="position-relative pb-4 border-start border-2 ps-4 ms-3">
+                                        <div class="position-absolute top-0 start-0 translate-middle rounded-circle bg-secondary text-white d-flex align-items-center justify-content-center" style="width: 24px; height: 24px;">
+                                            <i class="fas fa-clock small"></i>
+                                        </div>
+                                        <div class="position-absolute top-0 start-0 translate-middle bg-primary text-white px-2 py-1 rounded" style="transform: translate(-2.5rem, -1rem);">May 2024</div>
+                                        <div class="card border-0 shadow-sm mb-4">
+                                            <div class="card-body">
+                                                <h3 class="h5">Application Preparation</h3>
+                                                <p class="mb-2">Prepare documents and application materials</p>
+                                                <span class="badge bg-secondary">Upcoming</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="position-relative pb-4 border-start border-2 ps-4 ms-3">
+                                        <div class="position-absolute top-0 start-0 translate-middle rounded-circle bg-secondary text-white d-flex align-items-center justify-content-center" style="width: 24px; height: 24px;">
+                                            <i class="fas fa-clock small"></i>
+                                        </div>
+                                        <div class="position-absolute top-0 start-0 translate-middle bg-primary text-white px-2 py-1 rounded" style="transform: translate(-2.5rem, -1rem);">Aug 2024</div>
+                                        <div class="card border-0 shadow-sm mb-4">
+                                            <div class="card-body">
+                                                <h3 class="h5">Submit Applications</h3>
+                                                <p class="mb-2">Submit applications to selected universities</p>
+                                                <span class="badge bg-secondary">Upcoming</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="position-relative pb-0 border-start border-0 ps-4 ms-3">
+                                        <div class="position-absolute top-0 start-0 translate-middle rounded-circle bg-secondary text-white d-flex align-items-center justify-content-center" style="width: 24px; height: 24px;">
+                                            <i class="fas fa-clock small"></i>
+                                        </div>
+                                        <div class="position-absolute top-0 start-0 translate-middle bg-primary text-white px-2 py-1 rounded" style="transform: translate(-2.5rem, -1rem);">Dec 2024</div>
+                                        <div class="card border-0 shadow-sm mb-0">
+                                            <div class="card-body">
+                                                <h3 class="h5">Admission Decisions</h3>
+                                                <p class="mb-2">Receive and evaluate admission offers</p>
+                                                <span class="badge bg-secondary">Upcoming</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Bootstrap 5 JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Font Awesome JS (if needed for interactive icons) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js" defer></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/common.js"></script>
+</body>
+</html>
+                                <label class="form-label me-2">View:</label>
+                                <select class="form-select form-select-sm" style="width: auto; display: inline-block;">
+                                    <option>Monthly</option>
+                                    <option>Quarterly</option>
+                                    <option>Academic Year</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="timeline mt-4">
+                            <div class="timeline-item">
+                                <div class="timeline-date">Jan 2024</div>
+                                <div class="timeline-content">
+                                    <h3 class="h5">Research Programs</h3>
+                                    <p class="mb-2">Identify potential universities and programs</p>
+                                    <div class="timeline-status completed">Completed</div>
+                                </div>
+                            </div>
+
+                            <div class="timeline-item current">
+                                <div class="timeline-date">Mar 2024</div>
+                                <div class="timeline-content">
+                                    <h3 class="h5">Standardized Tests</h3>
+                                    <p class="mb-2">Take required tests (IELTS, GRE, etc.)</p>
+                                    <div class="timeline-status in-progress">In Progress</div>
+                                </div>
+                            </div>
+
+                            <div class="timeline-item">
+                                <div class="timeline-date">May 2024</div>
+                                <div class="timeline-content">
+                                    <h3 class="h5">Application Preparation</h3>
+                                    <p class="mb-2">Prepare documents and application materials</p>
+                                    <div class="timeline-status upcoming">Upcoming</div>
+                                </div>
+                            </div>
+
+                            <div class="timeline-item">
+                                <div class="timeline-date">Aug 2024</div>
+                                <div class="timeline-content">
+                                    <h3 class="h5">Submit Applications</h3>
+                                    <p class="mb-2">Submit applications to selected universities</p>
+                                    <div class="timeline-status upcoming">Upcoming</div>
+                                </div>
+                            </div>
+
+                            <div class="timeline-item">
+                                <div class="timeline-date">Dec 2024</div>
+                                <div class="timeline-content">
+                                    <h3 class="h5">Admission Decisions</h3>
+                                    <p class="mb-2">Receive and evaluate admission offers</p>
+                                    <div class="timeline-status upcoming">Upcoming</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap 5 JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../js/auth.js"></script>
+</body>
+</html>
+                    recoLetters.setDate(recoLetters.getDate() - 15);
+                    
+                    milestones.push({
+                        date: new Date(recoLetters),
+                        title: 'Recommendation Letters',
+                        description: 'Finalize recommendation letters',
+                        category: 'required',
+                        status: recoLetters < now ? 'past' : 'upcoming'
+                    });
+                }
+                
+                // Visa Application
+                let visaDate = new Date(targetDate);
+                visaDate.setMonth(visaDate.getMonth() - 3);
+                
+                milestones.push({
+                    date: new Date(visaDate),
+                    title: 'Visa Application',
+                    description: 'Apply for student visa',
+                    category: 'major',
+                    status: visaDate < now ? 'past' : 'upcoming'
+                });
+                
+                // Scholarship Application
+                if (requirements.needScholarship) {
+                    let scholarship = new Date(appDeadline);
+                    scholarship.setDate(scholarship.getDate() - 30);
+                    
+                    milestones.push({
+                        date: new Date(scholarship),
+                        title: 'Scholarship Application',
+                        description: 'Complete and submit scholarship applications',
+                        category: 'optional',
+                        status: scholarship < now ? 'past' : 'upcoming'
+                    });
+                }
+                
+                // Accommodation
+                if (requirements.needAccommodation) {
+                    let accommodation = new Date(targetDate);
+                    accommodation.setMonth(accommodation.getMonth() - 2);
+                    
+                    milestones.push({
+                        date: new Date(accommodation),
+                        title: 'Accommodation Arrangements',
+                        description: 'Secure your accommodation',
+                        category: 'optional',
+                        status: accommodation < now ? 'past' : 'upcoming'
+                    });
+                }
+                
+                // Sort by date
+                milestones.sort((a, b) => a.date - b.date);
+                
+                return milestones;
+            }
+
+            function displayTimeline(milestones) {
+                let timelineHTML = `
+                    <div class="timeline">
+                        ${milestones.map(milestone => {
+                            return `
+                                <div class="timeline-item ${milestone.status} ${milestone.category}">
+                                    <div class="timeline-marker"></div>
+                                    <div class="timeline-content">
+                                        <div class="timeline-date">${formatDate(milestone.date)}</div>
+                                        <h3>${milestone.title}</h3>
+                                        <p>${milestone.description}</p>
+                                    </div>
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>
+                `;
+                
+                timelineChart.innerHTML = timelineHTML;
+            }
+
+            function formatDate(date) {
+                const options = { year: 'numeric', month: 'long', day: 'numeric' };
+                return date.toLocaleDateString('en-US', options);
+            }
+        });
+    </script>
 </body>
 </html>
