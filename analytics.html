@@ -4,318 +4,503 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Analytics - Student DSS</title>
-    <link rel="stylesheet" href="css/analytics.css">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
-<body>
-    <nav class="top-navigation">
-        <div class="nav-container">
-            <div class="logo">
-                <h2>Student DSS</h2>
-            </div>
-            <div class="nav-links">
-                <a href="dashboard.html" class="nav-link">Dashboard</a>
-                <a href="results.html" class="nav-link">Results</a>
-                <a href="comparison.html" class="nav-link">Compare</a>
-                <a href="analytics.html" class="nav-link active">Analytics</a>
-            </div>
-        </div>
-    </nav>
+<body class="bg-light">
+    <div class="d-flex">
+        <!-- Sidebar container - will be filled by common.js -->
+        <div id="sidebar-container"></div>
 
-    <div class="analytics-container">
-        <header class="page-header">
-            <div class="header-content">
-                <h1>Advanced Analytics</h1>
-                <p class="subtitle">Deep insights into your study abroad decisions</p>
-            </div>
-            <div class="header-controls">
-                <select class="time-range">
-                    <option>Last 30 days</option>
-                    <option>Last 3 months</option>
-                    <option>All time</option>
-                </select>
-                <button class="refresh-btn">🔄 Refresh</button>
-            </div>
-        </header>
-
-        <div class="analytics-tabs">
-            <button class="tab-btn active" data-tab="sensitivity">Sensitivity Analysis</button>
-            <button class="tab-btn" data-tab="prediction">Success Prediction</button>
-            <button class="tab-btn" data-tab="trends">Market Trends</button>
-            <button class="tab-btn" data-tab="insights">AI Insights</button>
-        </div>
-
-        <div class="tab-content">
-            <div class="tab-panel active" id="sensitivityPanel">
-                <div class="panel-header">
-                    <h2>How Changes Affect Your Rankings</h2>
-                    <p>Adjust criteria weights to see how country rankings change</p>
-                </div>
-                
-                <div class="sensitivity-controls">
-                    <div class="control-section">
-                        <h3>Adjust Criteria Weights</h3>
-                        <div class="weight-sliders">
-                            <div class="slider-group">
-                                <label>Cost Importance: <span id="costWeight">25%</span></label>
-                                <input type="range" id="costSlider" min="0" max="50" value="25" class="weight-slider">
-                            </div>
-                            <div class="slider-group">
-                                <label>Quality Importance: <span id="qualityWeight">30%</span></label>
-                                <input type="range" id="qualitySlider" min="0" max="50" value="30" class="weight-slider">
-                            </div>
-                            <div class="slider-group">
-                                <label>Safety Importance: <span id="safetyWeight">20%</span></label>
-                                <input type="range" id="safetySlider" min="0" max="50" value="20" class="weight-slider">
-                            </div>
-                        </div>
+        <!-- Main content -->
+        <main class="flex-grow-1">
+            <!-- Navigation Bar - Fixed position at the top of main content -->
+            <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom shadow-sm sticky-top">
+                <div class="container-fluid">
+                    <button class="navbar-toggler me-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <span class="navbar-brand me-auto">Student DSS</span>
+                    
+                    <div class="collapse navbar-collapse" id="navbarNav">
+                        <ul class="navbar-nav mx-auto">
+                            <li class="nav-item">
+                                <a class="nav-link" href="dashboard.html">Dashboard</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="preferences.html">Preferences</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="results.html">Results</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="comparison.html">Compare</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link active fw-bold" href="analytics.html">Analytics</a>
+                            </li>
+                        </ul>
                     </div>
                     
-                    <div class="sensitivity-results">
-                        <div class="ranking-change">
-                            <h4>Ranking Changes</h4>
-                            <div class="change-list">
-                                <div class="change-item">
-                                    <span class="country">🇨🇦 Canada</span>
-                                    <span class="change positive">↑ 2 positions</span>
-                                </div>
-                                <div class="change-item">
-                                    <span class="country">🇩🇪 Germany</span>
-                                    <span class="change negative">↓ 1 position</span>
-                                </div>
-                                <div class="change-item">
-                                    <span class="country">🇦🇺 Australia</span>
-                                    <span class="change neutral">No change</span>
-                                </div>
-                            </div>
+                    <div class="d-flex align-items-center">
+                        <div class="dropdown">
+                            <a href="#" class="d-flex align-items-center text-decoration-none dropdown-toggle" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                <div class="rounded-circle bg-primary d-flex align-items-center justify-content-center text-white me-2" style="width: 32px; height: 32px;" id="navbarUserInitial">A</div>
+                                <span id="navbarUsername" class="d-none d-sm-inline">Admin</span>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="userDropdown">
+                                <li><a class="dropdown-item" href="#">Profile</a></li>
+                                <li><a class="dropdown-item" href="#">Settings</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="#" id="navbarLogout">Logout</a></li>
+                            </ul>
                         </div>
                     </div>
                 </div>
-                
-                <div class="sensitivity-charts">
-                    <div class="chart-container">
-                        <h3>Interactive Sensitivity Chart</h3>
-                        <canvas id="sensitivityChart"></canvas>
-                    </div>
-                    <div class="impact-matrix">
-                        <h3>Criteria Impact Matrix</h3>
-                        <div class="matrix-grid">
-                            <div class="matrix-cell high">
-                                <span class="criteria">Cost</span>
-                                <span class="impact">High Impact</span>
-                            </div>
-                            <div class="matrix-cell medium">
-                                <span class="criteria">Quality</span>
-                                <span class="impact">Medium Impact</span>
-                            </div>
-                            <div class="matrix-cell low">
-                                <span class="criteria">Culture</span>
-                                <span class="impact">Low Impact</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            </nav>
 
-            <div class="tab-panel hidden" id="predictionPanel">
-                <div class="panel-header">
-                    <h2>Application Success Prediction</h2>
-                    <p>Based on historical data and your profile</p>
-                </div>
-                
-                <div class="prediction-grid">
-                    <div class="prediction-card">
-                        <div class="card-header">
-                            <h3>🇨🇦 Canada</h3>
-                            <div class="probability-score high">
-                                <span class="score">87%</span>
-                                <span class="label">Success Rate</span>
-                            </div>
+            <!-- Page content -->
+            <div class="container-fluid py-4">
+                <header class="mb-4">
+                    <div class="row align-items-center">
+                        <div class="col-md-6">
+                            <h1>Advanced Analytics</h1>
+                            <p class="lead">Deep insights into your study abroad decisions</p>
                         </div>
-                        <div class="factors">
-                            <div class="factor positive">
-                                <span class="icon">✓</span>
-                                <span>Strong Academic Record</span>
-                            </div>
-                            <div class="factor positive">
-                                <span class="icon">✓</span>
-                                <span>Relevant Work Experience</span>
-                            </div>
-                            <div class="factor neutral">
-                                <span class="icon">!</span>
-                                <span>Average Test Scores</span>
-                            </div>
-                        </div>
-                        <div class="recommendation">
-                            <strong>Recommendation:</strong> Apply early, consider improving IELTS score
-                        </div>
-                    </div>
-                    
-                    <div class="prediction-card">
-                        <div class="card-header">
-                            <h3>🇩🇪 Germany</h3>
-                            <div class="probability-score medium">
-                                <span class="score">72%</span>
-                                <span class="label">Success Rate</span>
-                            </div>
-                        </div>
-                        <div class="factors">
-                            <div class="factor positive">
-                                <span class="icon">✓</span>
-                                <span>Technical Background</span>
-                            </div>
-                            <div class="factor negative">
-                                <span class="icon">✗</span>
-                                <span>Limited German Proficiency</span>
-                            </div>
-                            <div class="factor neutral">
-                                <span class="icon">!</span>
-                                <span>Competitive Program</span>
-                            </div>
-                        </div>
-                        <div class="recommendation">
-                            <strong>Recommendation:</strong> Consider German language course, apply to multiple universities
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="prediction-timeline">
-                    <h3>Optimal Application Timeline</h3>
-                    <div class="timeline">
-                        <div class="timeline-item completed">
-                            <div class="timeline-marker"></div>
-                            <div class="timeline-content">
-                                <h4>Profile Assessment</h4>
-                                <p>Completed March 2024</p>
-                            </div>
-                        </div>
-                        <div class="timeline-item current">
-                            <div class="timeline-marker"></div>
-                            <div class="timeline-content">
-                                <h4>Document Preparation</h4>
-                                <p>In Progress - Due April 2024</p>
-                            </div>
-                        </div>
-                        <div class="timeline-item">
-                            <div class="timeline-marker"></div>
-                            <div class="timeline-content">
-                                <h4>Application Submission</h4>
-                                <p>Recommended by May 2024</p>
+                        <div class="col-md-6 text-md-end">
+                            <div class="d-flex justify-content-md-end align-items-center">
+                                <select class="form-select me-2" style="width: auto;">
+                                    <option>Last 30 days</option>
+                                    <option>Last 3 months</option>
+                                    <option>All time</option>
+                                </select>
+                                <button class="btn btn-outline-primary">
+                                    <i class="fas fa-sync-alt me-1"></i> Refresh
+                                </button>
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
+                </header>
 
-            <div class="tab-panel hidden" id="trendsPanel">
-                <div class="panel-header">
-                    <h2>Global Study Abroad Trends</h2>
-                    <p>Market insights and emerging patterns</p>
-                </div>
-                
-                <div class="trends-grid">
-                    <div class="trend-card">
-                        <h3>Popular Destinations</h3>
-                        <div class="trend-chart">
-                            <canvas id="popularityChart"></canvas>
-                        </div>
+                <div class="card shadow-sm mb-4">
+                    <div class="card-header bg-white p-0">
+                        <ul class="nav nav-tabs card-header-tabs" id="analyticsTabs" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active px-4 py-3" id="sensitivity-tab" data-bs-toggle="tab" data-bs-target="#sensitivityPanel" type="button" role="tab" aria-controls="sensitivityPanel" aria-selected="true">
+                                    Sensitivity Analysis
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link px-4 py-3" id="prediction-tab" data-bs-toggle="tab" data-bs-target="#predictionPanel" type="button" role="tab" aria-controls="predictionPanel" aria-selected="false">
+                                    Success Prediction
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link px-4 py-3" id="trends-tab" data-bs-toggle="tab" data-bs-target="#trendsPanel" type="button" role="tab" aria-controls="trendsPanel" aria-selected="false">
+                                    Market Trends
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link px-4 py-3" id="insights-tab" data-bs-toggle="tab" data-bs-target="#insightsPanel" type="button" role="tab" aria-controls="insightsPanel" aria-selected="false">
+                                    AI Insights
+                                </button>
+                            </li>
+                        </ul>
                     </div>
-                    
-                    <div class="trend-card">
-                        <h3>Cost Trends</h3>
-                        <div class="trend-chart">
-                            <canvas id="costTrendsChart"></canvas>
-                        </div>
-                    </div>
-                    
-                    <div class="trend-card">
-                        <h3>Field of Study Demand</h3>
-                        <div class="demand-list">
-                            <div class="demand-item">
-                                <span class="field">Computer Science</span>
-                                <div class="demand-bar">
-                                    <div class="bar-fill" style="width: 95%"></div>
-                                </div>
-                                <span class="percentage">95%</span>
-                            </div>
-                            <div class="demand-item">
-                                <span class="field">Engineering</span>
-                                <div class="demand-bar">
-                                    <div class="bar-fill" style="width: 87%"></div>
-                                </div>
-                                <span class="percentage">87%</span>
-                            </div>
-                            <div class="demand-item">
-                                <span class="field">Business</span>
-                                <div class="demand-bar">
-                                    <div class="bar-fill" style="width: 78%"></div>
-                                </div>
-                                <span class="percentage">78%</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
 
-            <div class="tab-panel hidden" id="insightsPanel">
-                <div class="panel-header">
-                    <h2>AI-Powered Insights</h2>
-                    <p>Personalized recommendations based on data analysis</p>
-                </div>
-                
-                <div class="insights-container">
-                    <div class="insight-card priority">
-                        <div class="insight-header">
-                            <span class="insight-icon">🎯</span>
-                            <h3>Priority Recommendation</h3>
-                            <span class="confidence">95% confidence</span>
-                        </div>
-                        <div class="insight-content">
-                            <p><strong>Focus on Canada for Computer Science programs.</strong> Based on your profile analysis, you have the highest success probability and best ROI in Canadian universities.</p>
-                            <div class="supporting-data">
-                                <span class="data-point">87% success rate</span>
-                                <span class="data-point">Strong job market</span>
-                                <span class="data-point">Cultural fit</span>
+                    <div class="card-body">
+                        <div class="tab-content" id="analyticsTabContent">
+                            <!-- Sensitivity Analysis Panel -->
+                            <div class="tab-pane fade show active" id="sensitivityPanel" role="tabpanel" aria-labelledby="sensitivity-tab">
+                                <div class="mb-4">
+                                    <h2>How Changes Affect Your Rankings</h2>
+                                    <p class="text-muted">Adjust criteria weights to see how country rankings change</p>
+                                </div>
+                                
+                                <div class="row g-4 mb-4">
+                                    <div class="col-lg-5">
+                                        <div class="card h-100">
+                                            <div class="card-header bg-white">
+                                                <h3 class="h5 mb-0">Adjust Criteria Weights</h3>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="mb-3">
+                                                    <label class="form-label d-flex justify-content-between">
+                                                        Cost Importance:
+                                                        <span class="badge bg-primary" id="costWeight">25%</span>
+                                                    </label>
+                                                    <input type="range" id="costSlider" min="0" max="50" value="25" class="form-range">
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label class="form-label d-flex justify-content-between">
+                                                        Quality Importance:
+                                                        <span class="badge bg-primary" id="qualityWeight">30%</span>
+                                                    </label>
+                                                    <input type="range" id="qualitySlider" min="0" max="50" value="30" class="form-range">
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label class="form-label d-flex justify-content-between">
+                                                        Safety Importance:
+                                                        <span class="badge bg-primary" id="safetyWeight">20%</span>
+                                                    </label>
+                                                    <input type="range" id="safetySlider" min="0" max="50" value="20" class="form-range">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-lg-7">
+                                        <div class="card h-100">
+                                            <div class="card-header bg-white">
+                                                <h3 class="h5 mb-0">Ranking Changes</h3>
+                                            </div>
+                                            <div class="card-body">
+                                                <ul class="list-group list-group-flush">
+                                                    <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                                                        <span class="d-flex align-items-center">
+                                                            <span class="fs-4 me-2">🇨🇦</span> Canada
+                                                        </span>
+                                                        <span class="badge bg-success px-3 py-2">
+                                                            <i class="fas fa-arrow-up me-1"></i> 2 positions
+                                                        </span>
+                                                    </li>
+                                                    <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                                                        <span class="d-flex align-items-center">
+                                                            <span class="fs-4 me-2">🇩🇪</span> Germany
+                                                        </span>
+                                                        <span class="badge bg-danger px-3 py-2">
+                                                            <i class="fas fa-arrow-down me-1"></i> 1 position
+                                                        </span>
+                                                    </li>
+                                                    <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                                                        <span class="d-flex align-items-center">
+                                                            <span class="fs-4 me-2">🇦🇺</span> Australia
+                                                        </span>
+                                                        <span class="badge bg-secondary px-3 py-2">No change</span>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="row g-4">
+                                    <div class="col-lg-8">
+                                        <div class="card h-100">
+                                            <div class="card-header bg-white">
+                                                <h3 class="h5 mb-0">Interactive Sensitivity Chart</h3>
+                                            </div>
+                                            <div class="card-body">
+                                                <canvas id="sensitivityChart" style="height: 300px;"></canvas>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="card h-100">
+                                            <div class="card-header bg-white">
+                                                <h3 class="h5 mb-0">Criteria Impact Matrix</h3>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="list-group">
+                                                    <div class="list-group-item list-group-item-action border-start border-5 border-danger">
+                                                        <div class="d-flex w-100 justify-content-between">
+                                                            <h5 class="mb-1">Cost</h5>
+                                                            <small class="text-danger fw-bold">High Impact</small>
+                                                        </div>
+                                                    </div>
+                                                    <div class="list-group-item list-group-item-action border-start border-5 border-warning">
+                                                        <div class="d-flex w-100 justify-content-between">
+                                                            <h5 class="mb-1">Quality</h5>
+                                                            <small class="text-warning fw-bold">Medium Impact</small>
+                                                        </div>
+                                                    </div>
+                                                    <div class="list-group-item list-group-item-action border-start border-5 border-info">
+                                                        <div class="d-flex w-100 justify-content-between">
+                                                            <h5 class="mb-1">Culture</h5>
+                                                            <small class="text-info fw-bold">Low Impact</small>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-                    
-                    <div class="insight-card warning">
-                        <div class="insight-header">
-                            <span class="insight-icon">⚠️</span>
-                            <h3>Risk Alert</h3>
-                            <span class="confidence">78% confidence</span>
-                        </div>
-                        <div class="insight-content">
-                            <p><strong>German applications may be challenging.</strong> Limited German proficiency could impact admission chances for programs taught in German.</p>
-                            <div class="action-suggestions">
-                                <button class="suggestion-btn">Find English Programs</button>
-                                <button class="suggestion-btn">German Course Options</button>
+
+                            <!-- Success Prediction Panel -->
+                            <div class="tab-pane fade" id="predictionPanel" role="tabpanel" aria-labelledby="prediction-tab">
+                                <div class="mb-4">
+                                    <h2>Application Success Prediction</h2>
+                                    <p class="text-muted">Based on historical data and your profile</p>
+                                </div>
+                                
+                                <div class="row g-4 mb-5">
+                                    <div class="col-md-6">
+                                        <div class="card h-100 border-success border-top border-4">
+                                            <div class="card-body">
+                                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                                    <h3 class="h4 mb-0">
+                                                        <span class="fs-3 me-2">🇨🇦</span> Canada
+                                                    </h3>
+                                                    <div class="bg-success text-white rounded-pill px-3 py-2 text-center">
+                                                        <span class="fw-bold">87%</span><br>
+                                                        <small>Success Rate</small>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="mb-4">
+                                                    <div class="d-flex align-items-center mb-2">
+                                                        <span class="bg-success text-white rounded-circle d-inline-flex align-items-center justify-content-center me-2" style="width: 24px; height: 24px;">✓</span>
+                                                        <span>Strong Academic Record</span>
+                                                    </div>
+                                                    <div class="d-flex align-items-center mb-2">
+                                                        <span class="bg-success text-white rounded-circle d-inline-flex align-items-center justify-content-center me-2" style="width: 24px; height: 24px;">✓</span>
+                                                        <span>Relevant Work Experience</span>
+                                                    </div>
+                                                    <div class="d-flex align-items-center">
+                                                        <span class="bg-warning text-white rounded-circle d-inline-flex align-items-center justify-content-center me-2" style="width: 24px; height: 24px;">!</span>
+                                                        <span>Average Test Scores</span>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="alert alert-info mb-0">
+                                                    <strong>Recommendation:</strong> Apply early, consider improving IELTS score
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-md-6">
+                                        <div class="card h-100 border-warning border-top border-4">
+                                            <div class="card-body">
+                                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                                    <h3 class="h4 mb-0">
+                                                        <span class="fs-3 me-2">🇩🇪</span> Germany
+                                                    </h3>
+                                                    <div class="bg-warning text-white rounded-pill px-3 py-2 text-center">
+                                                        <span class="fw-bold">72%</span><br>
+                                                        <small>Success Rate</small>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="mb-4">
+                                                    <div class="d-flex align-items-center mb-2">
+                                                        <span class="bg-success text-white rounded-circle d-inline-flex align-items-center justify-content-center me-2" style="width: 24px; height: 24px;">✓</span>
+                                                        <span>Technical Background</span>
+                                                    </div>
+                                                    <div class="d-flex align-items-center mb-2">
+                                                        <span class="bg-danger text-white rounded-circle d-inline-flex align-items-center justify-content-center me-2" style="width: 24px; height: 24px;">✗</span>
+                                                        <span>Limited German Proficiency</span>
+                                                    </div>
+                                                    <div class="d-flex align-items-center">
+                                                        <span class="bg-warning text-white rounded-circle d-inline-flex align-items-center justify-content-center me-2" style="width: 24px; height: 24px;">!</span>
+                                                        <span>Competitive Program</span>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="alert alert-info mb-0">
+                                                    <strong>Recommendation:</strong> Consider German language course, apply to multiple universities
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="card">
+                                    <div class="card-header bg-white">
+                                        <h3 class="h5 mb-0">Optimal Application Timeline</h3>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="position-relative timeline-container py-3">
+                                            <!-- Timeline connector line -->
+                                            <div class="position-absolute start-0 ms-5" style="top: 0; bottom: 0; width: 4px; background-color: #e9ecef; z-index: 0;"></div>
+                                            
+                                            <!-- Timeline items -->
+                                            <div class="d-flex mb-4 position-relative">
+                                                <div class="rounded-circle bg-success text-white d-flex align-items-center justify-content-center me-4 position-relative" style="width: 40px; height: 40px; z-index: 1;">
+                                                    <i class="fas fa-check"></i>
+                                                </div>
+                                                <div>
+                                                    <h4 class="h5 mb-1">Profile Assessment</h4>
+                                                    <p class="text-muted mb-0">Completed March 2024</p>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="d-flex mb-4 position-relative">
+                                                <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center me-4 position-relative" style="width: 40px; height: 40px; z-index: 1;">
+                                                    <i class="fas fa-pen"></i>
+                                                </div>
+                                                <div>
+                                                    <h4 class="h5 mb-1">Document Preparation</h4>
+                                                    <p class="text-muted mb-0">In Progress - Due April 2024</p>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="d-flex position-relative">
+                                                <div class="rounded-circle bg-secondary text-white d-flex align-items-center justify-content-center me-4 position-relative" style="width: 40px; height: 40px; z-index: 1;">
+                                                    <i class="fas fa-paper-plane"></i>
+                                                </div>
+                                                <div>
+                                                    <h4 class="h5 mb-1">Application Submission</h4>
+                                                    <p class="text-muted mb-0">Recommended by May 2024</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-                    
-                    <div class="insight-card opportunity">
-                        <div class="insight-header">
-                            <span class="insight-icon">💡</span>
-                            <h3>Hidden Opportunity</h3>
-                            <span class="confidence">72% confidence</span>
-                        </div>
-                        <div class="insight-content">
-                            <p><strong>Consider Netherlands for Tech programs.</strong> Emerging as a tech hub with English-taught programs and good visa policies.</p>
-                            <div class="opportunity-metrics">
-                                <span class="metric">Lower competition</span>
-                                <span class="metric">Growing tech sector</span>
-                                <span class="metric">English friendly</span>
+
+                            <!-- Market Trends Panel -->
+                            <div class="tab-pane fade" id="trendsPanel" role="tabpanel" aria-labelledby="trends-tab">
+                                <div class="mb-4">
+                                    <h2>Global Study Abroad Trends</h2>
+                                    <p class="text-muted">Market insights and emerging patterns</p>
+                                </div>
+                                
+                                <div class="row g-4 mb-5">
+                                    <div class="col-md-6">
+                                        <div class="card h-100">
+                                            <div class="card-header bg-white">
+                                                <h3 class="h5 mb-0">Popular Destinations</h3>
+                                            </div>
+                                            <div class="card-body">
+                                                <canvas id="popularityChart" style="height: 300px;"></canvas>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-md-6">
+                                        <div class="card h-100">
+                                            <div class="card-header bg-white">
+                                                <h3 class="h5 mb-0">Cost Trends</h3>
+                                            </div>
+                                            <div class="card-body">
+                                                <canvas id="costTrendsChart" style="height: 300px;"></canvas>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="card">
+                                    <div class="card-header bg-white">
+                                        <h3 class="h5 mb-0">Field of Study Demand</h3>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="mb-4">
+                                            <div class="d-flex justify-content-between mb-1">
+                                                <span>Computer Science</span>
+                                                <span class="fw-bold">95%</span>
+                                            </div>
+                                            <div class="progress" style="height: 10px;">
+                                                <div class="progress-bar bg-success" role="progressbar" style="width: 95%" aria-valuenow="95" aria-valuemin="0" aria-valuemax="100"></div>
+                                            </div>
+                                        </div>
+                                        <div class="mb-4">
+                                            <div class="d-flex justify-content-between mb-1">
+                                                <span>Engineering</span>
+                                                <span class="fw-bold">87%</span>
+                                            </div>
+                                            <div class="progress" style="height: 10px;">
+                                                <div class="progress-bar bg-success" role="progressbar" style="width: 87%" aria-valuenow="87" aria-valuemin="0" aria-valuemax="100"></div>
+                                            </div>
+                                        </div>
+                                        <div class="mb-0">
+                                            <div class="d-flex justify-content-between mb-1">
+                                                <span>Business</span>
+                                                <span class="fw-bold">78%</span>
+                                            </div>
+                                            <div class="progress" style="height: 10px;">
+                                                <div class="progress-bar bg-primary" role="progressbar" style="width: 78%" aria-valuenow="78" aria-valuemin="0" aria-valuemax="100"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- AI Insights Panel -->
+                            <div class="tab-pane fade" id="insightsPanel" role="tabpanel" aria-labelledby="insights-tab">
+                                <div class="mb-4">
+                                    <h2>AI-Powered Insights</h2>
+                                    <p class="text-muted">Personalized recommendations based on data analysis</p>
+                                </div>
+                                
+                                <div class="row g-4">
+                                    <div class="col-md-12">
+                                        <div class="card border-primary mb-4">
+                                            <div class="card-header bg-primary text-white d-flex align-items-center">
+                                                <span class="fs-4 me-2">🎯</span>
+                                                <h3 class="h5 mb-0">Priority Recommendation</h3>
+                                                <span class="badge bg-white text-primary ms-auto">95% confidence</span>
+                                            </div>
+                                            <div class="card-body">
+                                                <p class="fw-bold fs-5 mb-3">Focus on Canada for Computer Science programs.</p>
+                                                <p class="mb-4">Based on your profile analysis, you have the highest success probability and best ROI in Canadian universities.</p>
+                                                <div class="d-flex flex-wrap gap-2">
+                                                    <span class="badge bg-light text-dark p-2">87% success rate</span>
+                                                    <span class="badge bg-light text-dark p-2">Strong job market</span>
+                                                    <span class="badge bg-light text-dark p-2">Cultural fit</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-md-6">
+                                        <div class="card border-warning h-100">
+                                            <div class="card-header bg-warning text-dark d-flex align-items-center">
+                                                <span class="fs-4 me-2">⚠️</span>
+                                                <h3 class="h5 mb-0">Risk Alert</h3>
+                                                <span class="badge bg-white text-warning ms-auto">78% confidence</span>
+                                            </div>
+                                            <div class="card-body">
+                                                <p class="fw-bold mb-3">German applications may be challenging.</p>
+                                                <p class="mb-4">Limited German proficiency could impact admission chances for programs taught in German.</p>
+                                                <div class="d-grid gap-2 d-md-flex justify-content-md-start">
+                                                    <button class="btn btn-outline-warning">Find English Programs</button>
+                                                    <button class="btn btn-outline-warning">German Course Options</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-md-6">
+                                        <div class="card border-info h-100">
+                                            <div class="card-header bg-info text-white d-flex align-items-center">
+                                                <span class="fs-4 me-2">💡</span>
+                                                <h3 class="h5 mb-0">Hidden Opportunity</h3>
+                                                <span class="badge bg-white text-info ms-auto">72% confidence</span>
+                                            </div>
+                                            <div class="card-body">
+                                                <p class="fw-bold mb-3">Consider Netherlands for Tech programs.</p>
+                                                <p class="mb-4">Emerging as a tech hub with English-taught programs and good visa policies.</p>
+                                                <div class="d-flex flex-wrap gap-2">
+                                                    <span class="badge bg-light text-dark p-2">Lower competition</span>
+                                                    <span class="badge bg-light text-dark p-2">Growing tech sector</span>
+                                                    <span class="badge bg-light text-dark p-2">English friendly</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </main>
     </div>
 
+    <!-- Bootstrap 5 JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Font Awesome JS (if needed for interactive icons) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js" defer></script>
+    <script src="js/auth.js"></script>
+    <script src="js/common.js"></script>
     <script src="js/analytics.js"></script>
 </body>
 </html>

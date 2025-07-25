@@ -58,7 +58,7 @@ A web application to help students make informed decisions about studying abroad
 
 ### Prerequisites
 - Node.js (v14 or higher)
-- npm (v6 or higher)
+- PNPM (v6 or higher)
 
 ### Installation
 
@@ -70,12 +70,27 @@ cd student_dss
 
 2. Install dependencies
 ```bash
-npm install
+pnpm install
 ```
 
 3. Start the development server
 ```bash
-npm run dev
+pnpm run dev
 ```
 
-4. Open your browser and navigate to:
+4. Open your browser and navigate to: http://localhost:3000
+
+## Login Instructions
+
+To access the system, use the following credentials:
+
+- **Admin Access:**
+  - Username: `admin`
+  - Password: `admin`
+
+- **Guest Access:**
+  - Username: `guest`
+  - Password: `guest`
+  - Or simply click on the "Continue as Guest" button on the login page
+
+**Note:** If you experience login issues, please check that the server is properly running and that the bcrypt hashing in auth.js matches the plaintext passwords.

@@ -4,53 +4,96 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Migration Decision Support System</title>
-    <link rel="stylesheet" href="style.css">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
     <!-- Navigation -->
-    <nav class="nav">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
-            <div class="nav__content">
-                <h1 class="nav__title">Student Migration Decision Support System</h1>
-                <div class="nav__actions">
-                    <span id="loginStatus" class="login-status"></span>
-                    <a href="dashboard.html" class="btn btn--link" id="adminDashboardLink" style="display: none;">Admin Dashboard</a>
-                    <a href="login.html" class="btn btn--link" id="adminLoginBtn">Login as Admin</a>
-                    <a href="#" class="btn btn--link" id="guestLoginBtn">Continue as Guest</a>
-                    <button class="btn btn--outline btn--sm" id="logoutBtn" style="display: none;">Logout</button>
-                    <button class="btn btn--outline btn--sm" id="resetBtn">Reset Preferences</button>
-                </div>
+            <a class="navbar-brand" href="index.html">Student Migration DSS</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="index.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="dashboard.html" id="adminDashboardLink" style="display: none;">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="preferences.html">Preferences</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="login.html" id="adminLoginBtn">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" id="guestLoginBtn">Continue as Guest</a>
+                    </li>
+                    <li class="nav-item">
+                        <span id="loginStatus" class="nav-link text-light"></span>
+                    </li>
+                    <li class="nav-item">
+                        <button class="btn btn-outline-light btn-sm" id="logoutBtn" style="display: none;">Logout</button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="btn btn-outline-light btn-sm" id="resetBtn">Reset</button>
+                    </li>
+                </ul>
             </div>
         </div>
     </nav>
 
     <!-- Welcome Page -->
-    <section id="welcomePage" class="page">
-        <div class="container">
-            <div class="welcome">
-                <div class="welcome__content">
-                    <h2 class="welcome__title">Make Informed Decisions About Studying Abroad</h2>
-                    <p class="welcome__description">
+    <section id="welcomePage" class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="text-center mb-5">
+                    <h1 class="display-4 fw-bold">Make Informed Decisions About Studying Abroad</h1>
+                    <p class="lead">
                         Our decision support system helps you evaluate and compare study destinations 
                         based on your personal preferences and priorities. Get personalized recommendations 
                         for the best countries to pursue your education.
                     </p>
-                    <div class="welcome__features">
-                        <div class="feature">
-                            <h4>Personalized Criteria</h4>
-                            <p>Adjust importance weights based on what matters most to you</p>
-                        </div>
-                        <div class="feature">
-                            <h4>Comprehensive Analysis</h4>
-                            <p>Compare countries across multiple factors including cost, rankings, and opportunities</p>
-                        </div>
-                        <div class="feature">
-                            <h4>Smart Recommendations</h4>
-                            <p>Get ranked suggestions using proven decision-making algorithms</p>
+                </div>
+                
+                <div class="row row-cols-1 row-cols-md-3 g-4 mb-5">
+                    <div class="col">
+                        <div class="card h-100 shadow-sm">
+                            <div class="card-body">
+                                <h4>Personalized Criteria</h4>
+                                <p>Adjust importance weights based on what matters most to you</p>
+                            </div>
                         </div>
                     </div>
-                    <button class="btn btn--primary btn--lg" id="startBtn">Start Decision Process</button>
+                    <div class="col">
+                        <div class="card h-100 shadow-sm">
+                            <div class="card-body">
+                                <h4>Comprehensive Analysis</h4>
+                                <p>Compare countries across multiple factors including cost, rankings, and opportunities</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="card h-100 shadow-sm">
+                            <div class="card-body">
+                                <h4>Smart Recommendations</h4>
+                                <p>Get ranked suggestions using proven decision-making algorithms</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="text-center">
+                    <button class="btn btn-primary btn-lg" id="startBtn">Start Decision Process</button>
                 </div>
             </div>
         </div>
@@ -253,7 +296,26 @@
         </div>
     </section>
 
+    <!-- Bootstrap 5 JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <script src="js/auth.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Update navigation based on login status
+            updateNavigation();
+            
+            // Start button click handler
+            document.getElementById('startBtn').addEventListener('click', function() {
+                // If logged in, go to preferences, otherwise go to login
+                const { isLoggedIn } = checkLoginStatus();
+                if (isLoggedIn === 'true') {
+                    window.location.href = 'preferences.html';
+                } else {
+                    window.location.href = 'login.html?redirect=preferences.html';
+                }
+            });
+        });
+    </script>
     <script src="app.js"></script>
 </body>
 </html>

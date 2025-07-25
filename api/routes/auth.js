@@ -8,7 +8,7 @@ const users = [
     {
         id: 1,
         username: 'admin',
-        password: '$2a$10$RNwxLOvHRQfyz4ZQ6PVYyOVFLBDxFQnPjJ1Nx0uZGfZdp7SN5xT8O', // 'admin' hashed with bcrypt
+        password: '$2a$10$JvCo4hj9qQdqJV3jNcAJSO6Zk3eOTvNs9h1LeqPheGr9JInRH9Fse', // 'admin' hashed with bcrypt
         role: 'admin'
     },
     {
@@ -28,17 +28,26 @@ router.post('/login', (req, res) => {
     
     // If user doesn't exist
     if (!user) {
-        return res.status(400).json({ message: 'Invalid credentials' });
+        return res.status(400).json({ 
+            success: false,
+            message: 'Invalid username or password' 
+        });
     }
 
     // Check password
     bcrypt.compare(password, user.password, (err, isMatch) => {
         if (err) {
-            return res.status(500).json({ message: 'Server error' });
+            return res.status(500).json({ 
+                success: false,
+                message: 'Server error during authentication' 
+            });
         }
 
         if (!isMatch) {
-            return res.status(400).json({ message: 'Invalid credentials' });
+            return res.status(400).json({ 
+                success: false,
+                message: 'Invalid username or password' 
+            });
         }
 
         // Create JWT token

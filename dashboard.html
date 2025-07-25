@@ -20,6 +20,52 @@
 
         <!-- Main content -->
         <main class="flex-grow-1">
+            <!-- Navigation Bar - Fixed position at the top of main content -->
+            <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom shadow-sm sticky-top">
+                <div class="container-fluid">
+                    <button class="navbar-toggler me-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <span class="navbar-brand me-auto">Student DSS</span>
+                    
+                    <div class="collapse navbar-collapse" id="navbarNav">
+                        <ul class="navbar-nav mx-auto">
+                            <li class="nav-item">
+                                <a class="nav-link active fw-bold" href="dashboard.html">Dashboard</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="preferences.html">Preferences</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="results.html">Results</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="comparison.html">Compare</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="analytics.html">Analytics</a>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="d-flex align-items-center">
+                        <div class="dropdown">
+                            <a href="#" class="d-flex align-items-center text-decoration-none dropdown-toggle" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                <div class="rounded-circle bg-primary d-flex align-items-center justify-content-center text-white me-2" style="width: 32px; height: 32px;" id="navbarUserInitial">A</div>
+                                <span id="navbarUsername" class="d-none d-sm-inline">Admin</span>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="userDropdown">
+                                <li><a class="dropdown-item" href="#">Profile</a></li>
+                                <li><a class="dropdown-item" href="#">Settings</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="#" id="navbarLogout">Logout</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+
+            <!-- Page content -->
             <div class="container-fluid py-4">
                 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-4 border-bottom">
                     <h1 class="h2">Welcome back, <span id="headerUsername">Admin</span>!</h1>
@@ -352,6 +398,18 @@
                 sidebarUserRoleElement.textContent = userRole === 'admin' ? 'Administrator' : 'Guest User';
             }
             
+            // Also update the navbar user info
+            const navbarUsernameElement = document.getElementById('navbarUsername');
+            const navbarUserInitialElement = document.getElementById('navbarUserInitial');
+            
+            if (navbarUsernameElement) {
+                navbarUsernameElement.textContent = username;
+            }
+            
+            if (navbarUserInitialElement) {
+                navbarUserInitialElement.textContent = username.charAt(0).toUpperCase();
+            }
+            
             // Handle sidebar logout button
             const sidebarLogoutBtn = document.getElementById('sidebarLogout');
             if (sidebarLogoutBtn) {
@@ -367,17 +425,11 @@
                     window.location.href = 'login.html';
                 });
             }
-        });
-    </script>
-    <script src="js/dashboard.js"></script>
-</body>
-</html>
-            }
             
-            // Handle sidebar logout button
-            const sidebarLogoutBtn = document.getElementById('sidebarLogout');
-            if (sidebarLogoutBtn) {
-                sidebarLogoutBtn.addEventListener('click', function(e) {
+            // Handle navbar logout button
+            const navbarLogoutBtn = document.getElementById('navbarLogout');
+            if (navbarLogoutBtn) {
+                navbarLogoutBtn.addEventListener('click', function(e) {
                     e.preventDefault();
                     
                     // Clear login status
