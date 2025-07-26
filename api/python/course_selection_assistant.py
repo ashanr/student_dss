@@ -22,8 +22,8 @@ class CourseSelectionAssistant:
     def __init__(self, db_path=None):
         """Initialize the assistant with database connection."""
         if db_path is None:
-            # Look for the SQLite database in the parent directory's data folder
-            self.db_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 
+            # Look for the SQLite database in the data folder (adjusted for new file location)
+            self.db_path = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 
                                       "data", "studentDSS.db")
         else:
             self.db_path = db_path
@@ -556,6 +556,71 @@ class CourseSelectionAssistant:
         return True
 
 
+    def extract_keywords(self, text):
+        """Extract keywords from text for better matching."""
+        # Simple implementation - split by spaces and common separators
+        if not text:
+            return []
+        words = text.lower().replace(',', ' ').replace(';', ' ').split()
+        return [w for w in words if len(w) > 2]
+        
+    def calculate_academic_fit(self, row, field_keywords):
+        """Calculate academic fit score based on keyword matching."""
+        if not field_keywords:
+            return 0.5
+            
+        # Get program name and field text
+        program_text = f"{row['name_program']} {row['field']}".lower()
+        
+        # Count matching keywords
+        matches = sum(1 for keyword in field_keywords if keyword in program_text)
+        
+        # Calculate score based on match ratio
+        score = min(1.0, matches / len(field_keywords)) if field_keywords else 0.5
+        return score
+        
+    def is_in_same_region(self, country, preferred_countries):
+        """Check if a country is in the same region as any preferred country."""
+        # Simple region groupings
+        regions = {
+            'europe': ['germany', 'france', 'italy', 'spain', 'netherlands', 
+                       'belgium', 'austria', 'switzerland', 'uk', 'ireland'],
+            'north_america': ['usa', 'united states', 'canada', 'mexico'],
+            'asia': ['china', 'japan', 'south korea', 'singapore', 'india', 'malaysia'],
+            'oceania': ['australia', 'new zealand'],
+        }
+        
+        # Find region of the country
+        country_region = None
+        for region, countries in regions.items():
+            if country.lower() in countries:
+                country_region = region
+                break
+                
+        # Check if any preferred country is in the same region
+        if country_region:
+            for preferred in preferred_countries:
+                for region, countries in regions.items():
+                    if preferred in countries and region == country_region:
+                        return True
+        
+        return False
+        
+    def calculate_confidence(self, row):
+        """Calculate confidence score based on data completeness."""
+        # Check presence of important data points
+        key_fields = ['name_program', 'name_university', 'tuition_per_year', 
+                      'ranking_global', 'language', 'duration']
+        
+        # Count how many important fields have values
+        valid_fields = sum(1 for field in key_fields if field in row and pd.notna(row[field]))
+        
+        # Calculate confidence as ratio of valid fields
+        confidence = valid_fields / len(key_fields)
+        
+        # Scale to a reasonable range (0.7-1.0)
+        return 0.7 + (confidence * 0.3)
+    
 if __name__ == "__main__":
     assistant = CourseSelectionAssistant()
     assistant.run()

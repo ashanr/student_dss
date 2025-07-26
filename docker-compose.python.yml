@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  python-api:
+    build:
+      context: .
+      dockerfile: Dockerfile.python
+    container_name: student-dss-python-api
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./:/app
+      - ./data:/app/data  # Mount the data directory for SQLite persistence
+    networks:
+      - python-api-network
+    environment:
+      - FLASK_APP=api/python/app.py
+      - FLASK_ENV=development
+      - PYTHONUNBUFFERED=1
+      - SQLITE_PATH=/app/data/studentDSS.db
+    restart: always
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    command: ["gunicorn", "--bind", "0.0.0.0:5000", "api.python.app:app"]
+
+networks:
+  python-api-network:
+    driver: bridge
+
+volumes:
+  data-volume:
+    driver: local

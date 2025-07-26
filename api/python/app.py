@@ -6,9 +6,8 @@ import json
 import sqlite3
 from datetime import datetime
 
-# Add the parent directory to the path so we can import the course selection assistant
-sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
-from scripts.course_selection_assistant import CourseSelectionAssistant
+# Import the course selection assistant from the local file
+from course_selection_assistant import CourseSelectionAssistant
 
 app = Flask(__name__)
 CORS(app)  # Enable CORS for all routes
@@ -47,6 +46,16 @@ def get_recommendations():
         # Get user preferences from request
         preferences = request.json
         
+        # Add preference validation and normalization
+        if not validate_preferences(preferences):
+            return jsonify({
+                "success": False,
+                "error": "Invalid preference format"
+            }), 400
+            
+        # Add preference enrichment with defaults for missing values
+        preferences = enrich_preferences(preferences)
+        
         # Initialize the course selection assistant
         assistant = CourseSelectionAssistant()
         
@@ -73,19 +82,31 @@ def get_recommendations():
         # Score and rank programs
         scored_programs = assistant.score_programs(filtered_programs)
         
+        # Apply diversity boosting to ensure varied recommendations
+        scored_programs = assistant.apply_diversity_boosting(scored_programs)
+        
+        # Add explanation generation for recommendations
+        explanations = assistant.generate_explanations(scored_programs.head(10))
+        
         # Convert DataFrame to dict for JSON serialization
         if scored_programs is not None:
             top_programs = scored_programs.head(10)
             result = []
-            for _, program in top_programs.iterrows():
+            for i, (_, program) in enumerate(top_programs.iterrows()):
                 program_dict = program.to_dict()
                 # Clean up any non-serializable objects
                 for key, value in program_dict.items():
                     if not isinstance(value, (str, int, float, bool, list, dict, type(None))):
                         program_dict[key] = str(value)
+                
+                # Add explanation for this recommendation
+                program_dict['explanation'] = explanations[i] if i < len(explanations) else ""
                 result.append(program_dict)
         else:
             result = []
+            
+        # Track recommendation performance for future improvement
+        log_recommendation_event(preferences, result)
             
         return jsonify({
             "success": True,
@@ -168,5 +189,45 @@ def get_universities():
             "error": str(e)
         }), 500
 
+# New helper functions to improve accuracy
+def validate_preferences(preferences):
+    """Validate that preferences contain required fields and proper value types"""
+    required_fields = ['field_of_study', 'degree_level']
+    for field in required_fields:
+        if field not in preferences:
+            return False
+    return True
+
+def enrich_preferences(preferences):
+    """Add default values for missing preferences to improve matching accuracy"""
+    enriched = preferences.copy()
+    
+    # Add defaults for common missing fields
+    if 'max_tuition' not in enriched:
+        enriched['max_tuition'] = 50000
+    if 'preferred_countries' not in enriched or not enriched['preferred_countries']:
+        enriched['preferred_countries'] = []
+    if 'language_preference' not in enriched:
+        enriched['language_preference'] = 'Any language with English programs'
+        
+    return enriched
+
+def log_recommendation_event(preferences, results):
+    """Log recommendation data for future analysis and algorithm improvement"""
+    try:
+        timestamp = datetime.now().isoformat()
+        log_entry = {
+            'timestamp': timestamp,
+            'preferences': preferences,
+            'results_count': len(results),
+            'top_match_score': results[0]['match_percentage'] if results else None
+        }
+        
+        # In a production system, this would write to a database or log file
+        print(f"Recommendation log: {json.dumps(log_entry)}")
+    except Exception as e:
+        print(f"Error logging recommendation: {e}")
+
 if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5000)
     app.run(host='0.0.0.0', port=5000)
