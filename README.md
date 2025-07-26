@@ -28,31 +28,6 @@ The Student Decision Support System is a comprehensive web-based application des
 - **Cost-Benefit Analysis**: Financial planning tools including tuition costs, living expenses, and potential return on investment
 - **Timeline Planning**: Academic pathway visualization and milestone tracking
 
-### **User Management**
-- **Student Profiles**: Secure user accounts with personalized dashboards and progress tracking
-- **Preference History**: Maintains records of preference changes and decision evolution over time
-- **Export Capabilities**: Generate reports and summaries for personal use or counselor consultations
-
-## Target Users
-
-- **Prospective Students**: High school graduates and career changers seeking higher education opportunities
-- **Academic Counselors**: Educational consultants and advisors assisting students with university selection
-- **Educational Institutions**: Universities and colleges looking to connect with suitable candidates
-
-## Technology Benefits
-
-- **Data-Driven Decisions**: Eliminates guesswork by providing evidence-based recommendations
-- **Time Efficiency**: Streamlines the research process that traditionally takes months of manual investigation
-- **Personalized Experience**: Tailored recommendations that align with individual goals and circumstances
-- **Comprehensive Coverage**: Access to global opportunities in a single platform
-
-This system bridges the gap between student aspirations and educational opportunities, making the complex process of international education selection more accessible and informed[1].
-
-[1] programming.documentation
-
-# Student Decision Support System
-
-A Bootstrap 5-based application for helping students make decisions about studying abroad.
 
 ## Running with Docker
 
@@ -70,7 +45,45 @@ A Bootstrap 5-based application for helping students make decisions about studyi
 docker-compose up -d
 ```
 
-4. Access the application at http://localhost:8080
+4. Access the application at http://localhost:80
+
+### Accessing the Application
+
+The application is divided into two main components:
+
+1. **Frontend (Web Interface)**: Available at http://localhost:80
+   - The main user interface where students can interact with the system
+   - Served through NGINX as a static website
+   - Features responsive design for desktop and mobile devices
+
+2. **Backend (API Service)**: Available at http://localhost:3000
+   - REST API endpoints for data operations
+   - Handles all business logic and data processing
+   - Documentation available at http://localhost:3000/api-docs
+
+### Using the Application
+
+1. **Landing Page**: Visit http://localhost:80 to access the landing page
+2. **Login**: Use one of the following credentials:
+   - Username: `admin` / Password: `admin` (Administrator access)
+   - Username: `guest` / Password: `guest` (Student access)
+   - Or click "Continue as Guest" button on the login page
+3. **Dashboard**: After login, you'll see your personalized dashboard with:
+   - Application progress
+   - Top recommended countries
+   - Upcoming deadlines
+   - Cost overview
+   
+4. **Preferences**: Set your study preferences under the Preferences section
+   - Academic preferences
+   - Financial constraints
+   - Location preferences
+   - Lifestyle priorities
+   - Criteria weighting
+
+5. **Results**: View matched universities and programs based on your preferences
+6. **Compare**: Compare different options side-by-side
+7. **Analytics**: Access detailed analytics on your options
 
 ### Stopping the Application
 
@@ -87,47 +100,46 @@ docker-compose up -d --build
 ## Development
 
 This application is built using:
+- Express.js for the backend API
+- SQLite for data storage
 - Bootstrap 5 for styling
 - Chart.js for data visualization
 - FontAwesome for icons
 
-## Setup Instructions
+## Technical Implementation
 
-### Prerequisites
-- Node.js (v14 or higher)
-- PNPM (v6 or higher)
+### Database
 
-### Installation
+The application uses SQLite for data storage with the following main tables:
+- `universities`: Information about universities worldwide
+- `programs`: Degree programs offered by universities
+- `countries`: Country information including costs, quality of life, etc.
+- `cities`: Information about cities where universities are located
+- `employment`: Employment data for different fields and countries
 
-1. Clone the repository
-```bash
-git clone <repository-url>
-cd student_dss
-```
+### Architecture
 
-2. Install dependencies
-```bash
-pnpm install
-```
+The application follows a three-tier architecture:
+1. **Frontend**: HTML, CSS, JavaScript with Bootstrap (served via NGINX)
+2. **API Layer**: Express.js REST API
+3. **Database**: SQLite (file-based database stored in /app/data/studentDSS.db)
 
-3. Start the development server
-```bash
-pnpm run dev
-```
+## Troubleshooting
 
-4. Open your browser and navigate to: http://localhost:3000
+### Database Connection Issues
+- Ensure the SQLite database file exists at the expected path
+- Check for proper file permissions on the database file
+- Verify the SQLITE_PATH environment variable is set correctly
 
-## Login Instructions
+### Login Issues
+- Default credentials are `admin`/`admin` or `guest`/`guest`
+- If login fails, check that the API service is running
+- Check browser console for any JavaScript errors
 
-To access the system, use the following credentials:
-
-- **Admin Access:**
-  - Username: `admin`
-  - Password: `admin`
-
-- **Guest Access:**
-  - Username: `guest`
-  - Password: `guest`
-  - Or simply click on the "Continue as Guest" button on the login page
-
-**Note:** If you experience login issues, please check that the server is properly running and that the bcrypt hashing in auth.js matches the plaintext passwords.
+### Docker Issues
+- If containers fail to start, check Docker logs:
+  ```bash
+  docker logs student-dss
+  docker logs student-dss-api
+  ```
+- Ensure ports 80 and 3000 are available on your system

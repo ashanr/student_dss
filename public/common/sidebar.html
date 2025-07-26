@@ -1,0 +1,92 @@
+<aside class="d-flex flex-column flex-shrink-0 p-3 text-bg-dark vh-100 overflow-auto" style="width: 280px;">
+    <div class="d-flex align-items-center mb-3">
+        <h2 class="fs-4 m-0 text-white">Student DSS</h2>
+    </div>
+    <div class="d-flex align-items-center mb-4">
+        <div class="rounded-circle bg-primary d-flex align-items-center justify-content-center me-2 p-2 text-white fw-bold" id="userInitial">A</div>
+        <div>
+            <h4 class="fs-6 m-0 text-white" id="sidebarUsername">Admin</h4>
+            <p class="m-0 text-white-50" id="sidebarUserRole">Administrator</p>
+        </div>
+    </div>
+    <nav class="nav flex-column">
+        <a href="dashboard.html" class="nav-link d-flex align-items-center text-white">
+            <span class="me-2">🏠</span>
+            <span>Dashboard</span>
+        </a>
+        <a href="preferences.html" class="nav-link d-flex align-items-center text-white">
+            <span class="me-2">⚙️</span>
+            <span>Preferences</span>
+        </a>
+        <a href="results.html" class="nav-link d-flex align-items-center text-white">
+            <span class="me-2">🎯</span>
+            <span>Results</span>
+        </a>
+        <a href="comparison.html" class="nav-link d-flex align-items-center text-white">
+            <span class="me-2">⚖️</span>
+            <span>Compare</span>
+        </a>
+        <a href="analytics.html" class="nav-link d-flex align-items-center text-white">
+            <span class="me-2">📊</span>
+            <span>Analytics</span>
+        </a>
+        <hr class="text-white-50">
+        <a href="tools/calculator.html" class="nav-link d-flex align-items-center text-white">
+            <span class="me-2">🧮</span>
+            <span>Cost Calculator</span>
+        </a>
+        <a href="tools/timeline.html" class="nav-link d-flex align-items-center text-white">
+            <span class="me-2">📅</span>
+            <span>Timeline</span>
+        </a>
+        <a href="tools/checklist.html" class="nav-link d-flex align-items-center text-white">
+            <span class="me-2">✓</span>
+            <span>Checklist</span>
+        </a>
+        <hr class="text-white-50">
+        <a href="#" class="nav-link d-flex align-items-center text-white" id="sidebarLogout">
+            <span class="me-2">🚪</span>
+            <span>Logout</span>
+        </a>
+    </nav>
+</aside>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Set user initial from username
+        const username = localStorage.getItem('username') || 'User';
+        const userInitial = document.getElementById('userInitial');
+        if (userInitial) {
+            userInitial.textContent = username.charAt(0).toUpperCase();
+        }
+        
+        // Set username and role
+        const sidebarUsername = document.getElementById('sidebarUsername');
+        const sidebarUserRole = document.getElementById('sidebarUserRole');
+        
+        if (sidebarUsername) {
+            sidebarUsername.textContent = username;
+        }
+        
+        if (sidebarUserRole) {
+            const userRole = localStorage.getItem('userRole') || 'student';
+            sidebarUserRole.textContent = userRole === 'admin' ? 'Administrator' : 'Student';
+        }
+        
+        // Handle sidebar logout button
+        const sidebarLogoutBtn = document.getElementById('sidebarLogout');
+        if (sidebarLogoutBtn) {
+            sidebarLogoutBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // Clear login status
+                localStorage.removeItem('isLoggedIn');
+                localStorage.removeItem('userRole');
+                localStorage.removeItem('username');
+                
+                // Redirect to login page
+                window.location.href = 'login.html';
+            });
+        }
+    });
+</script>

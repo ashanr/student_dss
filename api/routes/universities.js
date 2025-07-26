@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const University = require('../models/University');
-const Program = require('../models/Program');
+const University = require('../../models/University');
+const Program = require('../../models/Program');
 
 // Get all universities with pagination
 router.get('/', async (req, res) => {
@@ -21,6 +21,7 @@ router.get('/', async (req, res) => {
     if (country) filter.country = country;
     if (field) filter['programs.field'] = field;
     if (level) filter['programs.level'] = level;
+    // Still using MongoDB query syntax
     if (rankingMax) filter['ranking.global'] = { $lte: rankingMax };
     
     const universities = await University.find(filter)

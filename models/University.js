@@ -1,109 +1,97 @@
-const { Pool } = require('pg');
-const pool = new Pool({
-  connectionString: process.env.POSTGRES_URI
-});
+const sqlite3 = require('sqlite3').verbose();
+const path = require('path');
+const { getDbPath } = require('../db/connection');
 
 class University {
+  static getDb() {
+    return new sqlite3.Database(getDbPath());
+  }
+
   static async findById(id) {
-    try {
-      const result = await pool.query('SELECT * FROM universities WHERE id = $1', [id]);
-      return result.rows[0];
-    } catch (error) {
-      console.error('Error in University.findById:', error);
-      throw error;
-    }
+    return new Promise((resolve, reject) => {
+      const db = this.getDb();
+      db.get('SELECT * FROM universities WHERE id = ?', [id], (err, row) => {
+        db.close();
+        if (err) {
+          console.error('Error in University.findById:', err);
+          reject(err);
+        } else {
+          resolve(row);
+        }
+      });
+    });
   }
   
   static async find(filter = {}, skip = 0, limit = 20, sort = {}) {
-    try {
+    return new Promise((resolve, reject) => {
+      const db = this.getDb();
       let query = 'SELECT * FROM universities WHERE 1=1';
       const values = [];
-      let valueIndex = 1;
       
       // Build filter conditions
       if (filter.country) {
-        query += ` AND country = $${valueIndex}`;
+        query += ' AND country = ?';
         values.push(filter.country);
-        valueIndex++;
       }
       
-      if (filter['ranking.global'] && filter['ranking.global'].$lte) {
-        query += ` AND global_ranking <= $${valueIndex}`;
-        values.push(filter['ranking.global'].$lte);
-        valueIndex++;
+      // Handle ranking filter
+      if (filter.ranking && filter.ranking.max) {
+        query += ' AND ranking_global <= ?';
+        values.push(filter.ranking.max);
       }
       
       // Add sorting
-      if (sort['ranking.global'] === 1) {
-        query += ' ORDER BY global_ranking ASC';
+      if (sort.ranking === 'asc') {
+        query += ' ORDER BY ranking_global ASC';
+      } else if (sort.ranking === 'desc') {
+        query += ' ORDER BY ranking_global DESC';
       }
       
       // Add pagination
-      query += ` LIMIT $${valueIndex} OFFSET $${valueIndex + 1}`;
+      query += ' LIMIT ? OFFSET ?';
       values.push(limit, skip);
       
-      const result = await pool.query(query, values);
-      return result.rows;
-    } catch (error) {
-      console.error('Error in University.find:', error);
-      throw error;
-    }
+      db.all(query, values, (err, rows) => {
+        db.close();
+        if (err) {
+          console.error('Error in University.find:', err);
+          reject(err);
+        } else {
+          resolve(rows);
+        }
+      });
+    });
   }
   
   static async countDocuments(filter = {}) {
-    try {
-      let query = 'SELECT COUNT(*) FROM universities WHERE 1=1';
+    return new Promise((resolve, reject) => {
+      const db = this.getDb();
+      let query = 'SELECT COUNT(*) as count FROM universities WHERE 1=1';
       const values = [];
-      let valueIndex = 1;
       
       // Build filter conditions
       if (filter.country) {
-        query += ` AND country = $${valueIndex}`;
+        query += ' AND country = ?';
         values.push(filter.country);
-        valueIndex++;
       }
       
-      if (filter['ranking.global'] && filter['ranking.global'].$lte) {
-        query += ` AND global_ranking <= $${valueIndex}`;
-        values.push(filter['ranking.global'].$lte);
-        valueIndex++;
+      // Handle ranking filter
+      if (filter.ranking && filter.ranking.max) {
+        query += ' AND ranking_global <= ?';
+        values.push(filter.ranking.max);
       }
       
-      const result = await pool.query(query, values);
-      return parseInt(result.rows[0].count);
-    } catch (error) {
-      console.error('Error in University.countDocuments:', error);
-      throw error;
-    }
+      db.get(query, values, (err, row) => {
+        db.close();
+        if (err) {
+          console.error('Error in University.countDocuments:', err);
+          reject(err);
+        } else {
+          resolve(parseInt(row.count));
+        }
+      });
+    });
   }
 }
 
 module.exports = University;
-  description: String,
-  strengths: [String],
-  weaknesses: [String],
-  employmentRate: Number, // post-graduation employment rate
-  averageSalary: {
-    afterGraduation: Number,
-    currency: {
-      type: String,
-      default: 'USD'
-    }
-  },
-  scholarshipsAvailable: Boolean,
-  applicationDeadlines: {
-    fall: Date,
-    spring: Date,
-    summer: Date
-  },
-  createdAt: {
-    type: Date,
-    default: Date.now
-  },
-  updatedAt: {
-    type: Date,
-    default: Date.now
-  }
-});
-
-module.exports = mongoose.model('University', universitySchema);

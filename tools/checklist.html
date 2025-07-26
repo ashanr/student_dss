@@ -14,37 +14,37 @@
 </head>
 <body>
     <div class="d-flex">
-        <!-- Sidebar container - will be filled by common.js -->
-        <div id="sidebar-container"></div>
-
         <main class="flex-grow-1">
             <div class="container-fluid py-4">
-                <div class="row mb-4">
-                    <div class="col-12 text-center">
-                        <h1 class="display-5 fw-bold">Application Checklist</h1>
-                        <p class="lead text-muted">Track your application requirements and documents</p>
-                    </div>
-                </div>
-
                 <div class="row">
                     <div class="col-lg-10 mx-auto">
                         <div class="card shadow-sm">
                             <div class="card-body">
-                                <div class="d-flex justify-content-between align-items-center mb-4">
-                                    <button class="btn btn-primary">Add New Item</button>
-                                    <select class="form-select country-select" style="width: auto;">
-                                        <option value="">All Countries</option>
-                                        <option value="canada">Canada</option>
-                                        <option value="usa">United States</option>
-                                        <option value="uk">United Kingdom</option>
-                                        <option value="australia">Australia</option>
-                                        <option value="germany">Germany</option>
-                                    </select>
-                                </div>
-
                                 <div class="checklist">
-                                    <div class="card mb-4">
-                                        <div class="card-header bg-light">
+                                    <div class="card">
+                                        <div class="list-group list-group-flush">
+                                            <div class="list-group-item d-flex justify-content-between align-items-center">
+                                                <!-- Checklist content will go here -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Bootstrap 5 JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Font Awesome JS (if needed for interactive icons) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js" defer></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/common.js"></script>
+</body>
+</html>
                                             <h5 class="mb-0">Required Documents</h5>
                                         </div>
                                         <div class="list-group list-group-flush">

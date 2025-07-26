@@ -1,24 +1,36 @@
-const { Pool } = require('pg');
+const sqlite3 = require('sqlite3').verbose();
+const path = require('path');
+const fs = require('fs');
 
-// PostgreSQL connection with retry functionality
-const connectToPostgreSQL = (connectionString) => {
+// SQLite connection path
+const dbPath = process.env.SQLITE_PATH || path.join(__dirname, '..', 'data', 'studentDSS.db');
+
+// Connect to SQLite database
+const connectToDatabase = () => {
   return new Promise((resolve, reject) => {
     const connect = () => {
-      const pool = new Pool({
-        connectionString: connectionString,
-      });
-      
-      pool.connect()
-        .then(client => {
-          console.log('PostgreSQL connected successfully');
-          client.release();
-          resolve(pool);
-        })
-        .catch(err => {
-          console.error('Failed to connect to PostgreSQL:', err);
-          console.log('Retrying in 5 seconds...');
-          setTimeout(connect, 5000);
+      try {
+        // Ensure directory exists
+        const dir = path.dirname(dbPath);
+        if (!fs.existsSync(dir)) {
+          fs.mkdirSync(dir, { recursive: true });
+        }
+
+        const db = new sqlite3.Database(dbPath, (err) => {
+          if (err) {
+            console.error('Failed to connect to SQLite:', err);
+            console.log('Retrying in 5 seconds...');
+            setTimeout(connect, 5000);
+            return;
+          }
+          console.log('SQLite connected successfully');
+          resolve(db);
         });
+      } catch (err) {
+        console.error('Error creating SQLite connection:', err);
+        console.log('Retrying in 5 seconds...');
+        setTimeout(connect, 5000);
+      }
     };
     
     connect();
@@ -27,48 +39,34 @@ const connectToPostgreSQL = (connectionString) => {
 
 // Add connection validation
 const validateConnection = async () => {
-  try {
-    const pool = new Pool({
-      connectionString: process.env.POSTGRES_URI || 'postgres://postgres:password@localhost:5432/studentDSS',
-    });
-    
-    // Try to get a client from the pool
-    const client = await pool.connect();
-    client.release();
-    return true;
-  } catch (err) {
-    console.error('Database validation failed:', err);
-    return false;
-  }
-};
-
-module.exports = {
-  connectToPostgreSQL,
-  validateConnection
-};
-    connect();
+  return new Promise((resolve) => {
+    try {
+      const db = new sqlite3.Database(dbPath, (err) => {
+        if (err) {
+          console.error('Database validation failed:', err);
+          resolve(false);
+          return;
+        }
+        
+        db.get("SELECT 1", [], (err) => {
+          db.close();
+          if (err) {
+            console.error('Database validation query failed:', err);
+            resolve(false);
+          } else {
+            resolve(true);
+          }
+        });
+      });
+    } catch (err) {
+      console.error('Database validation exception:', err);
+      resolve(false);
+    }
   });
 };
 
-// Add connection validation
-const validateConnection = async () => {
-  try {
-    const pool = new Pool({
-      connectionString: process.env.POSTGRES_URI || 'postgres://postgres:password@localhost:5432/studentDSS',
-    });
-    
-    // Try to get a client from the pool
-    const client = await pool.connect();
-    client.release();
-    return true;
-  } catch (err) {
-    console.error('Database validation failed:', err);
-    return false;
-  }
-};
-
 module.exports = {
-  connectToMongoDB,
-  connectToPostgreSQL,
-  validateConnection
+  connectToDatabase,
+  validateConnection,
+  getDbPath: () => dbPath
 };

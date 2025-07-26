@@ -1,80 +1,58 @@
-const { Pool } = require('pg');
-const pool = new Pool({
-  connectionString: process.env.POSTGRES_URI
-});
+const sqlite3 = require('sqlite3').verbose();
+const { getDbPath } = require('../db/connection');
 
 class Employment {
+  static getDb() {
+    return new sqlite3.Database(getDbPath());
+  }
+
   static async findById(id) {
-    try {
-      const result = await pool.query('SELECT * FROM employment WHERE id = $1', [id]);
-      return result.rows[0];
-    } catch (error) {
-      console.error('Error in Employment.findById:', error);
-      throw error;
-    }
+    return new Promise((resolve, reject) => {
+      const db = this.getDb();
+      db.get('SELECT * FROM employment WHERE id = ?', [id], (err, row) => {
+        db.close();
+        if (err) {
+          console.error('Error in Employment.findById:', err);
+          reject(err);
+        } else {
+          resolve(row);
+        }
+      });
+    });
   }
 
   static async find(filter = {}) {
-    try {
+    return new Promise((resolve, reject) => {
+      const db = this.getDb();
       let query = 'SELECT * FROM employment WHERE 1=1';
       const values = [];
-      let valueIndex = 1;
       
       if (filter.country) {
-        query += ` AND country = $${valueIndex}`;
+        query += ' AND country = ?';
         values.push(filter.country);
-        valueIndex++;
       }
       
       if (filter.field) {
-        query += ` AND field = $${valueIndex}`;
+        query += ' AND field = ?';
         values.push(filter.field);
-        valueIndex++;
       }
       
       if (filter.city) {
-        query += ` AND city = $${valueIndex}`;
+        query += ' AND city = ?';
         values.push(filter.city);
-        valueIndex++;
       }
       
-      const result = await pool.query(query, values);
-      return result.rows;
-    } catch (error) {
-      console.error('Error in Employment.find:', error);
-      throw error;
-    }
+      db.all(query, values, (err, rows) => {
+        db.close();
+        if (err) {
+          console.error('Error in Employment.find:', err);
+          reject(err);
+        } else {
+          resolve(rows);
+        }
+      });
+    });
   }
 }
 
 module.exports = Employment;
-  growthRate: Number, // percentage
-  skillsInDemand: [String],
-  workVisa: {
-    difficulty: Number, // 0-100 scale (lower is easier)
-    durationAfterGraduation: Number, // in months
-    pathToPermanentResidency: Boolean
-  },
-  topEmployers: [String],
-  industrySize: {
-    employees: Number,
-    companies: Number
-  },
-  remoteWorkOpportunities: Number, // 0-100 scale
-  contractTypes: {
-    permanent: Number, // percentage
-    contract: Number, // percentage
-    internship: Number // percentage
-  },
-  sourceUrl: String,
-  createdAt: {
-    type: Date,
-    default: Date.now
-  },
-  updatedAt: {
-    type: Date,
-    default: Date.now
-  }
-});
-
-module.exports = mongoose.model('Employment', employmentSchema);

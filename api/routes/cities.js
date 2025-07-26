@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const City = require('../models/City');
+const City = require('../../models/City');
 
 // Get all cities with pagination and filtering
 router.get('/', async (req, res) => {

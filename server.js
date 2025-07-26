@@ -1,107 +1,133 @@
+require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
 const session = require('express-session');
-const { validateConnection } = require('./db/connection');
-const { Pool } = require('pg');
+const { connectToDatabase, validateConnection, getDbPath } = require('./db/connection');
 
 // Import routes
+const countriesRoutes = require('./api/routes/countries');
+const universitiesRoutes = require('./api/routes/universities');
+// Import other routes as needed
 const authRoutes = require('./api/routes/auth');
 const userRoutes = require('./api/routes/user');
 const preferencesRoutes = require('./api/routes/preferences');
-const countriesRoutes = require('./api/routes/countries');
-const universitiesRoutes = require('./api/routes/universities');
 const citiesRoutes = require('./api/routes/cities');
+// const healthRoutes = require('./api/routes/health');
 
-// Load environment variables if needed
-require('dotenv').config();
-
-// Create Express app
 const app = express();
 const PORT = process.env.PORT || 3000;
-
-// PostgreSQL connection with proper error handling
-const POSTGRES_URI = process.env.POSTGRES_URI || 'postgres://postgres:password@localhost:5432/studentDSS';
-
-// Connect to PostgreSQL with retry logic
-const pool = new Pool({
-  connectionString: POSTGRES_URI,
-});
-
-const connectWithRetry = () => {
-  console.log('Attempting to connect to PostgreSQL...');
-  pool.connect()
-    .then(client => {
-      console.log('PostgreSQL connected successfully');
-      client.release();
-    })
-    .catch(err => {
-      console.error('PostgreSQL connection error:', err);
-      console.log('Retrying connection in 5 seconds...');
-      setTimeout(connectWithRetry, 5000);
-    });
-};
-
-connectWithRetry();
 
 // Middleware
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Session middleware using PostgreSQL
-const pgSession = require('connect-pg-simple')(session);
-app.use(session({
-    store: new pgSession({
-        pool: pool,
-        tableName: 'sessions'
-    }),
-    secret: process.env.SESSION_SECRET || 'student-dss-secret-key',
-    resave: false,
-    saveUninitialized: false,
-    cookie: {
-        maxAge: 1000 * 60 * 60 * 24 // 1 day
+// Connect to the database
+let db;
+const connectWithRetry = async () => {
+  try {
+    db = await connectToDatabase();
+    console.log('Database connected successfully');
+    
+    // Set up session middleware using SQLite
+    if (process.env.USE_SESSIONS === 'true') {
+      const SQLiteStore = require('connect-sqlite3')(session);
+      app.use(session({
+        store: new SQLiteStore({
+          db: 'sessions.db',
+          dir: path.dirname(getDbPath())
+        }),
+        secret: process.env.SESSION_SECRET || 'student-dss-secret-key',
+        resave: false,
+        saveUninitialized: false,
+        cookie: {
+          maxAge: 1000 * 60 * 60 * 24 // 1 day
+        }
+      }));
     }
-}));
+  } catch (err) {
+    console.error('Database connection failed:', err);
+    console.log('Retrying in 5 seconds...');
+    setTimeout(connectWithRetry, 5000);
+  }
+};
 
-// Static files
+// Static files if needed
 app.use(express.static(path.join(__dirname, 'public')));
 
-// API routes
+// Debug middleware - log all requests
+app.use((req, res, next) => {
+  console.log(`[${new Date().toISOString()}] ${req.method} ${req.originalUrl}`);
+  next();
+});
+
+// Routes
+app.use('/api/countries', countriesRoutes);
+app.use('/api/universities', universitiesRoutes);
+// Use other routes
 app.use('/api/auth', authRoutes);
 app.use('/api/user', userRoutes);
 app.use('/api/preferences', preferencesRoutes);
-app.use('/api/countries', countriesRoutes);
-app.use('/api/universities', universitiesRoutes);
 app.use('/api/cities', citiesRoutes);
 
 // Health check route
 app.get('/api/health', async (req, res) => {
-  const isDbConnected = await validateConnection();
-  
-  if (isDbConnected) {
-    return res.status(200).json({ status: 'ok', database: 'connected' });
-  } else {
-    return res.status(500).json({ status: 'error', database: 'disconnected' });
-  }
+  const dbStatus = await validateConnection();
+  res.json({
+    status: 'ok',
+    timestamp: new Date(),
+    database: dbStatus ? 'connected' : 'disconnected'
+  });
+});
+
+// API root to show available endpoints
+app.get('/api', (req, res) => {
+  res.json({
+    message: 'Student DSS API is running',
+    endpoints: [
+      '/api/health',
+      '/api/auth/login',
+      '/api/auth/logout',
+      '/api/auth/status',
+      '/api/countries',
+      '/api/universities',
+      '/api/user/profile',
+      '/api/user/preferences',
+      '/api/preferences',
+      '/api/cities'
+    ]
+  });
 });
 
 // Serve the static files from the React app for any other routes
 app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-// Error handling middleware
+// Global error handler
 app.use((err, req, res, next) => {
-    console.error(err.stack);
-    res.status(500).json({
-        success: false,
-        message: 'Something went wrong on the server',
-        error: process.env.NODE_ENV === 'development' ? err.message : undefined
-    });
+  console.error('Unhandled error:', err.stack);
+  res.status(500).json({
+    success: false,
+    message: 'Something went wrong on the server',
+    error: process.env.NODE_ENV === 'development' ? err.message : undefined
+  });
 });
 
-// Start server
-app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
+// Start server with error handling
+const server = app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+  // Connect to database
+  connectWithRetry();
+});
+
+// Add error handler for the server itself
+server.on('error', (err) => {
+  if (err.code === 'EADDRINUSE') {
+    console.error(`Port ${PORT} is already in use. Please use a different port.`);
+  } else {
+    console.error('Server error:', err);
+  }
+  process.exit(1);
 });

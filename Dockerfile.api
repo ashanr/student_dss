@@ -1,18 +1,36 @@
-FROM node:16-alpine
+FROM node:18
 
 WORKDIR /app
 
-# Copy package.json and package-lock.json files
-COPY package*.json ./
+# Install build dependencies for native modules
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    python3 \
+    make \
+    gcc \
+    g++ \
+    sqlite3 \
+    libsqlite3-dev \
+    && rm -rf /var/lib/apt/lists/*
 
-# Install dependencies
-RUN npm install
+# Copy package files
+COPY package.json pnpm-lock.yaml ./
 
-# Copy the rest of the application code
+# Install pnpm
+RUN npm install -g pnpm
+
+# Install dependencies with rebuild
+RUN pnpm install
+RUN npm rebuild sqlite3
+
+# Copy application code
 COPY . .
+
+# Create data directory for SQLite
+RUN mkdir -p /app/data
 
 # Expose the port the app will run on
 EXPOSE 3000
 
-# Command to run the app
-CMD ["npm", "start"]
+# Command to run the app with startup script
+CMD ["sh", "-c", "node ./scripts/initializeDatabase.js && npm run dev"]

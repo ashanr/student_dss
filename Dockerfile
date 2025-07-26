@@ -4,9 +4,6 @@ FROM node:18
 # Set the working directory
 WORKDIR /app
 
-# Install netcat-openbsd for connection testing
-RUN apt-get update && apt-get install -y netcat-openbsd && rm -rf /var/lib/apt/lists/*
-
 # Copy package.json and package-lock.json
 COPY package*.json ./
 
@@ -16,13 +13,11 @@ RUN npm install
 # Copy the rest of the application
 COPY . .
 
-# Add script to wait for PostgreSQL
-COPY docker-entrypoint.sh /usr/local/bin/
-RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+# Create data directory for SQLite
+RUN mkdir -p /app/data
 
-# Expose port 3000
+# Expose port 3000 to match docker-compose configuration
 EXPOSE 3000
 
-# Start the application using the entrypoint script
-ENTRYPOINT ["docker-entrypoint.sh"]
-CMD ["npm", "run", "dev"]
+# Set command to initialize DB and then run the app
+CMD ["sh", "-c", "node ./scripts/initializeDatabase.js && npm run dev"]
