@@ -49,6 +49,32 @@ services:
       timeout: 5s
       retries: 3
 
+  python-api:
+    build:
+      context: .
+      dockerfile: Dockerfile.python
+    container_name: student-dss-python-api
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./:/app
+      - ./data:/app/data  # Mount the data directory for SQLite persistence
+    networks:
+      - student-dss-network
+    environment:
+      - FLASK_APP=api/python/app.py
+      - FLASK_ENV=development
+      - PYTHONUNBUFFERED=1
+      - SQLITE_PATH=/app/data/studentDSS.db
+    restart: always
+    depends_on:
+      - api
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
 networks:
   student-dss-network:
     driver: bridge

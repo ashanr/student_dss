@@ -19,6 +19,15 @@ const universityData = [
     acceptance_rate: 0.17,
     student_faculty_ratio: "11:1",
     website: "https://www.ox.ac.uk/",
+    programs: [
+      "Computer Science", 
+      "Medicine", 
+      "Law", 
+      "Philosophy, Politics and Economics", 
+      "Engineering Science", 
+      "Mathematics", 
+      "Physics"
+    ]
   },
   {
     id: 2,
@@ -34,6 +43,15 @@ const universityData = [
     acceptance_rate: 0.21,
     student_faculty_ratio: "11:1",
     website: "https://www.cam.ac.uk/",
+    programs: [
+      "Natural Sciences", 
+      "Mathematics", 
+      "Engineering", 
+      "Computer Science", 
+      "Law", 
+      "Medicine", 
+      "Economics"
+    ]
   },
   {
     id: 3,
@@ -49,6 +67,15 @@ const universityData = [
     acceptance_rate: 0.14,
     student_faculty_ratio: "12:1",
     website: "https://www.imperial.ac.uk/",
+    programs: [
+      "Aeronautical Engineering", 
+      "Chemical Engineering", 
+      "Computing", 
+      "Medicine", 
+      "Physics", 
+      "Mathematics", 
+      "Bioengineering"
+    ]
   },
   // ... 77 more UK universities ...
   
@@ -67,6 +94,15 @@ const universityData = [
     acceptance_rate: 0.07,
     student_faculty_ratio: "3:1",
     website: "https://www.mit.edu/",
+    programs: [
+      "Computer Science and Engineering", 
+      "Electrical Engineering and Computer Science", 
+      "Mechanical Engineering", 
+      "Physics", 
+      "Mathematics", 
+      "Aerospace Engineering", 
+      "Economics"
+    ]
   },
   {
     id: 82,
@@ -82,6 +118,15 @@ const universityData = [
     acceptance_rate: 0.05,
     student_faculty_ratio: "6:1",
     website: "https://www.harvard.edu/",
+    programs: [
+      "Economics", 
+      "Computer Science", 
+      "Political Science", 
+      "Psychology", 
+      "Biology", 
+      "History", 
+      "Mathematics"
+    ]
   },
   {
     id: 83,

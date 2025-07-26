@@ -313,3 +313,204 @@ document.addEventListener('DOMContentLoaded', () => {
         window.location.href = `country-details.html?id=${countryId}`;
     };
 });
+
+// Load location data and populate results
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Import data (assuming data.js, common.js, and location-data.js are already loaded)
+    
+    // Function to populate university cards
+    function populateUniversityResults() {
+        const universityGrid = document.getElementById('universityGrid');
+        if (!universityGrid) return;
+        
+        // Clear existing content
+        universityGrid.innerHTML = '';
+        
+        // Get the top countries from local storage or use default order
+        let matchScores;
+        try {
+            matchScores = JSON.parse(localStorage.getItem('dssMatchScores')) || {
+                canada: 92, germany: 89, australia: 85, uk: 82
+            };
+        } catch (e) {
+            matchScores = { canada: 92, germany: 89, australia: 85, uk: 82 };
+        }
+        
+        // Sort countries by match score
+        const sortedCountries = Object.keys(matchScores).sort((a, b) => matchScores[b] - matchScores[a]);
+        
+        // For each top country, add its top universities
+        let addedUniversities = 0;
+        
+        for (const country of sortedCountries) {
+            // Find universities for this country
+            const countryUniversities = Object.values(enhancedUniversitiesData)
+                .filter(uni => uni.country === country)
+                .sort((a, b) => a.ranking - b.ranking)
+                .slice(0, 2); // Get top 2 universities per country
+            
+            for (const uni of countryUniversities) {
+                // Get city data for this university
+                const cityData = citiesData[uni.city] || {};
+                
+                // Create university card
+                const card = document.createElement('div');
+                card.className = 'col-lg-6 col-xl-4';
+                card.dataset.university = uni.id;
+                
+                // Calculate match score: country score - small penalty for ranking
+                const uniMatchScore = Math.max(60, Math.round(matchScores[country] - (uni.ranking / 20)));
+                
+                card.innerHTML = `
+                    <div class="card h-100">
+                        <div class="card-header bg-white">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="d-flex align-items-center">
+                                    <div class="fs-5 me-2">${countriesData[country].flag}</div>
+                                    <div>
+                                        <h3 class="mb-0 fs-5">${uni.name}</h3>
+                                        <p class="text-muted mb-0 small">${uni.cityName}, ${uni.countryName}</p>
+                                    </div>
+                                </div>
+                                <div>
+                                    <span class="badge bg-success fs-6">#${uni.ranking}</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <div class="mb-2">
+                                    <div class="d-flex justify-content-between mb-1">
+                                        <span class="metric-label">Tuition</span>
+                                        <span class="metric-value">${uni.tuition.international.undergraduate.toLocaleString()} ${uni.tuition.currency}/year</span>
+                                    </div>
+                                    <div class="progress">
+                                        <div class="progress-bar bg-primary" role="progressbar" style="width: ${Math.min(100, uni.tuition.international.undergraduate / 600)}%" 
+                                            aria-valuenow="${uni.tuition.international.undergraduate / 600}" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                </div>
+                                <div class="mb-2">
+                                    <div class="d-flex justify-content-between mb-1">
+                                        <span class="metric-label">Admission Rate</span>
+                                        <span class="metric-value">${uni.admissionStats.rate}%</span>
+                                    </div>
+                                    <div class="progress">
+                                        <div class="progress-bar bg-success" role="progressbar" style="width: ${uni.admissionStats.rate}%" 
+                                            aria-valuenow="${uni.admissionStats.rate}" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                </div>
+                                <div class="mb-2">
+                                    <div class="d-flex justify-content-between mb-1">
+                                        <span class="metric-label">Match</span>
+                                        <span class="metric-value">${uniMatchScore}%</span>
+                                    </div>
+                                    <div class="progress">
+                                        <div class="progress-bar bg-warning" role="progressbar" style="width: ${uniMatchScore}%" 
+                                            aria-valuenow="${uniMatchScore}" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-2">
+                                <h6>Popular Programs</h6>
+                                <div class="highlights mb-3">
+                                    ${uni.programs.slice(0, 4).map(program => `<span class="badge bg-primary me-1">${program}</span>`).join('')}
+                                </div>
+                            </div>
+                            
+                            <div class="d-flex gap-2">
+                                <button class="btn btn-outline-primary" onclick="addToCompare('${uni.id}', 'university')">
+                                    <i class="fas fa-balance-scale me-1"></i> Compare
+                                </button>
+                                <a href="${uni.website}" target="_blank" class="btn btn-primary">
+                                    <i class="fas fa-external-link-alt me-1"></i> Visit Website
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                universityGrid.appendChild(card);
+                addedUniversities++;
+                
+                // Limit to 9 universities total for performance
+                if (addedUniversities >= 9) break;
+            }
+            
+            if (addedUniversities >= 9) break;
+        }
+    }
+    
+    // Initialize the page
+    function initPage() {
+        // Set up view switching
+        document.querySelectorAll('.view-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                // ...existing code...
+            });
+        });
+
+        // Level switching functionality
+        document.querySelectorAll('.level-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                // ...existing code...
+                
+                // Populate university data if needed
+                if (this.getAttribute('data-level') === 'university' && !document.getElementById('universityGrid').hasAttribute('data-loaded')) {
+                    document.getElementById('universityGrid').setAttribute('data-loaded', 'true');
+                    populateUniversityResults();
+                }
+            });
+        });
+        
+        // Populate country data by default
+        // ...existing code...
+    }
+    
+    // Call the initialization function
+    initPage();
+});
+
+function displayRecommendedUniversities(recommendations) {
+  const universityGrid = document.getElementById('universityGrid');
+  if (!universityGrid) return;
+  
+  universityGrid.innerHTML = '';
+  
+  recommendations.forEach(university => {
+    // Create card for each university
+    const card = document.createElement('div');
+    card.className = 'col-lg-6 col-xl-4';
+    
+    // Calculate display information
+    const matchScore = university.matchScore;
+    const matchClass = matchScore > 85 ? 'success' : 
+                       matchScore > 75 ? 'primary' : 'secondary';
+    
+    card.innerHTML = `
+      <div class="card h-100 border-${matchClass}">
+        <div class="card-header bg-white">
+          <div class="d-flex justify-content-between align-items-center">
+            <div class="d-flex align-items-center">
+              <div class="fs-5 me-2">🏫</div>
+              <div>
+                <h3 class="mb-0 fs-5">${university.name}</h3>
+                <p class="text-muted mb-0 small">${university.city}, ${university.country}</p>
+              </div>
+            </div>
+            <div>
+              <span class="badge bg-${matchClass} fs-6">${matchScore}%</span>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Card body with details -->
+        <!-- ...existing code... -->
+      </div>
+    `;
+    
+    universityGrid.appendChild(card);
+  });
+}

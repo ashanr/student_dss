@@ -1,18 +1,18 @@
-const sqlite3 = require('sqlite3').verbose();
+/**
+ * Database Connection Helper
+ * Provides functions to get the SQLite database path
+ */
+
 const path = require('path');
-const fs = require('fs');
 
-// SQLite connection path
-const dbPath = process.env.SQLITE_PATH || path.join(__dirname, '..', 'data', 'studentDSS.db');
+// Get database path from environment variable or use default
+function getDbPath() {
+  return process.env.SQLITE_PATH || path.join(__dirname, '..', 'data', 'studentDSS.db');
+}
 
-// Connect to SQLite database
-const connectToDatabase = () => {
-  return new Promise((resolve, reject) => {
-    const connect = () => {
-      try {
-        // Ensure directory exists
-        const dir = path.dirname(dbPath);
-        if (!fs.existsSync(dir)) {
+module.exports = {
+  getDbPath
+};
           fs.mkdirSync(dir, { recursive: true });
         }
 

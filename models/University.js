@@ -16,6 +16,17 @@ class University {
           console.error('Error in University.findById:', err);
           reject(err);
         } else {
+          // Parse programs JSON if it exists
+          if (row && row.programs) {
+            try {
+              row.programs = JSON.parse(row.programs);
+            } catch (e) {
+              console.error('Error parsing programs JSON:', e);
+              row.programs = [];
+            }
+          } else if (row) {
+            row.programs = [];
+          }
           resolve(row);
         }
       });
@@ -57,6 +68,19 @@ class University {
           console.error('Error in University.find:', err);
           reject(err);
         } else {
+          // Parse programs JSON for each row
+          rows.forEach(row => {
+            if (row.programs) {
+              try {
+                row.programs = JSON.parse(row.programs);
+              } catch (e) {
+                console.error('Error parsing programs JSON:', e);
+                row.programs = [];
+              }
+            } else {
+              row.programs = [];
+            }
+          });
           resolve(rows);
         }
       });

@@ -47,14 +47,17 @@ async function importData() {
     // Insert university data
     let count = 0;
     for (const uni of universityData) {
+      // Convert programs array to JSON string if it exists, otherwise use empty array
+      const programsJSON = uni.programs ? JSON.stringify(uni.programs) : JSON.stringify([]);
+      
       await run(db, `
         INSERT INTO universities (
           id, name, country, city, ranking_global, ranking_national,
           tuition_fees_domestic_undergraduate, tuition_fees_domestic_graduate,
           tuition_fees_international_undergraduate, tuition_fees_international_graduate,
-          acceptance_rate, student_faculty_ratio, website
+          programs, acceptance_rate, student_faculty_ratio, website
         )
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
       `, [
         uni.id,
         uni.name,
@@ -66,6 +69,7 @@ async function importData() {
         uni.tuition_fees_domestic_graduate,
         uni.tuition_fees_international_undergraduate,
         uni.tuition_fees_international_graduate,
+        programsJSON, // Now including programs as JSON string
         uni.acceptance_rate,
         uni.student_faculty_ratio,
         uni.website
