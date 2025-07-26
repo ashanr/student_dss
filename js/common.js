@@ -100,10 +100,17 @@ document.addEventListener('DOMContentLoaded', function() {
         if (sidebarLogoutBtn) {
             sidebarLogoutBtn.addEventListener('click', function(e) {
                 e.preventDefault();
-                localStorage.removeItem('isLoggedIn');
-                localStorage.removeItem('userRole');
-                localStorage.removeItem('username');
-                window.location.href = pathPrefix + 'login.html';
+                if (typeof performLogout === 'function') {
+                    performLogout();
+                } else {
+                    // Fallback if performLogout isn't available
+                    localStorage.removeItem('isLoggedIn');
+                    localStorage.removeItem('userRole');
+                    localStorage.removeItem('username');
+                    localStorage.removeItem('token');
+                    localStorage.removeItem('user');
+                    window.location.href = pathPrefix + 'login.html';
+                }
             });
         }
     }

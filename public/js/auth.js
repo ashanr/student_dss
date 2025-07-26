@@ -44,3 +44,23 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
+
+function checkLoginStatus() {
+    const isLoggedIn = localStorage.getItem('isLoggedIn');
+    const userRole = localStorage.getItem('userRole') || 'guest';
+    
+    return {
+        isLoggedIn: isLoggedIn,
+        userRole: userRole
+    };
+}
+
+// For testing purposes, add this function to simulate login
+function simulateLogin() {
+    localStorage.setItem('isLoggedIn', 'true');
+    localStorage.setItem('userRole', 'admin');
+    localStorage.setItem('username', 'Admin');
+    
+    // Refresh the page to apply the login
+    window.location.reload();
+}

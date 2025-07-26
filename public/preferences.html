@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Set Your Preferences - Student DSS</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="d-flex">
+        <!-- Sidebar container - will be filled by common.js -->
+        <div id="sidebar-container"></div>
+
+        <!-- Main Content -->
+        <main class="flex-grow-1">
+            <div class="container-fluid py-4">
+                <header class="mb-4">
+                    <div class="row">
+                        <div class="col-12 text-center mb-4">
+                            <h1>Set Your Study Abroad Preferences</h1>
+                            <p class="lead">Help us understand what matters most to you for better recommendations</p>
+                        </div>
+                    </div>
+                </header>
+
+                <div class="card shadow-sm">
+                    <div class="card-body p-4">
+                        <!-- Progress Steps -->
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <div class="d-flex justify-content-around position-relative">
+                                    <div class="progress position-absolute" style="width: 80%; top: 50%; left: 10%; height: 2px; z-index: 0;">
+                                        <div class="progress-bar" role="progressbar" style="width: 0%" id="progressBar"></div>
+                                    </div>
+                                    <div class="step-item position-relative z-1 d-flex flex-column align-items-center" data-step="1">
+                                        <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">1</div>
+                                        <span class="mt-2 small">Academic</span>
+                                    </div>
+                                    <div class="step-item position-relative z-1 d-flex flex-column align-items-center" data-step="2">
+                                        <div class="rounded-circle bg-secondary text-white d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">2</div>
+                                        <span class="mt-2 small">Financial</span>
+                                    </div>
+                                    <div class="step-item position-relative z-1 d-flex flex-column align-items-center" data-step="3">
+                                        <div class="rounded-circle bg-secondary text-white d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">3</div>
+                                        <span class="mt-2 small">Location</span>
+                                    </div>
+                                    <div class="step-item position-relative z-1 d-flex flex-column align-items-center" data-step="4">
+                                        <div class="rounded-circle bg-secondary text-white d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">4</div>
+                                        <span class="mt-2 small">Lifestyle</span>
+                                    </div>
+                                    <div class="step-item position-relative z-1 d-flex flex-column align-items-center" data-step="5">
+                                        <div class="rounded-circle bg-secondary text-white d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">5</div>
+                                        <span class="mt-2 small">Weights</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Form sections -->
+                        <form id="preferencesForm">
+                            <!-- Step 1: Academic Preferences -->
+                            <div class="preference-section active" id="step1">
+                                <h2 class="h3 mb-3 text-primary">Academic Preferences</h2>
+                                <p class="text-muted mb-4">Tell us about your academic goals and interests</p>
+
+                                <div class="mb-3">
+                                    <label for="studyLevel" class="form-label">Study Level</label>
+                                    <select id="studyLevel" class="form-select">
+                                        <option value="">Select your study level</option>
+                                        <option value="bachelor">Bachelor's Degree</option>
+                                        <option value="master">Master's Degree</option>
+                                        <option value="phd">PhD/Doctoral</option>
+                                        <option value="diploma">Diploma/Certificate</option>
+                                    </select>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="fieldOfStudy" class="form-label">Field of Study</label>
+                                    <select id="fieldOfStudy" class="form-select">
+                                        <option value="">Select your field of study</option>
+                                        <option value="computer_science">Computer Science & IT</option>
+                                        <option value="engineering">Engineering</option>
+                                        <option value="business">Business & Management</option>
+                                        <option value="medicine">Medicine & Healthcare</option>
+                                        <option value="arts">Arts & Humanities</option>
+                                        <option value="science">Natural Sciences</option>
+                                        <option value="social">Social Sciences</option>
+                                        <option value="law">Law</option>
+                                    </select>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">University Ranking Importance</label>
+                                    <div class="position-relative">
+                                        <input type="range" id="rankingImportance" min="1" max="10" value="7" class="form-range">
+                                        <div class="d-flex justify-content-between mt-1">
+                                            <span class="small text-muted">Not Important</span>
+                                            <span class="badge bg-primary"><span id="rankingValue">7</span>/10</span>
+                                            <span class="small text-muted">Very Important</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="programDuration" class="form-label">Preferred Program Duration</label>
+                                    <select id="programDuration" class="form-select">
+                                        <option value="">Select preferred duration</option>
+                                        <option value="1">1 year</option>
+                                        <option value="2">2 years</option>
+                                        <option value="3">3 years</option>
+                                        <option value="4">4 years</option>
+                                        <option value="5plus">5+ years</option>
+                                    </select>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">Research Opportunities Importance</label>
+                                    <div class="position-relative">
+                                        <input type="range" id="researchImportance" min="1" max="10" value="5" class="form-range">
+                                        <div class="d-flex justify-content-between mt-1">
+                                            <span class="small text-muted">Not Important</span>
+                                            <span class="badge bg-primary"><span id="researchValue">5</span>/10</span>
+                                            <span class="small text-muted">Very Important</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Step 2: Financial Preferences -->
+                            <div class="preference-section d-none" id="step2">
+                                <h2 class="h3 mb-3 text-primary">Financial Preferences</h2>
+                                <p class="text-muted mb-4">Help us understand your budget and financial considerations</p>
+
+                                <div class="mb-3">
+                                    <label for="tuitionBudget" class="form-label">Maximum Annual Tuition Budget</label>
+                                    <select id="tuitionBudget" class="form-select">
+                                        <option value="">Select your maximum budget</option>
+                                        <option value="10000">Up to $10,000 USD</option>
+                                        <option value="20000">Up to $20,000 USD</option>
+                                        <option value="30000">Up to $30,000 USD</option>
+                                        <option value="40000">Up to $40,000 USD</option>
+                                        <option value="50000">Up to $50,000 USD</option>
+                                        <option value="60000">More than $50,000 USD</option>
+                                    </select>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="livingBudget" class="form-label">Monthly Living Expenses Budget</label>
+                                    <select id="livingBudget" class="form-select">
+                                        <option value="">Select your monthly budget</option>
+                                        <option value="500">Up to $500 USD</option>
+                                        <option value="1000">Up to $1,000 USD</option>
+                                        <option value="1500">Up to $1,500 USD</option>
+                                        <option value="2000">Up to $2,000 USD</option>
+                                        <option value="2500">More than $2,000 USD</option>
+                                    </select>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">Scholarship Availability Importance</label>
+                                    <div class="position-relative">
+                                        <input type="range" id="scholarshipImportance" min="1" max="10" value="8" class="form-range">
+                                        <div class="d-flex justify-content-between mt-1">
+                                            <span class="small text-muted">Not Important</span>
+                                            <span class="badge bg-primary"><span id="scholarshipValue">8</span>/10</span>
+                                            <span class="small text-muted">Very Important</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">Need to Work While Studying</label>
+                                    <div class="d-flex flex-wrap gap-3">
+                                        <div class="form-check">
+                                            <input type="checkbox" id="workPartTime" class="form-check-input">
+                                            <label for="workPartTime" class="form-check-label">I need to work part-time</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input type="checkbox" id="workInternship" class="form-check-input">
+                                            <label for="workInternship" class="form-check-label">I want internship opportunities</label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">Return on Investment Importance</label>
+                                    <div class="position-relative">
+                                        <input type="range" id="roiImportance" min="1" max="10" value="7" class="form-range">
+                                        <div class="d-flex justify-content-between mt-1">
+                                            <span class="small text-muted">Not Important</span>
+                                            <span class="badge bg-primary"><span id="roiValue">7</span>/10</span>
+                                            <span class="small text-muted">Very Important</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Step 3: Location Preferences -->
+                            <div class="preference-section d-none" id="step3">
+                                <h2 class="h3 mb-3 text-primary">Location Preferences</h2>
+                                <p class="text-muted mb-4">Tell us about your preferred destinations</p>
+
+                                <div class="mb-3">
+                                    <label class="form-label">Preferred Regions</label>
+                                    <div class="row row-cols-1 row-cols-md-3 g-3">
+                                        <div class="col">
+                                            <div class="form-check">
+                                                <input type="checkbox" id="regionNA" class="form-check-input">
+                                                <label for="regionNA" class="form-check-label">North America</label>
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="form-check">
+                                                <input type="checkbox" id="regionEurope" class="form-check-input">
+                                                <label for="regionEurope" class="form-check-label">Europe</label>
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="form-check">
+                                                <input type="checkbox" id="regionAsia" class="form-check-input">
+                                                <label for="regionAsia" class="form-check-label">Asia</label>
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="form-check">
+                                                <input type="checkbox" id="regionOceania" class="form-check-input">
+                                                <label for="regionOceania" class="form-check-label">Australia/Oceania</label>
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="form-check">
+                                                <input type="checkbox" id="regionUK" class="form-check-input">
+                                                <label for="regionUK" class="form-check-label">United Kingdom</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="locationType" class="form-label">Location Type</label>
+                                    <select id="locationType" class="form-select">
+                                        <option value="">Select preferred location type</option>
+                                        <option value="urban">Urban/Major City</option>
+                                        <option value="suburban">Suburban Area</option>
+                                        <option value="rural">Rural/Small Town</option>
+                                        <option value="any">No Preference</option>
+                                    </select>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">Climate Preference</label>
+                                    <div class="d-flex flex-wrap gap-3">
+                                        <div class="form-check">
+                                            <input type="checkbox" id="climateWarm" class="form-check-input">
+                                            <label for="climateWarm" class="form-check-label">Warm</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input type="checkbox" id="climateCold" class="form-check-input">
+                                            <label for="climateCold" class="form-check-label">Cold</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input type="checkbox" id="climateMild" class="form-check-input">
+                                            <label for="climateMild" class="form-check-label">Mild/Moderate</label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">Distance from Home</label>
+                                    <div class="position-relative">
+                                        <input type="range" id="distancePreference" min="1" max="10" value="5" class="form-range">
+                                        <div class="d-flex justify-content-between mt-1">
+                                            <span class="small text-muted">Close to Home</span>
+                                            <span class="badge bg-primary"><span id="distanceValue">5</span>/10</span>
+                                            <span class="small text-muted">Distance Not Important</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Step 4: Lifestyle Preferences -->
+                            <div class="preference-section d-none" id="step4">
+                                <h2 class="h3 mb-3 text-primary">Lifestyle Preferences</h2>
+                                <p class="text-muted mb-4">Tell us about what's important for your lifestyle abroad</p>
+
+                                <div class="mb-3">
+                                    <label class="form-label">Safety Importance</label>
+                                    <div class="position-relative">
+                                        <input type="range" id="safetyImportance" min="1" max="10" value="9" class="form-range">
+                                        <div class="d-flex justify-content-between mt-1">
+                                            <span class="small text-muted">Not Important</span>
+                                            <span class="badge bg-primary"><span id="safetyValue">9</span>/10</span>
+                                            <span class="small text-muted">Very Important</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="languagePreference" class="form-label">Language Considerations</label>
+                                    <select id="languagePreference" class="form-select">
+                                        <option value="">Select language preference</option>
+                                        <option value="english_only">Must be English-speaking country</option>
+                                        <option value="english_program">English program in any country</option>
+                                        <option value="learn_new">Willing to learn a new language</option>
+                                    </select>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">Cultural Experience Importance</label>
+                                    <div class="position-relative">
+                                        <input type="range" id="cultureImportance" min="1" max="10" value="7" class="form-range">
+                                        <div class="d-flex justify-content-between mt-1">
+                                            <span class="small text-muted">Not Important</span>
+                                            <span class="badge bg-primary"><span id="cultureValue">7</span>/10</span>
+                                            <span class="small text-muted">Very Important</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="postGradPlans" class="form-label">Post-Graduation Plans</label>
+                                    <select id="postGradPlans" class="form-select">
+                                        <option value="">Select your post-graduation plans</option>
+                                        <option value="work_host">Work in host country</option>
+                                        <option value="return_home">Return to home country</option>
+                                        <option value="further_study">Further study</option>
+                                        <option value="undecided">Undecided</option>
+                                    </select>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">Healthcare System Quality Importance</label>
+                                    <div class="position-relative">
+                                        <input type="range" id="healthcareImportance" min="1" max="10" value="6" class="form-range">
+                                        <div class="d-flex justify-content-between mt-1">
+                                            <span class="small text-muted">Not Important</span>
+                                            <span class="badge bg-primary"><span id="healthcareValue">6</span>/10</span>
+                                            <span class="small text-muted">Very Important</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Step 5: Criteria Weights -->
+                            <div class="preference-section d-none" id="step5">
+                                <h2 class="h3 mb-3 text-primary">Set Criteria Weights</h2>
+                                <p class="text-muted mb-4">Distribute 100 points across these categories based on their importance to you</p>
+
+                                <div class="alert alert-info d-flex justify-content-between align-items-center mb-4">
+                                    <span>Total weight: <span id="totalWeightDisplay" class="fw-bold">100</span>/100 points</span>
+                                    <div id="weightWarning" class="d-none text-danger fw-bold">Total must equal 100 points!</div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="academicWeight" class="form-label d-flex justify-content-between">
+                                        <span>Academic Quality</span>
+                                        <span id="academicWeightValue" class="badge bg-primary">25</span>
+                                    </label>
+                                    <input type="range" id="academicWeight" min="0" max="50" value="25" class="form-range">
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="costWeight" class="form-label d-flex justify-content-between">
+                                        <span>Cost & Affordability</span>
+                                        <span id="costWeightValue" class="badge bg-primary">30</span>
+                                    </label>
+                                    <input type="range" id="costWeight" min="0" max="50" value="30" class="form-range">
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="locationWeight" class="form-label d-flex justify-content-between">
+                                        <span>Location & Environment</span>
+                                        <span id="locationWeightValue" class="badge bg-primary">15</span>
+                                    </label>
+                                    <input type="range" id="locationWeight" min="0" max="50" value="15" class="form-range">
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="lifestyleWeight" class="form-label d-flex justify-content-between">
+                                        <span>Lifestyle & Culture</span>
+                                        <span id="lifestyleWeightValue" class="badge bg-primary">10</span>
+                                    </label>
+                                    <input type="range" id="lifestyleWeight" min="0" max="50" value="10" class="form-range">
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="careerWeight" class="form-label d-flex justify-content-between">
+                                        <span>Career Prospects</span>
+                                        <span id="careerWeightValue" class="badge bg-primary">20</span>
+                                    </label>
+                                    <input type="range" id="careerWeight" min="0" max="50" value="20" class="form-range">
+                                </div>
+
+                                <div class="alert alert-light border mt-4">
+                                    <h4 class="h5">Your Preference Profile</h4>
+                                    <p class="mb-2">Here's a summary of your preferences:</p>
+                                    <div class="row row-cols-1 row-cols-md-2 g-3" id="preferenceSummary">
+                                        <!-- This will be filled with JS -->
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Navigation Buttons -->
+                            <div class="d-flex justify-content-between mt-4">
+                                <button type="button" id="prevBtn" class="btn btn-outline-secondary d-none">
+                                    <i class="fas fa-arrow-left me-1"></i> Previous
+                                </button>
+                                <div class="ms-auto">
+                                    <button type="button" id="nextBtn" class="btn btn-primary">
+                                        Next <i class="fas fa-arrow-right ms-1"></i>
+                                    </button>
+                                    <button type="submit" id="submitBtn" class="btn btn-success d-none">
+                                        Generate Recommendations <i class="fas fa-check ms-1"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Bootstrap 5 JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/common.js"></script>
+    <script>
+        // Authentication code
+        document.addEventListener('DOMContentLoaded', function() {
+            if (typeof checkLoginStatus === 'function') {
+                const { isLoggedIn, userRole } = checkLoginStatus();
+                
+                if (isLoggedIn !== 'true') {
+                    window.location.href = 'login.html';
+                    return;
+                }
+                
+                const username = localStorage.getItem('username');
+                const sidebarUsernameElement = document.getElementById('sidebarUsername');
+                const sidebarUserRoleElement = document.getElementById('sidebarUserRole');
+                
+                if (sidebarUsernameElement) {
+                    sidebarUsernameElement.textContent = username || 'Guest';
+                }
+                
+                if (sidebarUserRoleElement) {
+                    sidebarUserRoleElement.textContent = userRole === 'admin' ? 'Administrator' : 'Student';
+                }
+                
+                const sidebarLogoutBtn = document.getElementById('sidebarLogout');
+                if (sidebarLogoutBtn) {
+                    sidebarLogoutBtn.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        localStorage.removeItem('isLoggedIn');
+                        localStorage.removeItem('userRole');
+                        localStorage.removeItem('username');
+                        window.location.href = 'login.html';
+                    });
+                }
+            }
+            
+            // Multi-step form functionality
+            const steps = document.querySelectorAll('.preference-section');
+            const stepItems = document.querySelectorAll('.step-item');
+            const nextBtn = document.getElementById('nextBtn');
+            const prevBtn = document.getElementById('prevBtn');
+            const submitBtn = document.getElementById('submitBtn');
+            const progressBar = document.getElementById('progressBar');
+            let currentStep = 1;
+            
+            function updateStep() {
+                steps.forEach(step => step.classList.add('d-none'));
+                document.getElementById(`step${currentStep}`).classList.remove('d-none');
+                
+                stepItems.forEach(item => {
+                    const stepNum = parseInt(item.getAttribute('data-step'));
+                    const stepCircle = item.querySelector('.rounded-circle');
+                    
+                    if (stepNum < currentStep) {
+                        stepCircle.classList.remove('bg-secondary');
+                        stepCircle.classList.add('bg-success');
+                    } else if (stepNum === currentStep) {
+                        stepCircle.classList.remove('bg-secondary', 'bg-success');
+                        stepCircle.classList.add('bg-primary');
+                    } else {
+                        stepCircle.classList.remove('bg-primary', 'bg-success');
+                        stepCircle.classList.add('bg-secondary');
+                    }
+                });
+                
+                if (currentStep > 1) {
+                    prevBtn.classList.remove('d-none');
+                } else {
+                    prevBtn.classList.add('d-none');
+                }
+                
+                if (currentStep === steps.length) {
+                    nextBtn.classList.add('d-none');
+                    submitBtn.classList.remove('d-none');
+                } else {
+                    nextBtn.classList.remove('d-none');
+                    submitBtn.classList.add('d-none');
+                }
+                
+                // Update progress bar
+                const progress = ((currentStep - 1) / (steps.length - 1)) * 100;
+                progressBar.style.width = `${progress}%`;
+            }
+            
+            nextBtn.addEventListener('click', function() {
+                if (currentStep < steps.length) {
+                    currentStep++;
+                    updateStep();
+                }
+            });
+            
+            prevBtn.addEventListener('click', function() {
+                if (currentStep > 1) {
+                    currentStep--;
+                    updateStep();
+                }
+            });
+            
+            // Slider value displays
+            const sliders = ['ranking', 'research', 'scholarship', 'roi', 'distance', 'safety', 'culture', 'healthcare'];
+            sliders.forEach(slider => {
+                const input = document.getElementById(`${slider}Importance`);
+                const display = document.getElementById(`${slider}Value`);
+                
+                if (input && display) {
+                    input.addEventListener('input', function() {
+                        display.textContent = this.value;
+                    });
+                }
+            });
+            
+            // Weight sliders
+            const weightSliders = ['academic', 'cost', 'location', 'lifestyle', 'career'];
+            weightSliders.forEach(slider => {
+                const input = document.getElementById(`${slider}Weight`);
+                const display = document.getElementById(`${slider}WeightValue`);
+                
+                if (input && display) {
+                    input.addEventListener('input', function() {
+                        display.textContent = this.value;
+                        updateTotalWeight();
+                    });
+                }
+            });
+            
+            function updateTotalWeight() {
+                let total = 0;
+                weightSliders.forEach(slider => {
+                    total += parseInt(document.getElementById(`${slider}Weight`).value);
+                });
+                
+                const totalDisplay = document.getElementById('totalWeightDisplay');
+                const warning = document.getElementById('weightWarning');
+                
+                if (totalDisplay) {
+                    totalDisplay.textContent = total;
+                }
+                
+                if (warning) {
+                    if (total !== 100) {
+                        warning.classList.remove('d-none');
+                    } else {
+                        warning.classList.add('d-none');
+                    }
+                }
+            }
+            
+            // Form submission
+            document.getElementById('preferencesForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                // Form submission logic will be added later
+                alert('Form submitted! Redirecting to results page...');
+                window.location.href = 'results.html';
+            });
+        });
+    </script>
+</body>
+</html>

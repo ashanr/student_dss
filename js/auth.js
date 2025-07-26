@@ -193,16 +193,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (logoutBtn) {
         logoutBtn.addEventListener('click', function(e) {
             e.preventDefault();
-            
-            // Clear local storage
-            localStorage.removeItem('token');
-            localStorage.removeItem('user');
-            localStorage.removeItem('isLoggedIn');
-            localStorage.removeItem('userRole');
-            localStorage.removeItem('username');
-            
-            // Redirect to login page
-            window.location.href = 'login.html';
+            performLogout();
         });
     }
     
@@ -258,4 +249,40 @@ function updateNavigation() {
             logoutBtn.style.display = 'none';
         }
     }
+}
+
+// Logout function that can be called from anywhere
+function performLogout() {
+    // Call the server API to logout (if available)
+    try {
+        fetch('/api/auth/logout', {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            }
+        })
+        .then(response => response.json())
+        .catch(error => console.warn('Logout API error:', error))
+        .finally(() => {
+            // Always clear local storage and redirect regardless of API response
+            clearLoginDataAndRedirect();
+        });
+    } catch (e) {
+        console.warn('Error during logout API call:', e);
+        // Continue with local logout even if API call fails
+        clearLoginDataAndRedirect();
+    }
+}
+
+// Clear local data and redirect
+function clearLoginDataAndRedirect() {
+    // Clear local storage
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    localStorage.removeItem('isLoggedIn');
+    localStorage.removeItem('userRole');
+    localStorage.removeItem('username');
+    
+    // Redirect to login page
+    window.location.href = 'login.html';
 }

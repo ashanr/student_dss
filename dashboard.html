@@ -416,13 +416,17 @@
                 sidebarLogoutBtn.addEventListener('click', function(e) {
                     e.preventDefault();
                     
-                    // Clear login status
-                    localStorage.removeItem('isLoggedIn');
-                    localStorage.removeItem('userRole');
-                    localStorage.removeItem('username');
-                    
-                    // Redirect to login page
-                    window.location.href = 'login.html';
+                    if (typeof performLogout === 'function') {
+                        performLogout();
+                    } else {
+                        // Clear login status and redirect
+                        localStorage.removeItem('isLoggedIn');
+                        localStorage.removeItem('userRole');
+                        localStorage.removeItem('username');
+                        localStorage.removeItem('token');
+                        localStorage.removeItem('user');
+                        window.location.href = 'login.html';
+                    }
                 });
             }
             
@@ -432,13 +436,17 @@
                 navbarLogoutBtn.addEventListener('click', function(e) {
                     e.preventDefault();
                     
-                    // Clear login status
-                    localStorage.removeItem('isLoggedIn');
-                    localStorage.removeItem('userRole');
-                    localStorage.removeItem('username');
-                    
-                    // Redirect to login page
-                    window.location.href = 'login.html';
+                    if (typeof performLogout === 'function') {
+                        performLogout();
+                    } else {
+                        // Clear login status and redirect
+                        localStorage.removeItem('isLoggedIn');
+                        localStorage.removeItem('userRole');
+                        localStorage.removeItem('username');
+                        localStorage.removeItem('token');
+                        localStorage.removeItem('user');
+                        window.location.href = 'login.html';
+                    }
                 });
             }
         });
