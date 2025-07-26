@@ -1,8 +1,8 @@
 #!/bin/sh
 set -e
 
-# Function to wait for PostgreSQL
-wait_for_postgres() {
+# Continue with the main command
+exec "$@"
   echo "Waiting for PostgreSQL to be ready..."
   
   # Attempt to connect to PostgreSQL
@@ -12,7 +12,7 @@ wait_for_postgres() {
   done
   
   echo "PostgreSQL is up - executing seeder"
-}
+
 
 # Run the seeder if this is the first time
 if [ ! -f /app/.seed_completed ]; then

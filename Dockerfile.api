@@ -11,9 +11,6 @@ RUN npm install
 # Copy the rest of the application code
 COPY . .
 
-# Install PostgreSQL client for data seeding
-RUN apk --no-cache add postgresql-client
-
 # Expose the port the app will run on
 EXPOSE 3000
 
