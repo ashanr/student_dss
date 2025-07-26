@@ -1,88 +1,88 @@
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+const { Pool } = require('pg');
+const pool = new Pool({
+  connectionString: process.env.POSTGRES_URI
+});
 
-const programSchema = new Schema({
-  name: {
-    type: String,
-    required: true,
-    index: true
-  },
-  university: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'University',
-    required: true,
-    index: true
-  },
-  universityName: String, // denormalized for performance
-  level: {
-    type: String,
-    enum: ['bachelor', 'master', 'phd', 'diploma'],
-    required: true,
-    index: true
-  },
-  field: {
-    type: String,
-    required: true,
-    index: true
-  },
-  specialization: String,
-  description: String,
-  duration: {
-    years: Number,
-    months: Number
-  },
-  credits: Number,
-  teachingLanguage: {
-    type: String,
-    default: 'English'
-  },
-  format: {
-    type: String,
-    enum: ['Full-time', 'Part-time', 'Online', 'Hybrid'],
-    default: 'Full-time'
-  },
-  tuition: {
-    domestic: Number,
-    international: Number,
-    currency: String
-  },
-  admissionRequirements: {
-    gpa: Number,
-    languageTest: {
-      type: String,
-      score: Number
-    },
-    documents: [String],
-    prerequisites: [String]
-  },
-  applicationProcess: {
-    deadlines: {
-      fall: Date,
-      spring: Date,
-      summer: Date
-    },
-    applicationFee: {
-      amount: Number,
-      currency: {
-        type: String,
-        default: 'USD'
+class Program {
+  static async findById(id) {
+    try {
+      const result = await pool.query('SELECT * FROM programs WHERE id = $1', [id]);
+      return result.rows[0];
+    } catch (error) {
+      console.error('Error in Program.findById:', error);
+      throw error;
+    }
+  }
+
+  static async find(filter = {}, skip = 0, limit = 20) {
+    try {
+      let query = 'SELECT * FROM programs WHERE 1=1';
+      const values = [];
+      let valueIndex = 1;
+      
+      if (filter.university_id) {
+        query += ` AND university_id = $${valueIndex}`;
+        values.push(filter.university_id);
+        valueIndex++;
       }
-    },
-    selectionCriteria: [String],
-    acceptanceRate: Number // percentage
-  },
-  curriculum: [String], // key subjects
-  opportunities: {
-    internships: Boolean,
-    studyAbroad: Boolean,
-    researchProjects: Boolean,
-    industryPartnerships: [String]
-  },
-  careerOutcomes: {
-    jobTitles: [String],
-    employmentRate: Number, // percentage
-    averageStartingSalary: {
-      amount: Number,
+      
+      if (filter.field) {
+        query += ` AND field = $${valueIndex}`;
+        values.push(filter.field);
+        valueIndex++;
+      }
+      
+      if (filter.level) {
+        query += ` AND level = $${valueIndex}`;
+        values.push(filter.level);
+        valueIndex++;
+      }
+      
+      query += ` LIMIT $${valueIndex} OFFSET $${valueIndex + 1}`;
+      values.push(limit, skip);
+      
+      const result = await pool.query(query, values);
+      return result.rows;
+    } catch (error) {
+      console.error('Error in Program.find:', error);
+      throw error;
+    }
+  }
+  
+  static async countDocuments(filter = {}) {
+    try {
+      let query = 'SELECT COUNT(*) FROM programs WHERE 1=1';
+      const values = [];
+      let valueIndex = 1;
+      
+      if (filter.university_id) {
+        query += ` AND university_id = $${valueIndex}`;
+        values.push(filter.university_id);
+        valueIndex++;
+      }
+      
+      if (filter.field) {
+        query += ` AND field = $${valueIndex}`;
+        values.push(filter.field);
+        valueIndex++;
+      }
+      
+      if (filter.level) {
+        query += ` AND level = $${valueIndex}`;
+        values.push(filter.level);
+        valueIndex++;
+      }
+      
+      const result = await pool.query(query, values);
+      return parseInt(result.rows[0].count);
+    } catch (error) {
+      console.error('Error in Program.countDocuments:', error);
+      throw error;
+    }
+  }
+}
+
+module.exports = Program;
       currency: {
         type: String,
         default: 'USD'

@@ -1,53 +1,53 @@
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+const { Pool } = require('pg');
+const pool = new Pool({
+  connectionString: process.env.POSTGRES_URI
+});
 
-const employmentSchema = new Schema({
-  country: {
-    type: String,
-    required: true
-  },
-  field: {
-    type: String,
-    required: true
-  },
-  jobMarketScore: {
-    type: Number,
-    min: 1,
-    max: 10
-  },
-  salaryRange: {
-    min: Number,
-    max: Number,
-    currency: String
-  },
-  employmentRate: {
-    type: Number,
-    min: 0,
-    max: 1
-  },
-  workPermit: Boolean,
-  postStudyOptions: String,
-  demandedSkills: [String],
-  industries: [String],
-  growthRate: Number, // Annual growth rate as percentage
-  visaSponsorship: Boolean,
-  internshipOpportunities: String
-}, { timestamps: true });
-
-module.exports = mongoose.model('Employment', employmentSchema);
-        type: String,
-        default: 'USD'
-      }
-    },
-    senior: {
-      amount: Number,
-      currency: {
-        type: String,
-        default: 'USD'
-      }
+class Employment {
+  static async findById(id) {
+    try {
+      const result = await pool.query('SELECT * FROM employment WHERE id = $1', [id]);
+      return result.rows[0];
+    } catch (error) {
+      console.error('Error in Employment.findById:', error);
+      throw error;
     }
-  },
-  jobMarketDemand: Number, // 0-100 scale
+  }
+
+  static async find(filter = {}) {
+    try {
+      let query = 'SELECT * FROM employment WHERE 1=1';
+      const values = [];
+      let valueIndex = 1;
+      
+      if (filter.country) {
+        query += ` AND country = $${valueIndex}`;
+        values.push(filter.country);
+        valueIndex++;
+      }
+      
+      if (filter.field) {
+        query += ` AND field = $${valueIndex}`;
+        values.push(filter.field);
+        valueIndex++;
+      }
+      
+      if (filter.city) {
+        query += ` AND city = $${valueIndex}`;
+        values.push(filter.city);
+        valueIndex++;
+      }
+      
+      const result = await pool.query(query, values);
+      return result.rows;
+    } catch (error) {
+      console.error('Error in Employment.find:', error);
+      throw error;
+    }
+  }
+}
+
+module.exports = Employment;
   growthRate: Number, // percentage
   skillsInDemand: [String],
   workVisa: {

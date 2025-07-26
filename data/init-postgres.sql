@@ -1,91 +1,120 @@
--- Initialize PostgreSQL database and create necessary tables
+-- Initialize database schema
 
--- Create required tables
+-- Countries table
 CREATE TABLE IF NOT EXISTS countries (
-    id SERIAL PRIMARY KEY,
-    name VARCHAR(100) NOT NULL UNIQUE,
-    flag VARCHAR(10),
-    region VARCHAR(50),
-    score INTEGER,
-    cost INTEGER,
-    quality NUMERIC(3, 1),
-    safety NUMERIC(3, 1),
-    visa_ease VARCHAR(20),
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  id VARCHAR(255) PRIMARY KEY,
+  name VARCHAR(255) NOT NULL,
+  flag VARCHAR(10),
+  region VARCHAR(100),
+  score INTEGER,
+  cost INTEGER,
+  quality FLOAT,
+  safety FLOAT,
+  visa_ease VARCHAR(50),
+  highlights TEXT[],
+  language VARCHAR(100),
+  currency_code VARCHAR(10),
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE IF NOT EXISTS universities (
-    id SERIAL PRIMARY KEY,
-    name VARCHAR(200) NOT NULL,
-    country VARCHAR(100) NOT NULL,
-    city VARCHAR(100),
-    global_ranking INTEGER,
-    domestic_ranking INTEGER,
-    tuition_international INTEGER,
-    tuition_domestic INTEGER,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
-CREATE TABLE IF NOT EXISTS programs (
-    id SERIAL PRIMARY KEY,
-    university_id INTEGER REFERENCES universities(id),
-    name VARCHAR(200) NOT NULL,
-    field VARCHAR(100),
-    level VARCHAR(50),
-    language VARCHAR(50),
-    duration INTEGER,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
+-- Cities table
 CREATE TABLE IF NOT EXISTS cities (
-    id SERIAL PRIMARY KEY,
-    name VARCHAR(100) NOT NULL,
-    country VARCHAR(100) NOT NULL,
-    cost_of_living_index INTEGER,
-    quality_of_life_index INTEGER,
-    student_friendly_score INTEGER,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  id SERIAL PRIMARY KEY,
+  name VARCHAR(255) NOT NULL,
+  country VARCHAR(255) NOT NULL,
+  cost_of_living_index INTEGER,
+  quality_of_life_index INTEGER,
+  student_friendly_score INTEGER,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+-- Universities table
+CREATE TABLE IF NOT EXISTS universities (
+  id SERIAL PRIMARY KEY,
+  name VARCHAR(255) NOT NULL,
+  country VARCHAR(255) NOT NULL,
+  city VARCHAR(255) NOT NULL,
+  global_ranking INTEGER,
+  national_ranking INTEGER,
+  domestic_undergrad_tuition INTEGER,
+  domestic_graduate_tuition INTEGER,
+  international_undergrad_tuition INTEGER,
+  international_graduate_tuition INTEGER,
+  programs TEXT,
+  acceptance_rate FLOAT,
+  student_faculty_ratio TEXT,
+  website TEXT,
+  facilities TEXT,
+  accommodation_available BOOLEAN,
+  accommodation_cost INTEGER,
+  scholarships TEXT,
+  international_students INTEGER,
+  image_url TEXT,
+  description TEXT,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Programs table
+CREATE TABLE IF NOT EXISTS programs (
+  id SERIAL PRIMARY KEY,
+  name VARCHAR(255) NOT NULL,
+  university_id INTEGER REFERENCES universities(id),
+  university_name VARCHAR(255),
+  level VARCHAR(50),
+  field VARCHAR(100),
+  specialization VARCHAR(255),
+  description TEXT,
+  duration_years INTEGER,
+  duration_semesters INTEGER,
+  credits INTEGER,
+  teaching_language VARCHAR(50),
+  format VARCHAR(50),
+  tuition_amount INTEGER,
+  tuition_currency VARCHAR(10),
+  gpa_requirement FLOAT,
+  language_requirement VARCHAR(100),
+  acceptance_rate FLOAT,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Employment table
+CREATE TABLE IF NOT EXISTS employment (
+  id SERIAL PRIMARY KEY,
+  country VARCHAR(255) NOT NULL,
+  city VARCHAR(255),
+  field VARCHAR(255) NOT NULL,
+  year_data INTEGER,
+  employment_rate_overall FLOAT,
+  employment_rate_foreign FLOAT,
+  salary_entry_level INTEGER,
+  salary_mid_career INTEGER,
+  salary_senior INTEGER,
+  currency VARCHAR(10),
+  job_market_demand INTEGER,
+  growth_rate FLOAT,
+  skills_in_demand TEXT[],
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Users table
 CREATE TABLE IF NOT EXISTS users (
-    id SERIAL PRIMARY KEY,
-    username VARCHAR(50) NOT NULL UNIQUE,
-    email VARCHAR(100) NOT NULL UNIQUE,
-    password VARCHAR(100) NOT NULL,
-    role VARCHAR(20) DEFAULT 'guest',
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  id SERIAL PRIMARY KEY,
+  username VARCHAR(100) UNIQUE NOT NULL,
+  email VARCHAR(255) UNIQUE NOT NULL,
+  password VARCHAR(255) NOT NULL,
+  role VARCHAR(50) DEFAULT 'user',
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE IF NOT EXISTS preferences (
-    id SERIAL PRIMARY KEY,
-    user_id INTEGER REFERENCES users(id),
-    academic JSONB,
-    financial JSONB,
-    location JSONB,
-    lifestyle JSONB,
-    weights JSONB,
-    last_updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
--- Create indexes for better performance
-CREATE INDEX idx_countries_name ON countries(name);
-CREATE INDEX idx_universities_name ON universities(name);
-CREATE INDEX idx_universities_country ON universities(country);
-CREATE INDEX idx_programs_university ON programs(university_id);
-CREATE INDEX idx_programs_field ON programs(field);
-CREATE INDEX idx_cities_country ON cities(country);
-CREATE INDEX idx_cities_name ON cities(name);
-CREATE INDEX idx_users_username ON users(username);
-CREATE INDEX idx_users_email ON users(email);
-
--- Insert admin user for testing
+-- Insert test users
 INSERT INTO users (username, email, password, role)
-VALUES 
-('admin', 'admin@studentdss.com', '$2a$10$JvCo4hj9qQdqJV3jNcAJSO6Zk3eOTvNs9h1LeqPheGr9JInRH9Fse', 'admin'),
-('guest', 'guest@studentdss.com', '$2a$10$CuxKQrJpS0Q8jK9CQkCnIOe8t6myi7fTjDpjzW7JuZEPEQTAqJiA6', 'guest')
-ON CONFLICT (username) DO NOTHING;
+VALUES
+  ('admin', 'admin@studentdss.com', '$2a$10$JvCo4hj9qQdqJV3jNcAJSO6Zk3eOTvNs9h1LeqPheGr9JInRH9Fse', 'admin'),
+  ('guest', 'guest@studentdss.com', '$2a$10$CuxKQrJpS0Q8jK9CQkCnIOe8t6myi7fTjDpjzW7JuZEPEQTAqJiA6', 'guest')
+ON CONFLICT DO NOTHING;

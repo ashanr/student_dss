@@ -1,29 +1,4 @@
-const mongoose = require('mongoose');
 const { Pool } = require('pg');
-
-// MongoDB connection with retry functionality
-const connectToMongoDB = (uri) => {
-  return new Promise((resolve, reject) => {
-    const connect = () => {
-      mongoose.connect(uri, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true
-      })
-      .then(() => {
-        console.log('MongoDB connected successfully');
-        resolve();
-      })
-      .catch(err => {
-        console.error('MongoDB connection error:', err);
-        // In production, you might want to limit retries
-        console.log('Retrying connection in 5 seconds...');
-        setTimeout(connect, 5000);
-      });
-    };
-    
-    connect();
-  });
-};
 
 // PostgreSQL connection with retry functionality
 const connectToPostgreSQL = (connectionString) => {
@@ -46,6 +21,31 @@ const connectToPostgreSQL = (connectionString) => {
         });
     };
     
+    connect();
+  });
+};
+
+// Add connection validation
+const validateConnection = async () => {
+  try {
+    const pool = new Pool({
+      connectionString: process.env.POSTGRES_URI || 'postgres://postgres:password@localhost:5432/studentDSS',
+    });
+    
+    // Try to get a client from the pool
+    const client = await pool.connect();
+    client.release();
+    return true;
+  } catch (err) {
+    console.error('Database validation failed:', err);
+    return false;
+  }
+};
+
+module.exports = {
+  connectToPostgreSQL,
+  validateConnection
+};
     connect();
   });
 };

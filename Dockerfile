@@ -16,11 +16,11 @@ RUN npm install
 # Copy the rest of the application
 COPY . .
 
-# Expose port 3000
-EXPOSE 3000
+# Add script to wait for PostgreSQL
+COPY docker-entrypoint.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 
-# Start the application
-CMD ["npm", "run", "dev"]
+# Expose port 3000
 EXPOSE 3000
 
 # Start the application using the entrypoint script
