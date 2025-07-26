@@ -1,25 +1,107 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <title>Student Decision Support System</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student DSS</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         body {
             font-family: 'Inter', sans-serif;
         }
-        .hero-section {
-            min-height: 60vh;
+        .hero {
+            background: linear-gradient(135deg, #21808d, #2d6e7e);
+            color: white;
+            padding: 100px 0;
+        }
+        .feature-icon {
+            background-color: rgba(33, 128, 141, 0.1);
+            color: #21808d;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
             display: flex;
             align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        .progress-container {
+            margin-bottom: 30px;
+        }
+        .step-indicator {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            position: relative;
+        }
+        .step-indicator::before {
+            content: "";
+            position: absolute;
+            top: 15px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: #e9ecef;
+            z-index: 1;
+        }
+        .step {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            width: 60px;
+        }
+        .step-circle {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: #e9ecef;
+            color: #6c757d;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            margin: 0 auto 8px;
+            transition: all 0.3s ease;
+        }
+        .step.active .step-circle {
+            background: #21808d;
+            color: white;
+        }
+        .step.completed .step-circle {
+            background: #28a745;
+            color: white;
+        }
+        .step-label {
+            font-size: 0.8rem;
+            color: #6c757d;
+        }
+        .form-section {
+            display: none;
+        }
+        .form-section.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
     </style>
 </head>
 <body>
+    <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
         <div class="container">
             <a class="navbar-brand" href="/">Student DSS</a>
@@ -34,84 +116,543 @@
                     <li class="nav-item">
                         <a class="nav-link" href="/login.html">Login</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/register.html">Register</a>
+                    </li>
                 </ul>
             </div>
         </div>
     </nav>
 
-    <div class="hero-section bg-primary text-white">
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container text-center">
+            <h1 class="display-4 fw-bold mb-3">Make Smarter Study Abroad Decisions</h1>
+            <p class="lead mb-5">Navigate your international education journey with data-driven insights and personalized recommendations</p>
+            <div class="d-flex justify-content-center gap-3">
+                <a href="#decision-tool" class="btn btn-light btn-lg px-5">Start Now</a>
+                <a href="/login.html" class="btn btn-outline-light btn-lg px-4">Login for More</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="py-5 bg-light">
         <div class="container">
-            <div class="row align-items-center">
-                <div class="col-lg-6">
-                    <h1 class="display-4 fw-bold">Student Decision Support System</h1>
-                    <p class="lead">Make informed decisions about your international education journey</p>
-                    <div class="mt-4">
-                        <a href="/login.html" class="btn btn-light btn-lg me-2">Get Started</a>
-                        <a href="/dashboard.html" class="btn btn-outline-light btn-lg">View Dashboard</a>
-                    </div>
-                </div>
-                <div class="col-lg-6 d-none d-lg-block">
-                    <img src="https://via.placeholder.com/600x400?text=Student+DSS" class="img-fluid rounded" alt="Student DSS">
-                </div>
+            <div class="text-center mb-5">
+                <h2>Why Use Our Decision Support System?</h2>
+                <p class="text-muted">Make informed decisions based on data, not guesswork</p>
             </div>
-        </div>
-    </div>
 
-    <div class="container my-5">
-        <div class="text-center mb-5">
-            <h2>Make Better Decisions for Your Education</h2>
-            <p class="lead text-muted">Analyze options, compare countries, and find the best match for your goals</p>
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body text-center p-4">
+                            <div class="feature-icon mx-auto">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <h3 class="h5">Data-Driven Insights</h3>
+                            <p class="text-muted">Compare countries and universities based on your personal preferences and goals</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body text-center p-4">
+                            <div class="feature-icon mx-auto">
+                                <i class="fas fa-user-graduate"></i>
+                            </div>
+                            <h3 class="h5">Personalized Recommendations</h3>
+                            <p class="text-muted">Get tailored suggestions based on your academic background, work experience, and future goals</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body text-center p-4">
+                            <div class="feature-icon mx-auto">
+                                <i class="fas fa-balance-scale"></i>
+                            </div>
+                            <h3 class="h5">Comprehensive Comparison</h3>
+                            <p class="text-muted">Compare multiple destinations side-by-side across various factors</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
+    </section>
 
-        <div class="row g-4">
-            <div class="col-md-4">
-                <div class="card h-100">
-                    <div class="card-body text-center">
-                        <i class="fas fa-globe fa-3x text-primary mb-3"></i>
-                        <h3>Compare Countries</h3>
-                        <p>Analyze educational opportunities across different countries</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card h-100">
-                    <div class="card-body text-center">
-                        <i class="fas fa-university fa-3x text-primary mb-3"></i>
-                        <h3>Find Programs</h3>
-                        <p>Discover programs that match your preferences and requirements</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card h-100">
-                    <div class="card-body text-center">
-                        <i class="fas fa-calculator fa-3x text-primary mb-3"></i>
-                        <h3>Cost Calculator</h3>
-                        <p>Estimate and compare costs for studying in different countries</p>
+    <!-- Decision Tool Section -->
+    <section id="decision-tool" class="py-5">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-10">
+                    <div class="card shadow-lg border-0 rounded-lg">
+                        <div class="card-header bg-white p-4 border-0">
+                            <h2 class="text-center">Quick Migration Decision Tool</h2>
+                            <p class="text-muted text-center mb-0">Answer a few questions to get personalized recommendations</p>
+                        </div>
+                        <div class="card-body p-4">
+                            <!-- Progress Indicators -->
+                            <div class="progress-container">
+                                <div class="step-indicator">
+                                    <div class="step active" data-step="1">
+                                        <div class="step-circle">1</div>
+                                        <div class="step-label">Profile</div>
+                                    </div>
+                                    <div class="step" data-step="2">
+                                        <div class="step-circle">2</div>
+                                        <div class="step-label">Experience</div>
+                                    </div>
+                                    <div class="step" data-step="3">
+                                        <div class="step-circle">3</div>
+                                        <div class="step-label">Skills</div>
+                                    </div>
+                                    <div class="step" data-step="4">
+                                        <div class="step-circle">4</div>
+                                        <div class="step-label">Work</div>
+                                    </div>
+                                    <div class="step" data-step="5">
+                                        <div class="step-circle">5</div>
+                                        <div class="step-label">Language</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Form Sections -->
+                            <form id="migrationForm">
+                                <!-- Step 1: Basic Profile -->
+                                <div class="form-section active" id="step1">
+                                    <h3 class="mb-4">Tell Us About Yourself</h3>
+                                    <div class="row mb-3">
+                                        <div class="col-md-6 mb-3 mb-md-0">
+                                            <label class="form-label">Age Range</label>
+                                            <select class="form-select" required>
+                                                <option value="" selected disabled>Select age range</option>
+                                                <option value="18-24">18-24</option>
+                                                <option value="25-30">25-30</option>
+                                                <option value="31-35">31-35</option>
+                                                <option value="36+">36+</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">Education Level</label>
+                                            <select class="form-select" required>
+                                                <option value="" selected disabled>Select education level</option>
+                                                <option value="high_school">High School</option>
+                                                <option value="bachelors">Bachelor's Degree</option>
+                                                <option value="masters">Master's Degree</option>
+                                                <option value="phd">PhD</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Field of Study/Interest</label>
+                                        <select class="form-select" required>
+                                            <option value="" selected disabled>Select field</option>
+                                            <option value="computer_science">Computer Science & IT</option>
+                                            <option value="engineering">Engineering</option>
+                                            <option value="business">Business & Management</option>
+                                            <option value="medicine">Medicine & Healthcare</option>
+                                            <option value="arts">Arts & Humanities</option>
+                                            <option value="science">Natural Sciences</option>
+                                            <option value="social">Social Sciences</option>
+                                        </select>
+                                    </div>
+                                    <div class="text-end">
+                                        <button type="button" class="btn btn-primary px-4" onclick="nextStep(1)">Continue</button>
+                                    </div>
+                                </div>
+
+                                <!-- Step 2: Work Experience -->
+                                <div class="form-section" id="step2">
+                                    <h3 class="mb-4">Your Work Experience</h3>
+                                    <div class="mb-3">
+                                        <label class="form-label">Years of Work Experience</label>
+                                        <select class="form-select" required>
+                                            <option value="" selected disabled>Select experience</option>
+                                            <option value="0">No formal experience</option>
+                                            <option value="1-2">1-2 years</option>
+                                            <option value="3-5">3-5 years</option>
+                                            <option value="6-10">6-10 years</option>
+                                            <option value="10+">More than 10 years</option>
+                                        </select>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Industry Experience</label>
+                                        <select class="form-select" required>
+                                            <option value="" selected disabled>Select industry</option>
+                                            <option value="tech">Technology</option>
+                                            <option value="healthcare">Healthcare</option>
+                                            <option value="finance">Finance</option>
+                                            <option value="education">Education</option>
+                                            <option value="retail">Retail</option>
+                                            <option value="manufacturing">Manufacturing</option>
+                                            <option value="other">Other</option>
+                                        </select>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Type of Role</label>
+                                        <select class="form-select" required>
+                                            <option value="" selected disabled>Select role type</option>
+                                            <option value="technical">Technical/Specialized</option>
+                                            <option value="managerial">Managerial</option>
+                                            <option value="administrative">Administrative</option>
+                                            <option value="creative">Creative</option>
+                                            <option value="service">Customer Service</option>
+                                            <option value="other">Other</option>
+                                        </select>
+                                    </div>
+                                    <div class="d-flex justify-content-between">
+                                        <button type="button" class="btn btn-outline-secondary px-4" onclick="prevStep(2)">Back</button>
+                                        <button type="button" class="btn btn-primary px-4" onclick="nextStep(2)">Continue</button>
+                                    </div>
+                                </div>
+
+                                <!-- Step 3: Skills -->
+                                <div class="form-section" id="step3">
+                                    <h3 class="mb-4">Your Skills & Competencies</h3>
+                                    <div class="mb-3">
+                                        <label class="form-label">Technical Skills (Select all that apply)</label>
+                                        <div class="row">
+                                            <div class="col-md-6 mb-2">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" value="programming" id="skill1">
+                                                    <label class="form-check-label" for="skill1">Programming/Coding</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 mb-2">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" value="data_analysis" id="skill2">
+                                                    <label class="form-check-label" for="skill2">Data Analysis</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 mb-2">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" value="design" id="skill3">
+                                                    <label class="form-check-label" for="skill3">Design/Creative</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 mb-2">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" value="project_management" id="skill4">
+                                                    <label class="form-check-label" for="skill4">Project Management</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 mb-2">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" value="writing" id="skill5">
+                                                    <label class="form-check-label" for="skill5">Writing/Content Creation</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 mb-2">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" value="research" id="skill6">
+                                                    <label class="form-check-label" for="skill6">Research</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Soft Skills (Select your strongest 3)</label>
+                                        <div class="row">
+                                            <div class="col-md-6 mb-2">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" value="communication" id="soft1">
+                                                    <label class="form-check-label" for="soft1">Communication</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 mb-2">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" value="leadership" id="soft2">
+                                                    <label class="form-check-label" for="soft2">Leadership</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 mb-2">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" value="adaptability" id="soft3">
+                                                    <label class="form-check-label" for="soft3">Adaptability</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 mb-2">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" value="teamwork" id="soft4">
+                                                    <label class="form-check-label" for="soft4">Teamwork</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 mb-2">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" value="problem_solving" id="soft5">
+                                                    <label class="form-check-label" for="soft5">Problem Solving</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 mb-2">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" value="time_management" id="soft6">
+                                                    <label class="form-check-label" for="soft6">Time Management</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex justify-content-between">
+                                        <button type="button" class="btn btn-outline-secondary px-4" onclick="prevStep(3)">Back</button>
+                                        <button type="button" class="btn btn-primary px-4" onclick="nextStep(3)">Continue</button>
+                                    </div>
+                                </div>
+
+                                <!-- Step 4: Preferred Part-time Jobs -->
+                                <div class="form-section" id="step4">
+                                    <h3 class="mb-4">Part-time Work Preferences</h3>
+                                    <p class="text-muted mb-4">Many international students work part-time while studying. What types of part-time work would you be interested in?</p>
+                                    <div class="mb-3">
+                                        <label class="form-label">Preferred Part-time Work Areas (Select all that apply)</label>
+                                        <div class="row">
+                                            <div class="col-md-6 mb-2">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" value="retail" id="work1">
+                                                    <label class="form-check-label" for="work1">Retail/Sales</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 mb-2">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" value="hospitality" id="work2">
+                                                    <label class="form-check-label" for="work2">Hospitality/Food Service</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 mb-2">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" value="campus_jobs" id="work3">
+                                                    <label class="form-check-label" for="work3">On-campus Jobs</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 mb-2">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" value="tutoring" id="work4">
+                                                    <label class="form-check-label" for="work4">Tutoring/Teaching</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 mb-2">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" value="admin" id="work5">
+                                                    <label class="form-check-label" for="work5">Administrative/Office Work</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 mb-2">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" value="freelance" id="work6">
+                                                    <label class="form-check-label" for="work6">Freelance/Gig Economy</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Hours willing to work per week while studying</label>
+                                        <select class="form-select" required>
+                                            <option value="" selected disabled>Select hours</option>
+                                            <option value="0">Not planning to work</option>
+                                            <option value="1-10">1-10 hours</option>
+                                            <option value="11-20">11-20 hours</option>
+                                            <option value="20+">More than 20 hours</option>
+                                        </select>
+                                    </div>
+                                    <div class="d-flex justify-content-between">
+                                        <button type="button" class="btn btn-outline-secondary px-4" onclick="prevStep(4)">Back</button>
+                                        <button type="button" class="btn btn-primary px-4" onclick="nextStep(4)">Continue</button>
+                                    </div>
+                                </div>
+
+                                <!-- Step 5: Language Skills -->
+                                <div class="form-section" id="step5">
+                                    <h3 class="mb-4">Your Language Abilities</h3>
+                                    <div class="mb-3">
+                                        <label class="form-label">English Proficiency Level</label>
+                                        <select class="form-select" required>
+                                            <option value="" selected disabled>Select level</option>
+                                            <option value="native">Native/Bilingual</option>
+                                            <option value="advanced">Advanced/Fluent (C1-C2)</option>
+                                            <option value="intermediate">Intermediate (B1-B2)</option>
+                                            <option value="basic">Basic (A1-A2)</option>
+                                            <option value="none">No English skills</option>
+                                        </select>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Other Languages</label>
+                                        <div class="row mb-3">
+                                            <div class="col-md-6 mb-3 mb-md-0">
+                                                <select class="form-select">
+                                                    <option value="" selected>Select another language (optional)</option>
+                                                    <option value="french">French</option>
+                                                    <option value="spanish">Spanish</option>
+                                                    <option value="german">German</option>
+                                                    <option value="chinese">Chinese</option>
+                                                    <option value="japanese">Japanese</option>
+                                                    <option value="korean">Korean</option>
+                                                    <option value="arabic">Arabic</option>
+                                                    <option value="other">Other</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <select class="form-select">
+                                                    <option value="" selected disabled>Proficiency level</option>
+                                                    <option value="native">Native/Bilingual</option>
+                                                    <option value="advanced">Advanced/Fluent</option>
+                                                    <option value="intermediate">Intermediate</option>
+                                                    <option value="basic">Basic</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6 mb-3 mb-md-0">
+                                                <select class="form-select">
+                                                    <option value="" selected>Select another language (optional)</option>
+                                                    <option value="french">French</option>
+                                                    <option value="spanish">Spanish</option>
+                                                    <option value="german">German</option>
+                                                    <option value="chinese">Chinese</option>
+                                                    <option value="japanese">Japanese</option>
+                                                    <option value="korean">Korean</option>
+                                                    <option value="arabic">Arabic</option>
+                                                    <option value="other">Other</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <select class="form-select">
+                                                    <option value="" selected disabled>Proficiency level</option>
+                                                    <option value="native">Native/Bilingual</option>
+                                                    <option value="advanced">Advanced/Fluent</option>
+                                                    <option value="intermediate">Intermediate</option>
+                                                    <option value="basic">Basic</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Are you willing to learn a new language for your study destination?</label>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="language_willing" id="lang_yes" value="yes">
+                                            <label class="form-check-label" for="lang_yes">Yes</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="language_willing" id="lang_no" value="no">
+                                            <label class="form-check-label" for="lang_no">No, I prefer English-speaking countries only</label>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex justify-content-between">
+                                        <button type="button" class="btn btn-outline-secondary px-4" onclick="prevStep(5)">Back</button>
+                                        <button type="button" class="btn btn-success px-4" onclick="submitForm()">Get Recommendations</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    </section>
 
     <footer class="bg-dark text-white py-4">
-        <div class="container">
-            <div class="text-center">
-                <p class="mb-0">Student Decision Support System &copy; 2023</p>
-            </div>
+        <div class="container text-center">
+            <p class="mb-0">© 2024 Student Migration Decision Support System</p>
         </div>
     </footer>
 
-    <!-- Bootstrap JS -->
+    <!-- Bootstrap JS Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Check if user is already logged in
-        document.addEventListener('DOMContentLoaded', function() {
-            const isLoggedIn = localStorage.getItem('isLoggedIn');
-            if (isLoggedIn === 'true') {
-                window.location.href = '/dashboard.html';
+        // Navigation between steps
+        function nextStep(currentStep) {
+            // Mark current step as completed
+            document.querySelector(`.step[data-step="${currentStep}"]`).classList.add('completed');
+            // Hide current section
+            document.getElementById(`step${currentStep}`).classList.remove('active');
+            // Show next section
+            document.getElementById(`step${currentStep + 1}`).classList.add('active');
+            // Mark next step as active
+            document.querySelector(`.step[data-step="${currentStep + 1}"]`).classList.add('active');
+        }
+        
+        function prevStep(currentStep) {
+            // Remove active class from current step
+            document.querySelector(`.step[data-step="${currentStep}"]`).classList.remove('active');
+            document.querySelector(`.step[data-step="${currentStep - 1}"]`).classList.remove('completed');
+            document.querySelector(`.step[data-step="${currentStep - 1}"]`).classList.add('active');
+            // Hide current section
+            document.getElementById(`step${currentStep}`).classList.remove('active');
+            // Show previous section
+            document.getElementById(`step${currentStep - 1}`).classList.add('active');
+        }
+        
+        function submitForm() {
+            // Collect form data
+            const formData = {
+                profile: {},
+                experience: {},
+                skills: {
+                    technical: [],
+                    soft: []
+                },
+                workPreferences: {
+                    areas: [],
+                    hours: ""
+                },
+                languages: {
+                    english: "",
+                    other: [],
+                    willingToLearn: false
+                },
+                timestamp: new Date().toISOString()
+            };
+            
+            // Collect data from Step 1: Profile
+            const ageSelect = document.querySelector('#step1 select:nth-child(1)');
+            const educationSelect = document.querySelector('#step1 select:nth-child(2)');
+            const fieldSelect = document.querySelector('#step1 select:nth-child(3)');
+            
+            if (ageSelect) formData.profile.age = ageSelect.value;
+            if (educationSelect) formData.profile.education = educationSelect.value;
+            if (fieldSelect) formData.profile.field = fieldSelect.value;
+            
+            // Collect technical skills
+            document.querySelectorAll('#step3 input[id^="skill"]:checked').forEach(skill => {
+                formData.skills.technical.push(skill.value);
+            });
+            
+            // Collect soft skills
+            document.querySelectorAll('#step3 input[id^="soft"]:checked').forEach(skill => {
+                formData.skills.soft.push(skill.value);
+            });
+            
+            // Collect work preferences
+            document.querySelectorAll('#step4 input[id^="work"]:checked').forEach(work => {
+                formData.workPreferences.areas.push(work.value);
+            });
+            
+            // Collect language preferences
+            const englishLevel = document.querySelector('#step5 select');
+            if (englishLevel) formData.languages.english = englishLevel.value;
+            
+            const languageWilling = document.querySelector('input[name="language_willing"]:checked');
+            if (languageWilling) {
+                formData.languages.willingToLearn = languageWilling.value === 'yes';
             }
-        });
+            
+            // Store form data in localStorage
+            localStorage.setItem('dssFormData', JSON.stringify(formData));
+            
+            // Add match scores for demonstration purposes
+            const matchScores = {
+                canada: 92,
+                germany: 89,
+                australia: 85,
+                uk: 82,
+                netherlands: 78,
+                sweden: 76
+            };
+            localStorage.setItem('dssMatchScores', JSON.stringify(matchScores));
+            
+            // Redirect to results page
+            window.location.href = 'results.html';
+        }
     </script>
 </body>
 </html>

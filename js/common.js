@@ -100,15 +100,35 @@ document.addEventListener('DOMContentLoaded', function() {
         if (sidebarLogoutBtn) {
             sidebarLogoutBtn.addEventListener('click', function(e) {
                 e.preventDefault();
-                if (typeof performLogout === 'function') {
-                    performLogout();
+                console.log("Sidebar logout clicked");
+                
+                // First try to use the auth.js performLogout function
+                if (typeof window.performLogout === 'function') {
+                    window.performLogout();
                 } else {
-                    // Fallback if performLogout isn't available
+                    // Comprehensive fallback logout
+                    console.log("Using fallback logout");
+                    
+                    // Try server logout if possible
+                    try {
+                        fetch('/api/auth/logout', {
+                            method: 'GET',
+                            headers: {
+                                'Authorization': `Bearer ${localStorage.getItem('token')}`
+                            }
+                        }).catch(e => console.warn('API logout failed:', e));
+                    } catch (e) {
+                        console.warn('Error during logout API call:', e);
+                    }
+                    
+                    // Always clear ALL local storage items related to authentication
+                    localStorage.removeItem('token');
+                    localStorage.removeItem('user');
                     localStorage.removeItem('isLoggedIn');
                     localStorage.removeItem('userRole');
                     localStorage.removeItem('username');
-                    localStorage.removeItem('token');
-                    localStorage.removeItem('user');
+                    
+                    // Redirect to login page
                     window.location.href = pathPrefix + 'login.html';
                 }
             });

@@ -40,6 +40,13 @@
                                 Invalid username or password
                             </div>
                         </form>
+                        
+                        <div class="text-center mt-4">
+                            <p class="text-muted">Available credentials:</p>
+                            <p class="text-muted">Admin: username="admin", password="admin"</p>
+                            <p class="text-muted">Guest: username="guest", password="guest"</p>
+                            <p><a href="index.html" class="btn btn-link">Return to Home Page</a></p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -53,10 +60,18 @@
             const loginForm = document.getElementById('loginForm');
             const guestLoginBtn = document.getElementById('guestLoginBtn');
             
-            // Check if already logged in
-            const { isLoggedIn } = checkLoginStatus();
-            if (isLoggedIn === 'true') {
-                window.location.href = 'dashboard.html';
+            // Check if already logged in - FIXED with safety check
+            try {
+                if (typeof checkLoginStatus === 'function') {
+                    const { isLoggedIn } = checkLoginStatus();
+                    if (isLoggedIn === 'true') {
+                        window.location.href = 'dashboard.html';
+                    }
+                } else {
+                    console.warn('Auth module not loaded correctly - checkLoginStatus not found');
+                }
+            } catch (e) {
+                console.error('Error checking login status:', e);
             }
             
             if (loginForm) {
@@ -82,24 +97,7 @@
                 });
             }
             
-            if (guestLoginBtn) {
-                guestLoginBtn.addEventListener('click', function() {
-                    localStorage.setItem('isLoggedIn', 'true');
-                    localStorage.setItem('username', 'Guest');
-                    localStorage.setItem('userRole', 'guest');
-                    
-                    // Redirect to dashboard
-                    window.location.href = 'dashboard.html';
-                });
-            }
-        });
-    </script>
-</body>
-</html>
-            }
-            
             // Handle guest login
-            const guestLoginBtn = document.getElementById('guestLoginBtn');
             if (guestLoginBtn) {
                 guestLoginBtn.addEventListener('click', function(e) {
                     e.preventDefault();
@@ -127,5 +125,7 @@
             }
         });
     </script>
+</body>
+</html>
 </body>
 </html>

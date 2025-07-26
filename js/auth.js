@@ -253,6 +253,7 @@ function updateNavigation() {
 
 // Logout function that can be called from anywhere
 function performLogout() {
+    console.log("performLogout function called");
     // Call the server API to logout (if available)
     try {
         fetch('/api/auth/logout', {
@@ -273,6 +274,9 @@ function performLogout() {
         clearLoginDataAndRedirect();
     }
 }
+
+// Make performLogout available in the global scope
+window.performLogout = performLogout;
 
 // Clear local data and redirect
 function clearLoginDataAndRedirect() {

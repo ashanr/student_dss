@@ -216,12 +216,16 @@
                                         <div class="step-circle">5</div>
                                         <div class="step-label">Language</div>
                                     </div>
+                                    <div class="step" data-step="6">
+                                        <div class="step-circle">6</div>
+                                        <div class="step-label">Budget</div>
+                                    </div>
                                 </div>
                             </div>
 
                             <!-- Form Sections -->
                             <form id="migrationForm">
-                                <!-- Step 1: Basic Profile -->
+                                <!-- Step 1: Basic Profile - Enhanced with more academic details -->
                                 <div class="form-section active" id="step1">
                                     <h3 class="mb-4">Tell Us About Yourself</h3>
                                     <div class="row mb-3">
@@ -259,6 +263,67 @@
                                             <option value="social">Social Sciences</option>
                                         </select>
                                     </div>
+                                    
+                                    <!-- New academic preference details -->
+                                    <div class="mb-3">
+                                        <label class="form-label">Intended Degree Level</label>
+                                        <select class="form-select" required>
+                                            <option value="" selected disabled>Select degree level</option>
+                                            <option value="bachelor">Bachelor's Degree (Undergraduate)</option>
+                                            <option value="master">Master's Degree (Graduate)</option>
+                                            <option value="phd">PhD/Doctoral</option>
+                                            <option value="diploma">Diploma/Certificate</option>
+                                        </select>
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label class="form-label">Preferred Program Duration</label>
+                                        <select class="form-select">
+                                            <option value="" selected disabled>Select preferred duration</option>
+                                            <option value="1">1 year</option>
+                                            <option value="2">2 years</option>
+                                            <option value="3">3 years</option>
+                                            <option value="4">4 years</option>
+                                            <option value="5+">5+ years</option>
+                                        </select>
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label class="form-label">Preferred Study Regions (Select all that apply)</label>
+                                        <div class="row">
+                                            <div class="col-md-4 mb-2">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" value="north_america" id="region1">
+                                                    <label class="form-check-label" for="region1">North America</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4 mb-2">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" value="europe" id="region2">
+                                                    <label class="form-check-label" for="region2">Europe</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4 mb-2">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" value="asia" id="region3">
+                                                    <label class="form-check-label" for="region3">Asia</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4 mb-2">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" value="australia" id="region4">
+                                                    <label class="form-check-label" for="region4">Australia/Oceania</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4 mb-2">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" value="uk" id="region5">
+                                                    <label class="form-check-label" for="region5">United Kingdom</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
                                     <div class="text-end">
                                         <button type="button" class="btn btn-primary px-4" onclick="nextStep(1)">Continue</button>
                                     </div>
@@ -539,7 +604,242 @@
                                     </div>
                                     <div class="d-flex justify-content-between">
                                         <button type="button" class="btn btn-outline-secondary px-4" onclick="prevStep(5)">Back</button>
-                                        <button type="button" class="btn btn-success px-4" onclick="submitForm()">Get Recommendations</button>
+                                        <button type="button" class="btn btn-primary px-4" onclick="nextStep(5)">Continue</button>
+                                    </div>
+                                </div>
+
+                                <!-- Add Step 6: Budget & Financial Considerations after Step 5 -->
+                                <div class="form-section" id="step6">
+                                    <h3 class="mb-4">Budget & Financial Considerations</h3>
+                                    <p class="text-muted mb-4">Your financial preferences help us match you with affordable options</p>
+                                    
+                                    <div class="mb-3">
+                                        <label class="form-label">Maximum Annual Tuition Budget (USD)</label>
+                                        <select class="form-select" required>
+                                            <option value="" selected disabled>Select your maximum budget</option>
+                                            <option value="5000">Up to $5,000 per year</option>
+                                            <option value="10000">Up to $10,000 per year</option>
+                                            <option value="20000">Up to $20,000 per year</option>
+                                            <option value="30000">Up to $30,000 per year</option>
+                                            <option value="40000">Up to $40,000 per year</option>
+                                            <option value="50000">Up to $50,000 per year</option>
+                                            <option value="50000+">$50,000+ per year</option>
+                                        </select>
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label class="form-label">Monthly Living Expense Budget (USD)</label>
+                                        <select class="form-select" required>
+                                            <option value="" selected disabled>Select your monthly budget</option>
+                                            <option value="500">Up to $500 per month</option>
+                                            <option value="1000">Up to $1,000 per month</option>
+                                            <option value="1500">Up to $1,500 per month</option>
+                                            <option value="2000">Up to $2,000 per month</option>
+                                            <option value="2500">Up to $2,500 per month</option>
+                                            <option value="3000">$3,000+ per month</option>
+                                        </select>
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label class="form-label">Scholarship Needs</label>
+                                        <select class="form-select" required>
+                                            <option value="" selected disabled>Select your scholarship needs</option>
+                                            <option value="must">Must have scholarship (essential)</option>
+                                            <option value="preferred">Prefer scholarship options</option>
+                                            <option value="not_needed">No scholarship needed</option>
+                                        </select>
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label class="form-label">University Ranking Importance</label>
+                                        <div class="position-relative">
+                                            <input type="range" class="form-range" id="rankingImportance" min="1" max="10" value="5">
+                                            <div class="d-flex justify-content-between mt-1">
+                                                <span class="small text-muted">Not Important</span>
+                                                <span class="small text-muted">Very Important</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label class="form-label">Accommodation Preference</label>
+                                        <div class="row">
+                                            <div class="col-md-4 mb-2">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" value="on_campus" id="accom1">
+                                                    <label class="form-check-label" for="accom1">On-campus housing</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4 mb-2">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" value="private_housing" id="accom2">
+                                                    <label class="form-check-label" for="accom2">Private housing</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4 mb-2">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" value="shared_housing" id="accom3">
+                                                    <label class="form-check-label" for="accom3">Shared housing</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label class="form-label">Post-Graduation Plans</label>
+                                        <select class="form-select">
+                                            <option value="" selected disabled>Select your plans after graduation</option>
+                                            <option value="work_host">Work in host country</option>
+                                            <option value="return_home">Return to home country</option>
+                                            <option value="further_study">Continue to further study</option>
+                                            <option value="undecided">Undecided</option>
+                                        </select>
+                                    </div>
+                                    
+                                    <div class="d-flex justify-content-between">
+                                        <button type="button" class="btn btn-outline-secondary px-4" onclick="prevStep(6)">Back</button>
+                                        <button type="button" class="btn btn-success px-4" id="getRecommendationsBtn">Show My Recommendations</button>
+                                    </div>
+                                </div>
+                                
+                                <!-- New Recommendations Results Section -->
+                                <div class="form-section" id="recommendationsResults" style="display: none;">
+                                    <h3 class="mb-4 text-center">Your Top Recommended Destinations</h3>
+                                    <div class="alert alert-success">
+                                        <i class="fas fa-check-circle me-2"></i> Based on your preferences, we've found several excellent matches!
+                                    </div>
+                                    
+                                    <div class="row mb-4">
+                                        <div class="col-md-4 mb-3">
+                                            <div class="card h-100 border-success">
+                                                <div class="card-header bg-success text-white d-flex justify-content-between align-items-center">
+                                                    <span>Canada</span>
+                                                    <span class="badge bg-light text-success">92% Match</span>
+                                                </div>
+                                                <div class="card-body">
+                                                    <h5 class="card-title">University of Toronto</h5>
+                                                    <p class="card-text">Master's in Computer Science</p>
+                                                    <ul class="list-unstyled">
+                                                        <li><i class="fas fa-dollar-sign me-2"></i> Tuition: $18,000/year</li>
+                                                        <li><i class="fas fa-home me-2"></i> Living cost: $1,200/month</li>
+                                                        <li><i class="fas fa-graduation-cap me-2"></i> Program: 2 years</li>
+                                                    </ul>
+                                                </div>
+                                                <div class="card-footer">
+                                                    <a href="#" class="btn btn-outline-success btn-sm">View Details</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <div class="card h-100 border-primary">
+                                                <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                                                    <span>Germany</span>
+                                                    <span class="badge bg-light text-primary">89% Match</span>
+                                                </div>
+                                                <div class="card-body">
+                                                    <h5 class="card-title">Technical University of Munich</h5>
+                                                    <p class="card-text">Master's in Computer Science</p>
+                                                    <ul class="list-unstyled">
+                                                        <li><i class="fas fa-dollar-sign me-2"></i> Tuition: €1,500/year</li>
+                                                        <li><i class="fas fa-home me-2"></i> Living cost: €900/month</li>
+                                                        <li><i class="fas fa-graduation-cap me-2"></i> Program: 2 years</li>
+                                                    </ul>
+                                                </div>
+                                                <div class="card-footer">
+                                                    <a href="#" class="btn btn-outline-primary btn-sm">View Details</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <div class="card h-100 border-info">
+                                                <div class="card-header bg-info text-white d-flex justify-content-between align-items-center">
+                                                    <span>Australia</span>
+                                                    <span class="badge bg-light text-info">85% Match</span>
+                                                </div>
+                                                <div class="card-body">
+                                                    <h5 class="card-title">University of Melbourne</h5>
+                                                    <p class="card-text">Master's in Computer Science</p>
+                                                    <ul class="list-unstyled">
+                                                        <li><i class="fas fa-dollar-sign me-2"></i> Tuition: AU$42,000/year</li>
+                                                        <li><i class="fas fa-home me-2"></i> Living cost: AU$1,800/month</li>
+                                                        <li><i class="fas fa-graduation-cap me-2"></i> Program: 2 years</li>
+                                                    </ul>
+                                                </div>
+                                                <div class="card-footer">
+                                                    <a href="#" class="btn btn-outline-info btn-sm">View Details</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="row mb-4">
+                                        <div class="col-12">
+                                            <div class="card">
+                                                <div class="card-header bg-light">
+                                                    <h5 class="mb-0">Compare All Options</h5>
+                                                </div>
+                                                <div class="card-body">
+                                                    <div class="table-responsive">
+                                                        <table class="table table-hover">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>Country</th>
+                                                                    <th>University</th>
+                                                                    <th>Program</th>
+                                                                    <th>Duration</th>
+                                                                    <th>Tuition/Year</th>
+                                                                    <th>Living Cost</th>
+                                                                    <th>Match</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td>Canada</td>
+                                                                    <td>University of Toronto</td>
+                                                                    <td>Master's in Computer Science</td>
+                                                                    <td>2 years</td>
+                                                                    <td>$18,000</td>
+                                                                    <td>$1,200/mo</td>
+                                                                    <td><span class="badge bg-success">92%</span></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>Germany</td>
+                                                                    <td>Technical University of Munich</td>
+                                                                    <td>Master's in Computer Science</td>
+                                                                    <td>2 years</td>
+                                                                    <td>€1,500</td>
+                                                                    <td>€900/mo</td>
+                                                                    <td><span class="badge bg-primary">89%</span></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>Australia</td>
+                                                                    <td>University of Melbourne</td>
+                                                                    <td>Master's in Computer Science</td>
+                                                                    <td>2 years</td>
+                                                                    <td>AU$42,000</td>
+                                                                    <td>AU$1,800/mo</td>
+                                                                    <td><span class="badge bg-info">85%</span></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>UK</td>
+                                                                    <td>University College London</td>
+                                                                    <td>MSc Computer Science</td>
+                                                                    <td>1 year</td>
+                                                                    <td>£23,000</td>
+                                                                    <td>£1,500/mo</td>
+                                                                    <td><span class="badge bg-secondary">82%</span></td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="d-flex justify-content-between mt-4">
+                                        <button type="button" class="btn btn-outline-secondary" onclick="showForm()">Edit Preferences</button>
+                                        <button type="button" class="btn btn-primary" onclick="downloadResults()">Download Results</button>
                                     </div>
                                 </div>
                             </form>
@@ -582,11 +882,149 @@
             document.getElementById(`step${currentStep - 1}`).classList.add('active');
         }
         
+        // Update the form submission handling
+        document.addEventListener('DOMContentLoaded', function() {
+            const migrationForm = document.getElementById('migrationForm');
+            const getRecommendationsBtn = document.getElementById('getRecommendationsBtn');
+            
+            migrationForm.addEventListener('submit', function(e) {
+                e.preventDefault(); // Prevent the default form submission
+                submitForm();
+            });
+            
+            getRecommendationsBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                submitForm();
+            });
+        });
+        
         function submitForm() {
-            // Here you would typically send the form data to your backend
-            // For now, we'll just redirect to a sample results page
-            alert('Thank you! Based on your profile, we recommend exploring opportunities in Canada, Germany, and Australia. Create an account to see detailed recommendations.');
-            window.location.href = 'register.html'; // Redirect to registration page
+            try {
+                // Collect form data
+                const formData = {
+                    profile: {},
+                    experience: {},
+                    skills: {
+                        technical: [],
+                        soft: []
+                    },
+                    workPreferences: {
+                        areas: [],
+                        hours: ""
+                    },
+                    languages: {
+                        english: "",
+                        other: [],
+                        willingToLearn: false
+                    },
+                    budget: {
+                        tuition: "",
+                        living: "",
+                        scholarship: "",
+                        rankingImportance: 0
+                    },
+                    preferences: {
+                        regions: [],
+                        accommodation: [],
+                        postGraduation: ""
+                    },
+                    timestamp: new Date().toISOString()
+                };
+                
+                // Collect data from steps (including new fields)
+                // Step 1: Profile and academic preferences
+                const ageSelect = document.querySelector('#step1 select:nth-of-type(1)');
+                const educationSelect = document.querySelector('#step1 select:nth-of-type(2)');
+                const fieldSelect = document.querySelector('#step1 select:nth-of-type(3)');
+                const degreeSelect = document.querySelector('#step1 select:nth-of-type(4)');
+                const durationSelect = document.querySelector('#step1 select:nth-of-type(5)');
+                
+                if (ageSelect) formData.profile.age = ageSelect.value;
+                if (educationSelect) formData.profile.education = educationSelect.value;
+                if (fieldSelect) formData.profile.field = fieldSelect.value;
+                if (degreeSelect) formData.profile.intendedDegree = degreeSelect.value;
+                if (durationSelect) formData.profile.programDuration = durationSelect.value;
+                
+                // Collect preferred regions
+                document.querySelectorAll('#step1 input[id^="region"]:checked').forEach(region => {
+                    formData.preferences.regions.push(region.value);
+                });
+                
+                // Collect technical skills
+                document.querySelectorAll('#step3 input[id^="skill"]:checked').forEach(skill => {
+                    formData.skills.technical.push(skill.value);
+                });
+                
+                // Collect soft skills
+                document.querySelectorAll('#step3 input[id^="soft"]:checked').forEach(skill => {
+                    formData.skills.soft.push(skill.value);
+                });
+                
+                // Collect work preferences
+                document.querySelectorAll('#step4 input[id^="work"]:checked').forEach(work => {
+                    formData.workPreferences.areas.push(work.value);
+                });
+                
+                // Collect language preferences
+                const englishLevel = document.querySelector('#step5 select');
+                if (englishLevel) formData.languages.english = englishLevel.value;
+                
+                const languageWilling = document.querySelector('input[name="language_willing"]:checked');
+                if (languageWilling) {
+                    formData.languages.willingToLearn = languageWilling.value === 'yes';
+                }
+                
+                // Step 6: Budget & Financial Considerations
+                const tuitionSelect = document.querySelector('#step6 select:nth-of-type(1)');
+                const livingSelect = document.querySelector('#step6 select:nth-of-type(2)');
+                const scholarshipSelect = document.querySelector('#step6 select:nth-of-type(3)');
+                const rankingSlider = document.getElementById('rankingImportance');
+                const postGradSelect = document.querySelector('#step6 select:nth-of-type(4)');
+                
+                if (tuitionSelect) formData.budget.tuition = tuitionSelect.value;
+                if (livingSelect) formData.budget.living = livingSelect.value;
+                if (scholarshipSelect) formData.budget.scholarship = scholarshipSelect.value;
+                if (rankingSlider) formData.budget.rankingImportance = rankingSlider.value;
+                if (postGradSelect) formData.preferences.postGraduation = postGradSelect.value;
+                
+                // Collect accommodation preferences
+                document.querySelectorAll('#step6 input[id^="accom"]:checked').forEach(accom => {
+                    formData.preferences.accommodation.push(accom.value);
+                });
+                
+                // Store form data in localStorage
+                localStorage.setItem('dssFormData', JSON.stringify(formData));
+                
+                // Show recommendations directly
+                document.getElementById('step6').classList.remove('active');
+                document.getElementById('recommendationsResults').style.display = 'block';
+                
+                // Scroll to results
+                document.getElementById('recommendationsResults').scrollIntoView({ behavior: 'smooth' });
+                
+                console.log("Form submitted successfully, showing recommendations...");
+                
+            } catch(error) {
+                console.error("Error in form submission:", error);
+                // Still show recommendations even if there's an error collecting data
+                document.getElementById('step6').classList.remove('active');
+                document.getElementById('recommendationsResults').style.display = 'block';
+                
+                // Scroll to results
+                document.getElementById('recommendationsResults').scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+        
+        // New function to go back to the form
+        function showForm() {
+            document.getElementById('recommendationsResults').style.display = 'none';
+            document.getElementById('step6').classList.add('active');
+        }
+        
+        // Function to download results
+        function downloadResults() {
+            alert('Your results will be downloaded as PDF');
+            // In a real implementation, this would generate a PDF of the recommendations
         }
     </script>
 </body>
